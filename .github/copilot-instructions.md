@@ -425,6 +425,7 @@ This section defines the UI placement strategy for the AI Vision features.
     *   Concatenate data from multi-page scans.
 -   **Server Checkout:** Extracts financial data and auto-fills the shift form.
     *   Account for variable formats.
+    *   Account for multiple pages in a checkout.
     *   Start simple, extract what is consistently available, and improve over time.
     *   Review modal lets user verify/edit extracted data.
 -   **Business Card:** Creates/adds to Event Contacts and attaches it to the current shift.
