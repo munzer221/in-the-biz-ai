@@ -319,6 +319,17 @@ class HeroCard extends StatelessWidget {
 
 ---
 
+## 🌐 WEBSITE METADATA RULES (NEW - December 31, 2025)
+
+- **When deploying the website, ALWAYS update the `<title>` tag** in the `index.html` file to reflect the correct site name (e.g., "In The Biz").
+- **ALWAYS update the Open Graph meta tags** (`og:title`, `og:description`, `og:image`, etc.) in the `index.html` file to ensure correct display when sharing links. This includes:
+  - `og:title`: The title of your website
+  - `og:description`: A brief description of your website
+  - `og:image`: The URL of an image to display when sharing the link
+- **Verify the website metadata** after deployment by sharing the link on social media or messaging platforms to ensure it displays correctly.
+
+---
+
 ## 🔒 SECURITY RULES (NEW - December 31, 2025):
 
 - **NEVER commit `.env` files to Git.** These files contain sensitive API keys and credentials.
@@ -804,20 +815,4 @@ ALTER TABLE public.shifts ADD COLUMN (
   - [ ] 🧾 BEO (Event Details)
   - [ ] 📊 Server Checkout
   - [ ] 💼 Business Card
-  - [ ] 📄 Invoice (Coming Soon)
-  - [ ] 🧾 Receipt (Coming Soon)
-
-### Phase 6b: Server Checkout Scanner (Week 2-3)
-- [ ] Create checkout scan screen (photo picker)
-- [ ] Implement multi-page detection logic
-  - [ ] After each photo: "Another page?" or "Ready to import?"
-  - [ ] Concatenate multi-page data
-- [ ] Create verification screen UI
-  - [ ] Checkout preview card with confidence badges
-  - [ ] Questions section (responsive 2-4 cards)
-  - [ ] Action buttons (Approve/Answer/Discard)
-- [ ] Build Gemini vision integration
-  - [ ] POS system detection (Toast/Square/Aloha/etc)
-  - [ ] Field extraction with confidence scores
-  - [ ] Question generation for low-confidence fields
-- [ ] Create
+  - [ ] 📄 Invoice (Coming Soon
