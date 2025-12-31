@@ -742,13 +742,115 @@ CREATE INDEX idx_server_checkouts_date ON public.server_checkouts(checkout_date)
 CREATE INDEX idx_server_checkouts_verified ON public.server_checkouts(user_verified);
 ```
 
-### No Changes to Shifts Table (MVP)
-
-MVP keeps shifts table unchanged. In Phase 2 (v1.1), we can add:
+### New Database Table: beo_events
 
 ```sql
+CREATE TABLE public.beo_events (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  
+  -- Event Identification
+  event_name TEXT NOT NULL,
+  event_type TEXT,  -- "Wedding", "Corporate", "Social", "Birthday", etc.
+  event_date DATE NOT NULL,
+  event_time_start TIME,
+  event_time_end TIME,
+  
+  -- Contact Information
+  primary_contact_id UUID REFERENCES event_contacts(id),  -- Link to contact
+  primary_contact_name TEXT,
+  primary_contact_phone TEXT,
+  primary_contact_email TEXT,
+  alternate_contact_name TEXT,
+  alternate_contact_phone TEXT,
+  
+  -- Venue & Logistics
+  venue_name TEXT,
+  venue_address TEXT,
+  setup_time TIME,
+  breakdown_time TIME,
+  
+  -- Guests & Details
+  expected_guest_count INT,
+  confirmed_guest_count INT,
+  
+  -- Financial
+  total_sale_amount DECIMAL(10, 2),
+  deposit_amount DECIMAL(10, 2),
+  balance_due DECIMAL(10, 2),
+  service_charge_percent DECIMAL(5, 2),
+  commission_percent DECIMAL(5, 2),
+  commission_amount DECIMAL(10, 2),
+  
+  -- Extracted Details
+  menu_details TEXT,  -- Formatted menu info
+  decor_details TEXT,  -- Formatted decor info
+  staffing_details TEXT,  -- Formatted staffing info
+  
+  -- AI Metadata
+  ai_confidence_scores JSONB,  -- Confidence for each field
+  overall_confidence DECIMAL(3, 2),
+  
+  -- User Verification
+  user_verified BOOLEAN DEFAULT FALSE,
+  user_verified_at TIMESTAMPTZ,
+  user_adjustments JSONB,  -- What user changed
+  user_questions_answered JSONB,
+  
+  -- Formatted Notes (All unstructured BEO data)
+  formatted_notes TEXT,  -- Nicely formatted notes with sections
+  
+  -- Images & Attachments
+  image_urls TEXT[],  -- Multi-page BEO photos
+  floor_plan_urls TEXT[],  -- Floor plan photos/PDFs
+  image_count INT,
+  
+  -- Linking
+  linked_shift_id UUID REFERENCES shifts(id) ON DELETE SET NULL,  -- If user created shift from BEO
+  
+  -- Timestamps
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX idx_beo_events_user ON public.beo_events(user_id);
+CREATE INDEX idx_beo_events_date ON public.beo_events(event_date);
+CREATE INDEX idx_beo_events_verified ON public.beo_events(user_verified);
+```
+
+### New Database Table: beo_guest_list
+
+```sql
+CREATE TABLE public.beo_guest_list (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  beo_event_id UUID NOT NULL REFERENCES beo_events(id) ON DELETE CASCADE,
+  
+  guest_name TEXT NOT NULL,
+  dietary_restrictions TEXT,  -- "Vegetarian", "Gluten-free", "Shellfish allergy", etc.
+  entree_choice TEXT,  -- "Filet Mignon", "Herb Chicken", "Vegetarian Pasta"
+  table_number INT,
+  notes TEXT,  -- Special instructions for this guest
+  
+  arrived BOOLEAN DEFAULT FALSE,
+  arrived_at TIMESTAMPTZ,
+  
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX idx_guest_list_event ON public.beo_guest_list(beo_event_id);
+CREATE INDEX idx_guest_list_table ON public.beo_guest_list(table_number);
+```
+
+### Shifts Table Updates (For Both Servers & Event Planners)
+
+**No database changes needed initially.** The system will use the existing shifts table and link to server_checkouts or beo_events via foreign keys.
+
+Future enhancement (v1.1):
+```sql
 ALTER TABLE public.shifts ADD COLUMN (
-  source_checkout_id UUID REFERENCES server_checkouts(id)  -- Track origin if imported
+  source_checkout_id UUID REFERENCES server_checkouts(id),  -- If created from checkout
+  source_beo_id UUID REFERENCES beo_events(id),  -- If created from BEO
+  shift_type TEXT DEFAULT 'shift'  -- "shift" or "party" (for UI display)
 );
 ```
 
