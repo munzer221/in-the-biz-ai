@@ -641,26 +641,183 @@ Should be on the stats screen. May want to have a toggle button somewhere where 
 
 ## 📝 Data Storage
 
-New Database Fields (Shifts Table)
+### New Database Table: server_checkouts
 
-For Server Checkouts:
+```sql
+CREATE TABLE public.server_checkouts (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
 
-sql
-ALTER TABLE public.shifts ADD COLUMN (
-checkout_image_url TEXT, -- Receipt image
-checkout_pos_system TEXT, -- Toast/Square/Aloha/Micros/Other
-checkout_confidence DECIMAL(3,2), -- 0.00 to 1.00
-checkout_scanned_at TIMESTAMPTZ, -- When checkout was scanned
-checkout_metadata JSONB -- Raw extracted data for future use
+  -- Extracted Data from Receipt
+  checkout_date DATE NOT NULL,
+  checkout_time TIME,  -- If available on receipt, else NULL
+
+  sales_amount DECIMAL(10, 2),
+  tax_amount DECIMAL(10, 2),
+  tips_amount DECIMAL(10, 2),
+  service_charge DECIMAL(10, 2),
+  total_amount DECIMAL(10, 2),
+
+  -- Context Information
+  server_name TEXT,
+  table_number TEXT,
+  covers INT,
+  pos_system TEXT,  -- "Toast", "Square", "Aloha", "Clover", etc.
+
+  -- AI Metadata
+  ai_confidence_scores JSONB,  -- { "tips": 0.45, "sales": 0.95, ... }
+  ai_notes TEXT,  -- "Handwritten tip, unclear" or system notes
+  overall_confidence DECIMAL(3, 2),  -- Average confidence (0.0-1.0)
+
+  -- User Verification
+  user_verified BOOLEAN DEFAULT FALSE,
+  user_verified_at TIMESTAMPTZ,
+  user_adjustments JSONB,  -- What user changed: { "tips": "95.00", "server_name": "John" }
+  user_questions_answered JSONB,  -- Answers to verification questions
+
+  -- Images (Multi-page Support)
+  image_urls TEXT[] NOT NULL,  -- Array of photo URLs
+  image_count INT,  -- Number of pages scanned
+
+  -- Linking
+  linked_shift_id UUID REFERENCES shifts(id) ON DELETE SET NULL,  -- If user imported to shift
+
+  -- Timestamps
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
-For BEOs:
+CREATE INDEX idx_server_checkouts_user ON public.server_checkouts(user_id);
+CREATE INDEX idx_server_checkouts_date ON public.server_checkouts(checkout_date);
+CREATE INDEX idx_server_checkouts_verified ON public.server_checkouts(user_verified);
+```
 
-sql
+### No Changes to Shifts Table (MVP)
+
+MVP keeps shifts table unchanged. In Phase 2 (v1.1), we can add:
+
+```sql
 ALTER TABLE public.shifts ADD COLUMN (
-beo_image_urls TEXT[], -- Array of BEO photos (multi-page)
-beo_scanned_at TIMESTAMPTZ,
-beo_metadata JSONB -- Raw extracted BEO data
+  source_checkout_id UUID REFERENCES server_checkouts(id)  -- Track origin if imported
 );
+```
 
 ---
+
+## 🎯 Post-Scan Verification Flow
+
+### User Journey After Scanning
+
+```
+1. User scans checkout receipt(s)
+   ↓
+2. AI analyzes (possibly multi-page)
+   ↓
+3. VERIFICATION SCREEN APPEARS
+   ├─ Checkout Preview Card (top)
+   │  └─ Shows all extracted data with confidence badges
+   │
+   ├─ Questions Section (scrollable)
+   │  ├─ "X questions need your help"
+   │  ├─ 2-4 questions per view (responsive layout)
+   │  └─ Each question has input field + hint text
+   │
+   └─ Action Buttons
+      ├─ [Approve as-is] (skip unanswered questions)
+      ├─ [Answer Questions] (fill in blanks)
+      └─ [Discard]
+   ↓
+4. Data saved to server_checkouts table
+   ↓
+5. Optional: User can "Import to Shift" later
+```
+
+### Checkout Preview Card
+
+**Layout:**
+
+```
+┌─────────────────────────────────────┐
+│ 🧾 CHECKOUT PREVIEW                 │
+├─────────────────────────────────────┤
+│  Sales:        $450.00               │
+│  Tax:          $38.25                │
+│  Tips:         $95.00   ⚠️ Unclear   │
+│  Service Chg:  $0.00   ✅ Clear      │
+│  ───────────────────────────────────│
+│  TOTAL:        $583.25               │
+│                                      │
+│  Server: John Smith   Table: 8       │
+│  Date: 12/31/2025     Covers: 4      │
+│  POS: Toast                          │
+│                                      │
+│  ✓ High Confidence (5/8 fields)      │
+└─────────────────────────────────────┘
+```
+
+**Confidence Badges:**
+- ✅ Green: High confidence (>80%)
+- ⚠️ Yellow: Medium confidence (50-80%)
+- ❌ Red: Low/Failed (could not extract)
+
+### Question Card Examples
+
+**Simple Input Question:**
+
+```
+┌─────────────────────────────────────┐
+│ ❓ What was your tip amount?         │
+│    I found $95, but it was unclear   │
+│                                      │
+│ [_____________________]              │
+│  Hint: E.g., $100 or 95.50          │
+└─────────────────────────────────────┘
+```
+
+**Multiple Choice Question:**
+
+```
+┌─────────────────────────────────────┐
+│ ❓ Was service charge a house fee?   │
+│    Found: Service Charge $15         │
+│                                      │
+│ [ ] Yes, deduct from my tips         │
+│ [ ] No, it's part of my pay          │
+│ [ ] Not sure                         │
+└─────────────────────────────────────┘
+```
+
+**Questions Always Optional:**
+- Users CAN skip unanswered questions
+- No required fields (user choice)
+- Can edit verification data later if needed
+
+---
+
+## 🤖 AI Implementation Strategy
+
+### Phase 6a: UI Foundation (Week 1)
+- [ ] Add ✨ Scan button icon to Add Shift header
+- [ ] Add Scan button to Edit Shift header
+- [ ] Add Scan button to Shift Details header
+- [ ] Create bottom sheet menu component with options:
+  - [ ] 🧾 BEO (Event Details)
+  - [ ] 📊 Server Checkout
+  - [ ] 💼 Business Card
+  - [ ] 📄 Invoice (Coming Soon)
+  - [ ] 🧾 Receipt (Coming Soon)
+
+### Phase 6b: Server Checkout Scanner (Week 2-3)
+- [ ] Create checkout scan screen (photo picker)
+- [ ] Implement multi-page detection logic
+  - [ ] After each photo: "Another page?" or "Ready to import?"
+  - [ ] Concatenate multi-page data
+- [ ] Create verification screen UI
+  - [ ] Checkout preview card with confidence badges
+  - [ ] Questions section (responsive 2-4 cards)
+  - [ ] Action buttons (Approve/Answer/Discard)
+- [ ] Build Gemini vision integration
+  - [ ] POS system detection (Toast/Square/Aloha/etc)
+  - [ ] Field extraction with confidence scores
+  - [ ] Question generation for low-confidence fields
+- [ ] Create
