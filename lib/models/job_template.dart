@@ -27,6 +27,27 @@ class JobTemplate {
   final bool showPhotos;
   final bool showNotes;
 
+  // Industry-specific fields (Salon, Hospitality, Fitness, etc.)
+  final bool showServiceType; // Hair cut, color, massage type, etc.
+  final bool showSessionType; // PT session vs group class, etc.
+  final bool showClassSize; // For group fitness
+  final bool showGigType; // For musicians: wedding, corporate, street, etc.
+  final bool showMaterialsCost; // For construction, salon, artists
+  final bool showEquipmentRental; // For construction, music
+  final bool showUpsells; // For retail: warranties, credit cards, etc.
+  final bool showShrink; // For retail: inventory loss/shrink
+  final bool showReturns; // For retail: return tracking
+  final bool showProductSales; // For salon: separate product revenue
+  final bool showRepeatClientPercent; // For salon, fitness: loyalty metric
+  final bool showRetentionRate; // For fitness: recurring clients %
+  final bool showQualityScore; // For housekeeping: quality metrics
+  final bool showCancellations; // For fitness, healthcare: no-show tracking
+  final bool showChairRental; // For salon: freelance stylists
+  final bool showOnCallHours; // For healthcare: on-call shifts
+  final bool showRoomType; // For housekeeping: standard/suite/deluxe
+  final bool showShiftType; // For hospitality, retail, healthcare: peak vs slow
+  final bool showShiftDifferential; // For healthcare, hospitality: night/weekend bonus
+
   JobTemplate({
     this.payStructure = PayStructure.hourly,
     this.flatRateAmount,
@@ -45,6 +66,25 @@ class JobTemplate {
     this.showProjectName = false,
     this.showPhotos = true,
     this.showNotes = true,
+    this.showServiceType = false,
+    this.showSessionType = false,
+    this.showClassSize = false,
+    this.showGigType = false,
+    this.showMaterialsCost = false,
+    this.showEquipmentRental = false,
+    this.showUpsells = false,
+    this.showShrink = false,
+    this.showReturns = false,
+    this.showProductSales = false,
+    this.showRepeatClientPercent = false,
+    this.showRetentionRate = false,
+    this.showQualityScore = false,
+    this.showCancellations = false,
+    this.showChairRental = false,
+    this.showOnCallHours = false,
+    this.showRoomType = false,
+    this.showShiftType = false,
+    this.showShiftDifferential = false,
   });
 
   /// Create from Supabase JSONB field
@@ -70,6 +110,25 @@ class JobTemplate {
       showProjectName: json['show_project_name'] ?? false,
       showPhotos: json['show_photos'] ?? true,
       showNotes: json['show_notes'] ?? true,
+      showServiceType: json['show_service_type'] ?? false,
+      showSessionType: json['show_session_type'] ?? false,
+      showClassSize: json['show_class_size'] ?? false,
+      showGigType: json['show_gig_type'] ?? false,
+      showMaterialsCost: json['show_materials_cost'] ?? false,
+      showEquipmentRental: json['show_equipment_rental'] ?? false,
+      showUpsells: json['show_upsells'] ?? false,
+      showShrink: json['show_shrink'] ?? false,
+      showReturns: json['show_returns'] ?? false,
+      showProductSales: json['show_product_sales'] ?? false,
+      showRepeatClientPercent: json['show_repeat_client_percent'] ?? false,
+      showRetentionRate: json['show_retention_rate'] ?? false,
+      showQualityScore: json['show_quality_score'] ?? false,
+      showCancellations: json['show_cancellations'] ?? false,
+      showChairRental: json['show_chair_rental'] ?? false,
+      showOnCallHours: json['show_on_call_hours'] ?? false,
+      showRoomType: json['show_room_type'] ?? false,
+      showShiftType: json['show_shift_type'] ?? false,
+      showShiftDifferential: json['show_shift_differential'] ?? false,
     );
   }
 
@@ -93,6 +152,25 @@ class JobTemplate {
       'show_project_name': showProjectName,
       'show_photos': showPhotos,
       'show_notes': showNotes,
+      'show_service_type': showServiceType,
+      'show_session_type': showSessionType,
+      'show_class_size': showClassSize,
+      'show_gig_type': showGigType,
+      'show_materials_cost': showMaterialsCost,
+      'show_equipment_rental': showEquipmentRental,
+      'show_upsells': showUpsells,
+      'show_shrink': showShrink,
+      'show_returns': showReturns,
+      'show_product_sales': showProductSales,
+      'show_repeat_client_percent': showRepeatClientPercent,
+      'show_retention_rate': showRetentionRate,
+      'show_quality_score': showQualityScore,
+      'show_cancellations': showCancellations,
+      'show_chair_rental': showChairRental,
+      'show_on_call_hours': showOnCallHours,
+      'show_room_type': showRoomType,
+      'show_shift_type': showShiftType,
+      'show_shift_differential': showShiftDifferential,
     };
   }
 
@@ -198,6 +276,25 @@ class JobTemplate {
     bool? showProjectName,
     bool? showPhotos,
     bool? showNotes,
+    bool? showServiceType,
+    bool? showSessionType,
+    bool? showClassSize,
+    bool? showGigType,
+    bool? showMaterialsCost,
+    bool? showEquipmentRental,
+    bool? showUpsells,
+    bool? showShrink,
+    bool? showReturns,
+    bool? showProductSales,
+    bool? showRepeatClientPercent,
+    bool? showRetentionRate,
+    bool? showQualityScore,
+    bool? showCancellations,
+    bool? showChairRental,
+    bool? showOnCallHours,
+    bool? showRoomType,
+    bool? showShiftType,
+    bool? showShiftDifferential,
   }) {
     return JobTemplate(
       payStructure: payStructure ?? this.payStructure,
@@ -217,6 +314,25 @@ class JobTemplate {
       showProjectName: showProjectName ?? this.showProjectName,
       showPhotos: showPhotos ?? this.showPhotos,
       showNotes: showNotes ?? this.showNotes,
+      showServiceType: showServiceType ?? this.showServiceType,
+      showSessionType: showSessionType ?? this.showSessionType,
+      showClassSize: showClassSize ?? this.showClassSize,
+      showGigType: showGigType ?? this.showGigType,
+      showMaterialsCost: showMaterialsCost ?? this.showMaterialsCost,
+      showEquipmentRental: showEquipmentRental ?? this.showEquipmentRental,
+      showUpsells: showUpsells ?? this.showUpsells,
+      showShrink: showShrink ?? this.showShrink,
+      showReturns: showReturns ?? this.showReturns,
+      showProductSales: showProductSales ?? this.showProductSales,
+      showRepeatClientPercent: showRepeatClientPercent ?? this.showRepeatClientPercent,
+      showRetentionRate: showRetentionRate ?? this.showRetentionRate,
+      showQualityScore: showQualityScore ?? this.showQualityScore,
+      showCancellations: showCancellations ?? this.showCancellations,
+      showChairRental: showChairRental ?? this.showChairRental,
+      showOnCallHours: showOnCallHours ?? this.showOnCallHours,
+      showRoomType: showRoomType ?? this.showRoomType,
+      showShiftType: showShiftType ?? this.showShiftType,
+      showShiftDifferential: showShiftDifferential ?? this.showShiftDifferential,
     );
   }
 }
