@@ -46,7 +46,8 @@ class JobTemplate {
   final bool showOnCallHours; // For healthcare: on-call shifts
   final bool showRoomType; // For housekeeping: standard/suite/deluxe
   final bool showShiftType; // For hospitality, retail, healthcare: peak vs slow
-  final bool showShiftDifferential; // For healthcare, hospitality: night/weekend bonus
+  final bool
+      showShiftDifferential; // For healthcare, hospitality: night/weekend bonus
 
   JobTemplate({
     this.payStructure = PayStructure.hourly,
@@ -434,7 +435,8 @@ class JobTemplate {
       showShrink: showShrink ?? this.showShrink,
       showReturns: showReturns ?? this.showReturns,
       showProductSales: showProductSales ?? this.showProductSales,
-      showRepeatClientPercent: showRepeatClientPercent ?? this.showRepeatClientPercent,
+      showRepeatClientPercent:
+          showRepeatClientPercent ?? this.showRepeatClientPercent,
       showRetentionRate: showRetentionRate ?? this.showRetentionRate,
       showQualityScore: showQualityScore ?? this.showQualityScore,
       showCancellations: showCancellations ?? this.showCancellations,
@@ -442,7 +444,8 @@ class JobTemplate {
       showOnCallHours: showOnCallHours ?? this.showOnCallHours,
       showRoomType: showRoomType ?? this.showRoomType,
       showShiftType: showShiftType ?? this.showShiftType,
-      showShiftDifferential: showShiftDifferential ?? this.showShiftDifferential,
+      showShiftDifferential:
+          showShiftDifferential ?? this.showShiftDifferential,
     );
   }
 }
