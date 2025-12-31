@@ -438,6 +438,7 @@ This section defines the UI placement strategy for the AI Vision features.
     *   Concatenate data from multi-page scans.
 -   **Server Checkout Scanner:**
     *   Account for variable formats.
+    *   Account for multiple pages in a checkout.
     *   Start simple, extract what is consistently available, and improve over time.
     *   Review modal lets user verify/edit extracted data.
 -   **Receipt and Invoice:**
