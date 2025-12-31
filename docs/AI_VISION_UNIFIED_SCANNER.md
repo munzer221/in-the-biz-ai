@@ -579,29 +579,43 @@ Settings → Analytics Preferences
 
 ---
 
-## 🛠️ Implementation Roadmap
+## 🛠️ Implementation Roadmap (Phase 6 - Integrated)
 
-### Phase 6a: UI Foundation (Week 1)
-- [ ] Add ✨ Scan button icon to Add Shift header
-- [ ] Add Scan button to Edit Shift header  
-- [ ] Add Scan button to Shift Details header
+### Phase 6a: UI Foundation & Job Type System (Week 1)
+- [ ] Create/update Job Type system
+  - [ ] Add job type detection (Server vs Event Planner)
+  - [ ] Auto-configure features based on job type
+  - [ ] Auto-rename "Shift" ↔ "Party" based on context
+  - [ ] Add toggles for optional sections
+- [ ] Add ✨ Scan button icon to Add Shift/Party header
+- [ ] Add Scan button to Edit Shift/Party header  
+- [ ] Add Scan button to Shift/Party Details header
 - [ ] Create bottom sheet menu component with options:
-  - [ ] 🧾 BEO (Event Details)
-  - [ ] 📊 Server Checkout
+  - [ ] 🧾 BEO (Event Details) - For Event Planners
+  - [ ] 📊 Server Checkout - For Servers/Bartenders
   - [ ] 💼 Business Card
   - [ ] 📄 Invoice (Coming Soon)
   - [ ] 🧾 Receipt (Coming Soon)
 
-### Phase 6b: Server Checkout Scanner (Week 2-3)
+### Phase 6b: Unified Verification Framework (Week 1-2)
+- [ ] Build reusable verification screen component
+  - [ ] Preview card with confidence badges
+  - [ ] Questions section (responsive 2-4 cards)
+  - [ ] Action buttons (Approve/Answer/Discard)
+  - [ ] Notes section (formatted or free-text)
+- [ ] Build question generation logic
+- [ ] Implement Gemini vision integration (base)
+
+### Phase 6c: Server Checkout Scanner (Week 2-3)
 - [ ] Create checkout scan screen (photo picker)
 - [ ] Implement multi-page detection logic
   - [ ] After each photo: "Another page?" or "Ready to import?"
   - [ ] Concatenate multi-page data
-- [ ] Create verification screen UI
-  - [ ] Checkout preview card with confidence badges
-  - [ ] Questions section (responsive 2-4 cards)
-  - [ ] Action buttons (Approve/Answer/Discard)
-- [ ] Build Gemini vision integration
+- [ ] Customize verification for checkout data
+  - [ ] Checkout preview card (sales, tips, tax, etc.)
+  - [ ] Questions for unclear fields
+  - [ ] Optional notes section
+- [ ] Build Gemini vision integration for checkouts
   - [ ] POS system detection (Toast/Square/Aloha/etc)
   - [ ] Field extraction with confidence scores
   - [ ] Question generation for low-confidence fields
@@ -609,7 +623,39 @@ Settings → Analytics Preferences
 - [ ] Save verified checkout data
 - [ ] Error handling for unclear receipts
 
-### Phase 6c: Checkout Analytics Tab (Week 3-4)
+### Phase 6d: BEO Scanner (Week 3-4)
+- [ ] Create BEO scan screen (photo picker)
+- [ ] Implement multi-page detection (same as checkout)
+- [ ] Customize verification for BEO data
+  - [ ] Event preview card (event name, date, guests, venue, contact, sales)
+  - [ ] Questions for unclear fields
+  - [ ] Formatted notes section (with categories)
+- [ ] Build Gemini vision integration for BEOs
+  - [ ] Extract all BEO fields (using comprehensive field database)
+  - [ ] Generate questions for ambiguous data
+  - [ ] Format unstructured data into readable notes
+- [ ] Create beo_events database table
+- [ ] Wire extracted contacts to Contact Database
+- [ ] Auto-fill shift/party form with BEO data
+
+### Phase 6e: Event Planner Features (Week 4)
+- [ ] Build Guest List section
+  - [ ] Table for guest name, dinner choice, dietary restrictions, table #
+  - [ ] Filter by dietary/table
+  - [ ] Check off arrivals
+  - [ ] Edit notes per guest
+- [ ] Build Floor Plan gallery section
+  - [ ] Multi-photo gallery
+  - [ ] Photo captions
+  - [ ] PDF attachments
+- [ ] Update Shift/Party form with new sections
+  - [ ] Event Details (Event Name, Type, Venue, Contact)
+  - [ ] Event Logistics (Setup time, breakdown, timeline)
+  - [ ] Guest List tab
+  - [ ] Floor Plan tab
+  - [ ] Staffing Assignments (for future)
+
+### Phase 6f: Checkout Analytics Tab (Week 4-5)
 - [ ] Add "Checkout Tracking" tab to Stats screen
 - [ ] Build analytics queries from server_checkouts table
 - [ ] Create dashboard UI with:
@@ -619,31 +665,26 @@ Settings → Analytics Preferences
   - [ ] Charts (sales by day, tip % trend)
 - [ ] Add period selector (Week/Month/Year/Custom)
 
-### Phase 6d: Optional Features (Week 4-5)
-- [ ] Import to Shift button
-  - [ ] Pre-fill Add Shift form with checkout data
-  - [ ] Map checkout fields to shift fields
+### Phase 6g: Optional Features (Week 5)
+- [ ] Import to Shift/Party button
+  - [ ] Pre-fill Add Shift/Party form with checkout/BEO data
+  - [ ] Map fields to shift form
 - [ ] Auto-import toggle in settings
 - [ ] Duplicate detection
-  - [ ] Warn if checkout already exists for same date/server/amount
+  - [ ] Warn if checkout/event already exists
   - [ ] Options to create new or replace
 
-### Phase 6e: BEO Scanner (Week 5)
-- [ ] Same verification flow as checkout
-- [ ] Multi-page support (same logic)
-- [ ] Auto-fill shift form with event details
-- [ ] Create Event Contact from BEO data
-
-### Phase 6f: Business Card Integration (Week 5)
+### Phase 6h: Business Card Integration (Week 5)
 - [ ] Add Business Card option to bottom sheet menu
 - [ ] Wire to existing business card scanner
-- [ ] Test integration
+- [ ] Test integration with both Server and Event Planner workflows
 
-### Phase 6g: Testing & Documentation (Week 6)
-- [ ] Test all scanners with 20+ real-world receipts
-- [ ] Document extraction accuracy by POS system
+### Phase 6i: Testing & Documentation (Week 6)
+- [ ] Test scanners with 20+ real-world receipts and BEOs
+- [ ] Document extraction accuracy by type
+- [ ] Test with both Server and Event Planner jobs
 - [ ] Collect edge cases and improvements
-- [ ] Create user guide
+- [ ] Create user guides (for both job types)
 - [ ] Gather feedback for v1.1
 
 ---
