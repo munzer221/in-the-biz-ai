@@ -815,4 +815,4 @@ ALTER TABLE public.shifts ADD COLUMN (
   - [ ] 🧾 BEO (Event Details)
   - [ ] 📊 Server Checkout
   - [ ] 💼 Business Card
-  - [ ] 📄 Invoice (Coming Soon
+  - [ ] 📄 Invoice (Coming Soon)
