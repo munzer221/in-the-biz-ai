@@ -148,6 +148,57 @@ class JobTemplate {
     this.showRoomType = false,
     this.showShiftType = false,
     this.showShiftDifferential = false,
+    // Rideshare & Delivery
+    this.showRidesCount = false,
+    this.showDeadMiles = false,
+    this.showFuelCost = false,
+    this.showTollsParking = false,
+    this.showSurgeMultiplier = false,
+    this.showBaseFare = false,
+    // Music & Entertainment
+    this.showSetupHours = false,
+    this.showPerformanceHours = false,
+    this.showBreakdownHours = false,
+    this.showEquipmentUsed = false,
+    this.showCrewPayment = false,
+    this.showMerchSales = false,
+    this.showAudienceSize = false,
+    // Artist & Crafts
+    this.showPiecesCreated = false,
+    this.showPiecesSold = false,
+    this.showSalePrice = false,
+    this.showVenueCommission = false,
+    // Retail additional
+    this.showItemsSold = false,
+    this.showTransactionsCount = false,
+    // Salon additional
+    this.showServicesCount = false,
+    this.showNewClients = false,
+    this.showWalkins = false,
+    // Hospitality additional
+    this.showRoomsCleaned = false,
+    this.showRoomUpgrades = false,
+    this.showGuestsCheckedIn = false,
+    this.showCarsParked = false,
+    // Healthcare additional
+    this.showPatientCount = false,
+    this.showProceduresCount = false,
+    // Fitness additional
+    this.showSessionsCount = false,
+    this.showPackageSales = false,
+    this.showSupplementSales = false,
+    // Construction additional
+    this.showLaborCost = false,
+    this.showSubcontractorCost = false,
+    this.showSquareFootage = false,
+    this.showWeatherDelay = false,
+    // Freelancer additional
+    this.showRevisionsCount = false,
+    this.showClientType = false,
+    this.showExpenses = false,
+    this.showBillableHours = false,
+    // Restaurant additional
+    this.showTableSection = false,
   });
 
   /// Create from Supabase JSONB field
