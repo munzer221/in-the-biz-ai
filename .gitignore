@@ -47,3 +47,4 @@ docs/
 # Supabase CLI temp files
 supabase/.temp/
 .vercel
+.env*.local
