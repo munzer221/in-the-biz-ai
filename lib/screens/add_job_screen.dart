@@ -64,7 +64,7 @@ class _AddJobScreenState extends State<AddJobScreen> {
   bool? _showPerformanceHours;
   bool? _showBreakdownHours;
   bool? _showEquipmentUsed;
-  bool? _showEquipmentRentalCost;
+  bool? _showEquipmentRental;
   bool? _showCrewPayment;
   bool? _showMerchSales;
   bool? _showAudienceSize;
