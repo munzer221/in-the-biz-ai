@@ -1382,10 +1382,9 @@ class _AddJobScreenState extends State<AddJobScreen> {
                 child: ChoiceChip(
                   label: const Text('Hourly'),
                   selected: _payStructure == PayStructure.hourly,
-                  onSelected: (selected) => setState(
-                      () => _payStructure = PayStructure.hourly),
-                  selectedColor:
-                      AppTheme.primaryGreen.withOpacity(0.3),
+                  onSelected: (selected) =>
+                      setState(() => _payStructure = PayStructure.hourly),
+                  selectedColor: AppTheme.primaryGreen.withOpacity(0.3),
                   backgroundColor: AppTheme.cardBackgroundLight,
                 ),
               ),
@@ -1394,10 +1393,9 @@ class _AddJobScreenState extends State<AddJobScreen> {
                 child: ChoiceChip(
                   label: const Text('Flat Rate'),
                   selected: _payStructure == PayStructure.flatRate,
-                  onSelected: (selected) => setState(
-                      () => _payStructure = PayStructure.flatRate),
-                  selectedColor:
-                      AppTheme.primaryGreen.withOpacity(0.3),
+                  onSelected: (selected) =>
+                      setState(() => _payStructure = PayStructure.flatRate),
+                  selectedColor: AppTheme.primaryGreen.withOpacity(0.3),
                   backgroundColor: AppTheme.cardBackgroundLight,
                 ),
               ),
@@ -1406,10 +1404,9 @@ class _AddJobScreenState extends State<AddJobScreen> {
                 child: ChoiceChip(
                   label: const Text('Commission'),
                   selected: _payStructure == PayStructure.commission,
-                  onSelected: (selected) => setState(
-                      () => _payStructure = PayStructure.commission),
-                  selectedColor:
-                      AppTheme.primaryGreen.withOpacity(0.3),
+                  onSelected: (selected) =>
+                      setState(() => _payStructure = PayStructure.commission),
+                  selectedColor: AppTheme.primaryGreen.withOpacity(0.3),
                   backgroundColor: AppTheme.cardBackgroundLight,
                 ),
               ),
@@ -1451,8 +1448,7 @@ class _AddJobScreenState extends State<AddJobScreen> {
             divisions: 20,
             activeColor: AppTheme.primaryGreen,
             inactiveColor: AppTheme.cardBackgroundLight,
-            onChanged: (value) =>
-                setState(() => _overtimeMultiplier = value),
+            onChanged: (value) => setState(() => _overtimeMultiplier = value),
           ),
         ],
       ),

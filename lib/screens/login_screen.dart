@@ -36,49 +36,53 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  String? _rawNonce;
-  String? _hashedNonce;
-
   Future<void> _initializeGoogleSignInWeb() async {
     try {
-      // Generate a raw nonce
-      _rawNonce = _generateNonce();
-      // Hash the nonce with SHA256
-      _hashedNonce = sha256.convert(utf8.encode(_rawNonce!)).toString();
-
       await GoogleSignIn.instance.initialize(
         clientId:
             '30441285456-pkvqkagh3fcv0b6n71t5tpnuda94l8d5.apps.googleusercontent.com',
         serverClientId:
             '30441285456-pkvqkagh3fcv0b6n71t5tpnuda94l8d5.apps.googleusercontent.com',
-        nonce: _hashedNonce,
       );
 
       GoogleSignIn.instance.authenticationEvents.listen((event) async {
         // Handle sign-in event
         if (event is GoogleSignInAuthenticationEventSignIn) {
-          final user = event.user;
-          final googleAuth = await user.authentication;
+          if (!mounted) return;
+          
+          // Set loading state immediately when user selects account
+          setState(() {
+            _isLoading = true;
+            _errorMessage = null;
+          });
 
-          if (googleAuth.idToken != null) {
-            try {
+          try {
+            final user = event.user;
+            final googleAuth = await user.authentication;
+
+            if (googleAuth.idToken != null) {
+              // Generate fresh nonce for each sign-in attempt
+              final rawNonce = _generateNonce();
+              final hashedNonce = sha256.convert(utf8.encode(rawNonce)).toString();
+
               final response = await AuthService.signInWithIdToken(
                 idToken: googleAuth.idToken!,
-                nonce: _hashedNonce,
+                nonce: hashedNonce,
               );
+              
               if (response != null && mounted) {
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(builder: (_) => const DashboardScreen()),
                 );
               }
-            } catch (e) {
-              print('Supabase sign-in error: $e');
-              if (mounted) {
-                setState(() {
-                  _errorMessage = 'Sign-in failed: $e';
-                  _isLoading = false;
-                });
-              }
+            }
+          } catch (e) {
+            print('Supabase sign-in error: $e');
+            if (mounted) {
+              setState(() {
+                _errorMessage = 'Sign-in failed: $e';
+                _isLoading = false;
+              });
             }
           }
         }
