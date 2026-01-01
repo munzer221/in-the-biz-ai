@@ -1773,29 +1773,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     required String title,
     required IconData icon,
     required List<Widget> children,
+    bool initiallyExpanded = true,
+    bool hasActiveFields = false,
   }) {
-    return Container(
-      decoration: BoxDecoration(
-        color: AppTheme.cardBackground,
-        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Row(
-              children: [
-                Icon(icon, color: AppTheme.primaryGreen, size: 20),
-                const SizedBox(width: 8),
-                Text(title, style: AppTheme.titleMedium),
-              ],
-            ),
-          ),
-          Divider(height: 1, color: AppTheme.cardBackgroundLight),
-          ...children,
-        ],
-      ),
+    return _CollapsibleSection(
+      title: title,
+      icon: icon,
+      initiallyExpanded: initiallyExpanded,
+      hasActiveFields: hasActiveFields,
+      children: children,
     );
   }
 
