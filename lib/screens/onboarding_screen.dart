@@ -1077,57 +1077,48 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           title: 'Earnings Tracking',
           icon: Icons.trending_up,
           children: [
-            if (template.showTips)
-              _buildTemplateToggle(
-                'Tips (Cash & Credit)',
-                'Track tips received',
-                template.showTips,
-                (value) => _updateTemplate(
-                    jobName, template.copyWith(showTips: value)),
-              ),
-            if (template.showSales)
-              _buildTemplateToggle(
-                'Sales Amount',
-                'Track total sales for tip %',
-                template.showSales,
-                (value) => _updateTemplate(
-                    jobName, template.copyWith(showSales: value)),
-              ),
-            if (template.showCommission)
-              _buildTemplateToggle(
-                'Commission',
-                'Track sales commission',
-                template.showCommission,
-                (value) => _updateTemplate(
-                    jobName, template.copyWith(showCommission: value)),
-              ),
-            if (template.tracksOvertime)
-              _buildTemplateToggle(
-                'Overtime',
-                'Track overtime hours',
-                template.tracksOvertime,
-                (value) => _updateTemplate(
-                    jobName, template.copyWith(tracksOvertime: value)),
-              ),
+            _buildTemplateToggle(
+              'Tips (Cash & Credit)',
+              'Track tips received',
+              template.showTips,
+              (value) => _updateTemplate(
+                  jobName, template.copyWith(showTips: value)),
+            ),
+            _buildTemplateToggle(
+              'Sales Amount',
+              'Track total sales for tip %',
+              template.showSales,
+              (value) => _updateTemplate(
+                  jobName, template.copyWith(showSales: value)),
+            ),
+            _buildTemplateToggle(
+              'Commission',
+              'Track sales commission',
+              template.showCommission,
+              (value) => _updateTemplate(
+                  jobName, template.copyWith(showCommission: value)),
+            ),
+            _buildTemplateToggle(
+              'Overtime',
+              'Track overtime hours',
+              template.tracksOvertime,
+              (value) => _updateTemplate(
+                  jobName, template.copyWith(tracksOvertime: value)),
+            ),
           ],
         ),
         const SizedBox(height: 16),
 
         // Event Details Section
-        if (template.showEventName ||
-            template.showEventCost ||
-            template.showHostess ||
-            template.showGuestCount)
-          _buildTemplateSection(
-            title: 'Event Details',
-            icon: Icons.celebration,
-            children: [
-              if (template.showEventName)
-                _buildTemplateToggle(
-                  'Event/Party Name',
-                  'Name the event',
-                  template.showEventName,
-                  (value) => _updateTemplate(
+        _buildTemplateSection(
+          title: 'Event Details',
+          icon: Icons.celebration,
+          children: [
+            _buildTemplateToggle(
+              'Event/Party Name',
+              'Name the event',
+              template.showEventName,
+              (value) => _updateTemplate(
                       jobName, template.copyWith(showEventName: value)),
                 ),
               if (template.showEventCost)
