@@ -260,6 +260,250 @@ class AIActionsService {
   }
 
   // ============================================
+  // SHIFT ACTIONS
+  // ============================================
+
+  /// Create a new shift with all industry-specific fields
+  Future<Shift> createShift({
+    required String jobId,
+    required DateTime date,
+    double cashTips = 0,
+    double creditTips = 0,
+    double hoursWorked = 0,
+    double hourlyRate = 0,
+    String? startTime,
+    String? endTime,
+    String? eventName,
+    String? hostess,
+    int? guestCount,
+    String? location,
+    String? clientName,
+    String? projectName,
+    double? commission,
+    double? mileage,
+    double? flatRate,
+    double? overtimeHours,
+    String? notes,
+    double? salesAmount,
+    double? tipoutPercent,
+    double? additionalTipout,
+    String? additionalTipoutNote,
+    double? eventCost,
+    // Rideshare & Delivery
+    int? ridesCount,
+    int? deliveriesCount,
+    double? deadMiles,
+    double? fuelCost,
+    double? tollsParking,
+    double? surgeMultiplier,
+    double? acceptanceRate,
+    double? baseFare,
+    // Music & Entertainment
+    String? gigType,
+    double? setupHours,
+    double? performanceHours,
+    double? breakdownHours,
+    String? equipmentUsed,
+    double? equipmentRentalCost,
+    double? crewPayment,
+    double? merchSales,
+    int? audienceSize,
+    // Artist & Crafts
+    int? piecesCreated,
+    int? piecesSold,
+    double? materialsCost,
+    double? salePrice,
+    double? venueCommissionPercent,
+    // Retail/Sales
+    int? itemsSold,
+    int? transactionsCount,
+    int? upsellsCount,
+    double? upsellsAmount,
+    int? returnsCount,
+    double? returnsAmount,
+    double? shrinkAmount,
+    String? department,
+    // Salon/Spa
+    String? serviceType,
+    int? servicesCount,
+    double? productSales,
+    double? repeatClientPercent,
+    double? chairRental,
+    int? newClientsCount,
+    int? returningClientsCount,
+    int? walkinCount,
+    int? appointmentCount,
+    // Hospitality
+    String? roomType,
+    int? roomsCleaned,
+    double? qualityScore,
+    String? shiftType,
+    int? roomUpgrades,
+    int? guestsCheckedIn,
+    int? carsParked,
+    // Healthcare
+    int? patientCount,
+    double? shiftDifferential,
+    double? onCallHours,
+    int? proceduresCount,
+    String? specialization,
+    // Fitness
+    int? sessionsCount,
+    String? sessionType,
+    int? classSize,
+    double? retentionRate,
+    int? cancellationsCount,
+    double? packageSales,
+    double? supplementSales,
+    // Construction/Trades
+    double? laborCost,
+    double? subcontractorCost,
+    double? squareFootage,
+    double? weatherDelayHours,
+    // Freelancer
+    int? revisionsCount,
+    String? clientType,
+    double? expenses,
+    double? billableHours,
+    // Restaurant Additional
+    String? tableSection,
+    double? cashSales,
+    double? cardSales,
+  }) async {
+    final shift = Shift(
+      id: const Uuid().v4(),
+      date: date,
+      cashTips: cashTips,
+      creditTips: creditTips,
+      hoursWorked: hoursWorked,
+      hourlyRate: hourlyRate,
+      startTime: startTime,
+      endTime: endTime,
+      eventName: eventName,
+      hostess: hostess,
+      guestCount: guestCount,
+      location: location,
+      clientName: clientName,
+      projectName: projectName,
+      commission: commission,
+      mileage: mileage,
+      flatRate: flatRate,
+      overtimeHours: overtimeHours,
+      notes: notes,
+      jobId: jobId,
+      salesAmount: salesAmount,
+      tipoutPercent: tipoutPercent,
+      additionalTipout: additionalTipout,
+      additionalTipoutNote: additionalTipoutNote,
+      eventCost: eventCost,
+      // Rideshare & Delivery
+      ridesCount: ridesCount,
+      deliveriesCount: deliveriesCount,
+      deadMiles: deadMiles,
+      fuelCost: fuelCost,
+      tollsParking: tollsParking,
+      surgeMultiplier: surgeMultiplier,
+      acceptanceRate: acceptanceRate,
+      baseFare: baseFare,
+      // Music & Entertainment
+      gigType: gigType,
+      setupHours: setupHours,
+      performanceHours: performanceHours,
+      breakdownHours: breakdownHours,
+      equipmentUsed: equipmentUsed,
+      equipmentRentalCost: equipmentRentalCost,
+      crewPayment: crewPayment,
+      merchSales: merchSales,
+      audienceSize: audienceSize,
+      // Artist & Crafts
+      piecesCreated: piecesCreated,
+      piecesSold: piecesSold,
+      materialsCost: materialsCost,
+      salePrice: salePrice,
+      venueCommissionPercent: venueCommissionPercent,
+      // Retail/Sales
+      itemsSold: itemsSold,
+      transactionsCount: transactionsCount,
+      upsellsCount: upsellsCount,
+      upsellsAmount: upsellsAmount,
+      returnsCount: returnsCount,
+      returnsAmount: returnsAmount,
+      shrinkAmount: shrinkAmount,
+      department: department,
+      // Salon/Spa
+      serviceType: serviceType,
+      servicesCount: servicesCount,
+      productSales: productSales,
+      repeatClientPercent: repeatClientPercent,
+      chairRental: chairRental,
+      newClientsCount: newClientsCount,
+      returningClientsCount: returningClientsCount,
+      walkinCount: walkinCount,
+      appointmentCount: appointmentCount,
+      // Hospitality
+      roomType: roomType,
+      roomsCleaned: roomsCleaned,
+      qualityScore: qualityScore,
+      shiftType: shiftType,
+      roomUpgrades: roomUpgrades,
+      guestsCheckedIn: guestsCheckedIn,
+      carsParked: carsParked,
+      // Healthcare
+      patientCount: patientCount,
+      shiftDifferential: shiftDifferential,
+      onCallHours: onCallHours,
+      proceduresCount: proceduresCount,
+      specialization: specialization,
+      // Fitness
+      sessionsCount: sessionsCount,
+      sessionType: sessionType,
+      classSize: classSize,
+      retentionRate: retentionRate,
+      cancellationsCount: cancellationsCount,
+      packageSales: packageSales,
+      supplementSales: supplementSales,
+      // Construction/Trades
+      laborCost: laborCost,
+      subcontractorCost: subcontractorCost,
+      squareFootage: squareFootage,
+      weatherDelayHours: weatherDelayHours,
+      // Freelancer
+      revisionsCount: revisionsCount,
+      clientType: clientType,
+      expenses: expenses,
+      billableHours: billableHours,
+      // Restaurant Additional
+      tableSection: tableSection,
+      cashSales: cashSales,
+      cardSales: cardSales,
+    );
+
+    await _db.saveShift(shift);
+    return shift;
+  }
+
+  /// Update an existing shift
+  Future<Shift> updateShift(Shift shift) async {
+    await _db.updateShift(shift);
+    return shift;
+  }
+
+  /// Delete a shift
+  Future<void> deleteShift(String shiftId) async {
+    await _db.deleteShift(shiftId);
+  }
+
+  /// Get shift by ID
+  Future<Shift?> getShiftById(String shiftId) async {
+    final shifts = await _db.getShifts();
+    try {
+      return shifts.firstWhere((s) => s.id == shiftId);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // ============================================
   // TAX ACTIONS
   // ============================================
 
