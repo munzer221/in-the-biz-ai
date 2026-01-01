@@ -64,7 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
             try {
               final response = await AuthService.signInWithIdToken(
                 idToken: googleAuth.idToken!,
-                nonce: _rawNonce,
+                nonce: _hashedNonce,
               );
               if (response != null && mounted) {
                 Navigator.of(context).pushReplacement(
