@@ -815,4 +815,4 @@ ALTER TABLE public.shifts ADD COLUMN (
 - [ ] Create bottom sheet menu component with options:
   - [ ] 🧾 BEO (Event Details)
   - [ ] 📊 Server Checkout
-  - [ ]
+- [ ]
