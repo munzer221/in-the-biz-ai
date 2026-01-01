@@ -62,11 +62,28 @@ class AuthService {
       }
 
       // Sign in to Supabase with the ID token
-      return await _supabase.auth.signInWithIdToken(
-        provider: OAuthProvider.google,
-        idToken: googleAuth!.idToken!,
-      );
+      // This may throw an error but still save the session
+      try {
+        final response = await _supabase.auth.signInWithIdToken(
+          provider: OAuthProvider.google,
+          idToken: googleAuth!.idToken!,
+        );
+        return response;
+      } catch (e) {
+        // Check if user is actually logged in despite the error
+        // (Supabase sometimes throws 400 but still authenticates)
+        if (_supabase.auth.currentUser != null) {
+          // User is logged in - return success
+          return _supabase.auth.currentSession as AuthResponse?;
+        }
+        // Otherwise re-throw the error
+        rethrow;
+      }
     } catch (e) {
+      // Check final state: if user got logged in despite error, don't fail
+      if (_supabase.auth.currentUser != null) {
+        return _supabase.auth.currentSession as AuthResponse?;
+      }
       throw Exception('Google sign-in failed: $e');
     }
   }
