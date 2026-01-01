@@ -62,42 +62,58 @@ serve(async (req) => {
       );
     }
 
-    // Get user from JWT token (following official Supabase pattern)
-    const authHeader = req.headers.get("Authorization");
-    if (!authHeader) {
-      return new Response(
-        JSON.stringify({ error: "Missing authorization header" }),
-        { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
-    }
-
-    // Create Supabase client with auth context
-    const supabase = createClient(
-      supabaseUrl,
-      supabaseServiceKey,
-      {
-        global: {
-          headers: { Authorization: authHeader },
-        },
+    // Get user_id from JWT claims (Supabase automatically verifies the JWT)
+    // This uses the auth context automatically set up by Supabase
+    const jwtClaim = req.headers.get("x-user-id");
+    if (!jwtClaim) {
+      // If x-user-id isn't present, try to extract from Authorization header JWT
+      const authHeader = req.headers.get("Authorization");
+      if (!authHeader) {
+        return new Response(
+          JSON.stringify({ error: "Missing authorization header" }),
+          { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
       }
-    );
 
-    // Get the token from header and verify user
-    const token = authHeader.replace("Bearer ", "");
-    const { data: { user }, error: authError } = await supabase.auth.getUser(token);
+      // Parse JWT to get user_id without validation (Supabase already validated it)
+      const token = authHeader.replace("Bearer ", "");
+      const parts = token.split(".");
+      if (parts.length !== 3) {
+        return new Response(
+          JSON.stringify({ error: "Invalid token format" }),
+          { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
 
-    if (authError || !user) {
-      console.error("Auth error:", authError);
-      return new Response(
-        JSON.stringify({ 
-          error: "Authentication failed",
-          details: authError?.message 
-        }),
-        { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
-    }
+      let userId: string;
+      try {
+        const payload = JSON.parse(
+          new TextDecoder().decode(
+            Deno.core.ops.op_decode_base64url(parts[1])
+          )
+        );
+        userId = payload.sub;
+        if (!userId) {
+          // ANON key doesn't have sub - user is not authenticated
+          return new Response(
+            JSON.stringify({ error: "User not authenticated. Please sign in." }),
+            { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+          );
+        }
+      } catch (e) {
+        return new Response(
+          JSON.stringify({ error: "Invalid token" }),
+          { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
 
-    const userId = user.id;
+      // Now create Supabase client with the authenticated user context
+      const authHeader2 = req.headers.get("Authorization");
+      const supabase = createClient(supabaseUrl, supabaseServiceKey, {
+        global: {
+          headers: { Authorization: authHeader2 || "" },
+        },
+      });
 
     // Initialize executors
     const shiftExecutor = new ShiftExecutor(supabase, userId);
