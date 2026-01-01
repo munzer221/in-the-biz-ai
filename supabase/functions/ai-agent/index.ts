@@ -68,17 +68,15 @@ serve(async (req) => {
     let supabase = null;
     
     if (authHeader) {
-      // Initialize Supabase client
-      // Use ANON key if available for better RLS security, otherwise fallback to service key
-      const supabaseKey = Deno.env.get("SUPABASE_ANON_KEY") || supabaseServiceKey;
-      
-      supabase = createClient(supabaseUrl, supabaseKey, {
+      // Initialize Supabase client with SERVICE ROLE KEY for admin access
+      // The JWT token will be validated separately
+      supabase = createClient(supabaseUrl, supabaseServiceKey, {
         global: {
           headers: { Authorization: authHeader },
         },
       });
 
-      // Try to get authenticated user
+      // Try to get authenticated user from the JWT token
       const token = authHeader.replace("Bearer ", "");
       const {
         data: { user },
@@ -87,6 +85,17 @@ serve(async (req) => {
 
       if (userError) {
         console.error("Supabase getUser error:", userError);
+        return new Response(
+          JSON.stringify({ 
+            error: "Invalid JWT", 
+            details: "Your session may have expired. Please log out and log back in.",
+            code: 401 
+          }),
+          {
+            status: 401,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          }
+        );
       }
 
       if (user) {
