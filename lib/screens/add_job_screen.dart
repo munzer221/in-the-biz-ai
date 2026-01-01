@@ -624,7 +624,11 @@ class _AddJobScreenState extends State<AddJobScreen> {
                     label: Text(jobTitle),
                     selected: isSelected,
                     onSelected: (selected) {
-                      setState(() => _selectedJobTitle = jobTitle);
+                      setState(() {
+                        _selectedJobTitle = jobTitle;
+                        // Reapply template to ensure it's set for this job
+                        _applyIndustryTemplate(_selectedIndustry);
+                      });
                     },
                     selectedColor: AppTheme.primaryGreen.withOpacity(0.3),
                     backgroundColor: AppTheme.cardBackground,
