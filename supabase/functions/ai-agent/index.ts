@@ -68,11 +68,8 @@ serve(async (req) => {
     let supabase = null;
     
     if (authHeader) {
-      // Initialize Supabase client
-      // Use ANON key if available for better RLS security, otherwise fallback to service key
-      const supabaseKey = Deno.env.get("SUPABASE_ANON_KEY") || supabaseServiceKey;
-      
-      supabase = createClient(supabaseUrl, supabaseKey, {
+      // Initialize Supabase client with service key
+      supabase = createClient(supabaseUrl, supabaseServiceKey, {
         global: {
           headers: { Authorization: authHeader },
         },
