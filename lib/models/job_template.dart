@@ -243,6 +243,57 @@ class JobTemplate {
       showRoomType: json['show_room_type'] ?? false,
       showShiftType: json['show_shift_type'] ?? false,
       showShiftDifferential: json['show_shift_differential'] ?? false,
+      // Rideshare & Delivery
+      showRidesCount: json['show_rides_count'] ?? false,
+      showDeadMiles: json['show_dead_miles'] ?? false,
+      showFuelCost: json['show_fuel_cost'] ?? false,
+      showTollsParking: json['show_tolls_parking'] ?? false,
+      showSurgeMultiplier: json['show_surge_multiplier'] ?? false,
+      showBaseFare: json['show_base_fare'] ?? false,
+      // Music & Entertainment
+      showSetupHours: json['show_setup_hours'] ?? false,
+      showPerformanceHours: json['show_performance_hours'] ?? false,
+      showBreakdownHours: json['show_breakdown_hours'] ?? false,
+      showEquipmentUsed: json['show_equipment_used'] ?? false,
+      showCrewPayment: json['show_crew_payment'] ?? false,
+      showMerchSales: json['show_merch_sales'] ?? false,
+      showAudienceSize: json['show_audience_size'] ?? false,
+      // Artist & Crafts
+      showPiecesCreated: json['show_pieces_created'] ?? false,
+      showPiecesSold: json['show_pieces_sold'] ?? false,
+      showSalePrice: json['show_sale_price'] ?? false,
+      showVenueCommission: json['show_venue_commission'] ?? false,
+      // Retail additional
+      showItemsSold: json['show_items_sold'] ?? false,
+      showTransactionsCount: json['show_transactions_count'] ?? false,
+      // Salon additional
+      showServicesCount: json['show_services_count'] ?? false,
+      showNewClients: json['show_new_clients'] ?? false,
+      showWalkins: json['show_walkins'] ?? false,
+      // Hospitality additional
+      showRoomsCleaned: json['show_rooms_cleaned'] ?? false,
+      showRoomUpgrades: json['show_room_upgrades'] ?? false,
+      showGuestsCheckedIn: json['show_guests_checked_in'] ?? false,
+      showCarsParked: json['show_cars_parked'] ?? false,
+      // Healthcare additional
+      showPatientCount: json['show_patient_count'] ?? false,
+      showProceduresCount: json['show_procedures_count'] ?? false,
+      // Fitness additional
+      showSessionsCount: json['show_sessions_count'] ?? false,
+      showPackageSales: json['show_package_sales'] ?? false,
+      showSupplementSales: json['show_supplement_sales'] ?? false,
+      // Construction additional
+      showLaborCost: json['show_labor_cost'] ?? false,
+      showSubcontractorCost: json['show_subcontractor_cost'] ?? false,
+      showSquareFootage: json['show_square_footage'] ?? false,
+      showWeatherDelay: json['show_weather_delay'] ?? false,
+      // Freelancer additional
+      showRevisionsCount: json['show_revisions_count'] ?? false,
+      showClientType: json['show_client_type'] ?? false,
+      showExpenses: json['show_expenses'] ?? false,
+      showBillableHours: json['show_billable_hours'] ?? false,
+      // Restaurant additional
+      showTableSection: json['show_table_section'] ?? false,
     );
   }
 
