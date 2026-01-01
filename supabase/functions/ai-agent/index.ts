@@ -65,14 +65,17 @@ serve(async (req) => {
     // Get user ID from auth header (required)
     const authHeader = req.headers.get("authorization");
     if (!authHeader) {
+      console.error("Missing authorization header");
       return new Response(
         JSON.stringify({ error: "Missing authorization header" }),
         { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
+    console.log("Auth header present, length:", authHeader.length);
+    console.log("Auth header starts with:", authHeader.substring(0, 20));
+
     // Create Supabase client with ANON key and user's auth header
-    // This is the correct pattern per Supabase docs
     const supabaseAnonKey = Deno.env.get("SUPABASE_ANON_KEY");
     if (!supabaseAnonKey) {
       console.error("SUPABASE_ANON_KEY not found in environment");
@@ -82,31 +85,34 @@ serve(async (req) => {
       );
     }
 
+    console.log("Creating Supabase client with ANON key");
     const supabase = createClient(supabaseUrl, supabaseAnonKey, {
       global: {
         headers: { Authorization: authHeader },
       },
     });
 
+    console.log("Calling getUser()...");
     // Get the authenticated user from the session
     const { data: { user }, error: authError } = await supabase.auth.getUser();
 
+    console.log("getUser() result - user:", !!user, "error:", !!authError);
+    if (authError) {
+      console.error("Auth error details:", JSON.stringify(authError, null, 2));
+    }
+
     if (authError || !user) {
-      console.error("Auth error details:", {
-        error: authError,
-        errorMessage: authError?.message,
-        errorStatus: authError?.status,
-        hasUser: !!user,
-        authHeaderLength: authHeader.length,
-      });
       return new Response(
         JSON.stringify({ 
           error: "Invalid or expired token",
-          details: authError?.message || "No user found"
+          details: authError?.message || "No user found",
+          code: authError?.code || "unknown"
         }),
         { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
+
+    console.log("User authenticated successfully:", user.id);
 
     const userId = user.id;
 
