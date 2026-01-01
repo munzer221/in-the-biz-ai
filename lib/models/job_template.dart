@@ -399,9 +399,13 @@ class JobTemplate {
       showEventName: true,
       showHostess: true,
       showGuestCount: true,
-      showLocation: false,
-      showClientName: false,
-      showProjectName: false,
+      showLocation: true,
+      showClientName: true,
+      showProjectName: true,
+      showPhotos: true,
+      showNotes: true,
+      showCommission: false,
+      showMileage: false,
       // Restaurant-specific fields
       showTableSection: true,
     );
