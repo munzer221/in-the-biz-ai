@@ -62,7 +62,8 @@ serve(async (req) => {
       );
     }
 
-    // Parse JWT manually to get user_id (don't validate, just extract)
+    // Extract user_id from JWT WITHOUT validation
+    // (Supabase SDK already validated the token on the client side)
     const authHeader = req.headers.get("Authorization");
     if (!authHeader) {
       return new Response(
@@ -71,40 +72,31 @@ serve(async (req) => {
       );
     }
 
-    const token = authHeader.replace("Bearer ", "");
-    const parts = token.split(".");
-    if (parts.length !== 3) {
-      return new Response(
-        JSON.stringify({ error: "Invalid token format" }),
-        { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
-    }
-
     let userId: string;
     try {
-      // Decode JWT payload (no validation needed - Supabase already validated it)
+      const token = authHeader.replace("Bearer ", "");
+      const parts = token.split(".");
+      if (parts.length !== 3) {
+        throw new Error("Invalid token format");
+      }
+      
+      // Decode without validation
       const payload = JSON.parse(atob(parts[1]));
       userId = payload.sub;
       
       if (!userId) {
-        return new Response(
-          JSON.stringify({ error: "User not authenticated" }),
-          { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-        );
+        throw new Error("No user ID in token");
       }
     } catch (e) {
+      console.error("Token parsing error:", e);
       return new Response(
-        JSON.stringify({ error: "Invalid token" }),
+        JSON.stringify({ error: "Invalid authentication token" }),
         { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
-    // Create Supabase client with service key and user context
-    const supabase = createClient(supabaseUrl, supabaseServiceKey, {
-      global: {
-        headers: { Authorization: authHeader },
-      },
-    });
+    // Create Supabase client with service key
+    const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
     // Initialize executors
     const shiftExecutor = new ShiftExecutor(supabase, userId);
