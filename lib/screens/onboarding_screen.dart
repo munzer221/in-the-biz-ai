@@ -1702,6 +1702,26 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     );
   }
 
+  /// Get the industry-specific section for onboarding template ordering
+  String? _getIndustrySpecificSectionForTemplate(String? industry) {
+    switch (industry) {
+      case 'Rideshare & Delivery':
+        return 'rideshare';
+      case 'Music & Entertainment':
+        return 'music';
+      case 'Artist & Crafts':
+        return 'art';
+      case 'Retail/Sales':
+        return 'retail';
+      case 'Salon/Spa':
+        return 'salon';
+      case 'Hospitality':
+        return 'hospitality';
+      default:
+        return null;
+    }
+  }
+
   String _getPayStructureName(PayStructure structure) {
     switch (structure) {
       case PayStructure.hourly:
