@@ -1230,7 +1230,7 @@ class _AddJobScreenState extends State<AddJobScreen> {
             currentTemplate.showPerformanceHours ||
             currentTemplate.showBreakdownHours ||
             currentTemplate.showEquipmentUsed ||
-            currentTemplate.showEquipmentRentalCost ||
+            currentTemplate.showEquipmentRental ||
             currentTemplate.showCrewPayment ||
             currentTemplate.showMerchSales ||
             currentTemplate.showAudienceSize)
