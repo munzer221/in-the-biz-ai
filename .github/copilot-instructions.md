@@ -392,6 +392,8 @@ git push origin gh-pages
 
 ## 🚀 ALTERNATIVE WEB DEPLOYMENT OPTIONS (UPDATED - January 1, 2026)
 
+**The project is currently configured to deploy to GitHub Pages, with source code and built files on the `gh-pages` branch root. GitHub Actions cannot be used with this configuration without destroying the source code. Manual deployment is required. The following automated deployment options are NOT compatible with the current repository structure.**
+
 Consider switching to Vercel or using GitHub Actions for automated deployments.
 
 ### Option 1: Switch to Vercel (Recommended - Fastest)
@@ -793,11 +795,4 @@ Should be on the stats screen. May want to have a toggle button somewhere where 
 ```sql
 CREATE TABLE public.server_checkouts (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
-
-  -- Extracted Data from Receipt
-  checkout_date DATE NOT NULL,
-  checkout_time TIME,  -- If available on receipt, else NULL
-
-  sales_amount DECIMAL(10, 2),
-  tax_amount DECIMAL
+  user_id UUID NOT NULL REFERENCES
