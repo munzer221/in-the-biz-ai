@@ -451,6 +451,13 @@ class JobTemplate {
       showEventName: false,
       showHostess: false,
       showGuestCount: false,
+      // Rideshare-specific fields
+      showRidesCount: true,
+      showDeadMiles: true,
+      showFuelCost: true,
+      showTollsParking: true,
+      showSurgeMultiplier: true,
+      showBaseFare: true,
     );
   }
 
@@ -466,7 +473,15 @@ class JobTemplate {
       showEquipmentRental: true,
       showLocation: true,
       showHostess: false,
-      showGuestCount: false,
+      showGuestCount: true,
+      // Music/Entertainment-specific fields
+      showSetupHours: true,
+      showPerformanceHours: true,
+      showBreakdownHours: true,
+      showEquipmentUsed: true,
+      showCrewPayment: true,
+      showMerchSales: true,
+      showAudienceSize: true,
     );
   }
 
@@ -482,6 +497,11 @@ class JobTemplate {
       showClientName: false,
       showHostess: false,
       showGuestCount: false,
+      // Artist/Crafts-specific fields
+      showPiecesCreated: true,
+      showPiecesSold: true,
+      showSalePrice: true,
+      showVenueCommission: true,
     );
   }
 
@@ -499,7 +519,11 @@ class JobTemplate {
       showChairRental: true,
       showEventName: false,
       showHostess: false,
-      showGuestCount: false,
+      showGuestCount: true,
+      // Salon-specific fields
+      showServicesCount: true,
+      showNewClients: true,
+      showWalkins: true,
     );
   }
 
@@ -517,6 +541,11 @@ class JobTemplate {
       showQualityScore: true,
       showLocation: true,
       showHostess: false,
+      // Hospitality-specific fields
+      showRoomsCleaned: true,
+      showRoomUpgrades: true,
+      showGuestsCheckedIn: true,
+      showCarsParked: true,
     );
   }
 
