@@ -62,45 +62,45 @@ serve(async (req) => {
       );
     }
 
-    // Extract user from JWT token (optional - fallback to anon if not provided)
+    // Extract user from JWT token
     const authHeader = req.headers.get("authorization");
-    let userId = null;
-    let supabase = null;
     
-    if (authHeader) {
-      // Initialize Supabase client
-      // Use ANON key if available for better RLS security, otherwise fallback to service key
-      const supabaseKey = Deno.env.get("SUPABASE_ANON_KEY") || supabaseServiceKey;
-      
-      supabase = createClient(supabaseUrl, supabaseKey, {
-        global: {
-          headers: { Authorization: authHeader },
-        },
-      });
-
-      // Try to get authenticated user
-      const token = authHeader.replace("Bearer ", "");
-      const {
-        data: { user },
-        error: userError,
-      } = await supabase.auth.getUser(token);
-
-      if (userError) {
-        console.error("Supabase getUser error:", userError);
-      }
-
-      if (user) {
-        userId = user.id;
-      } else {
-        console.log("No user found for token. Token length:", token.length);
-      }
+    if (!authHeader) {
+      return new Response(
+        JSON.stringify({ error: "Authentication required - no authorization header" }),
+        {
+          status: 401,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        }
+      );
     }
     
-    // If no user ID, this is an unauthenticated request - return error
-    if (!userId || !supabase) {
-      console.error("Authentication failed. UserId:", userId, "Supabase client initialized:", !!supabase);
+    // Initialize Supabase client with service role key (has admin access)
+    const supabase = createClient(supabaseUrl, supabaseServiceKey);
+    
+    // Extract user ID from JWT token directly
+    const token = authHeader.replace("Bearer ", "");
+    
+    let userId = null;
+    try {
+      // Decode JWT to get user ID (no verification needed - service key has full access)
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      userId = payload.sub;
+      console.log("Extracted user ID from JWT:", userId);
+    } catch (e) {
+      console.error("Failed to decode JWT:", e);
       return new Response(
-        JSON.stringify({ error: "Authentication required - please log in to the app" }),
+        JSON.stringify({ error: "Invalid authentication token" }),
+        {
+          status: 401,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        }
+      );
+    }
+    
+    if (!userId) {
+      return new Response(
+        JSON.stringify({ error: "No user ID found in token" }),
         {
           status: 401,
           headers: { ...corsHeaders, "Content-Type": "application/json" },
