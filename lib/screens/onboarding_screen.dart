@@ -94,7 +94,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       for (final industryKey in IndustryData.industries) {
         // Get job titles for this industry from IndustryData
         final jobTitles = IndustryData.getJobTitles(industryKey);
-        
+
         // Convert to JobTypeTemplate objects with default rate of $15/hr
         final jobTypes = jobTitles
             .map((title) => JobTypeTemplate(name: title, rate: 15.0))
