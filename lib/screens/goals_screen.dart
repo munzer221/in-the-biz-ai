@@ -291,7 +291,7 @@ class _GoalsScreenState extends State<GoalsScreen>
             width: isComplete ? 2 : 1,
           ),
         ),
-      child: Column(
+        child: Column(
         children: [
           // Header row
           ListTile(
@@ -586,7 +586,7 @@ class _GoalsScreenState extends State<GoalsScreen>
                         ),
                         child: Text(
                           '${(progressPercent * 100).toInt()}%',
-                          style: AppTheme.titleSmall.copyWith(
+                          style: AppTheme.bodyLarge.copyWith(
                             color: isComplete
                                 ? AppTheme.primaryGreen
                                 : AppTheme.textSecondary,
@@ -658,7 +658,7 @@ class _GoalsScreenState extends State<GoalsScreen>
                           const SizedBox(width: 10),
                           Text(
                             'Goal Achieved!',
-                            style: AppTheme.titleSmall.copyWith(
+                            style: AppTheme.bodyLarge.copyWith(
                               color: AppTheme.primaryGreen,
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
