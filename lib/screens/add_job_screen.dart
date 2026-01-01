@@ -87,169 +87,34 @@ class _AddJobScreenState extends State<AddJobScreen> {
 
   bool _isSaving = false;
 
-  final List<String> _industries = [
-    'Restaurant/Bar/Nightclub',
-    'Construction/Trades',
-    'Freelancer/Consultant',
-    'Healthcare',
-    'Rideshare & Delivery',
-    'Music & Entertainment',
-    'Artist & Crafts',
-    'Retail/Sales',
-    'Salon/Spa',
-    'Hospitality',
-    'Fitness',
+  // Industries - use IndustryData as source of truth
+  late final List<String> _industries = [
+    ...IndustryData.industries,
     '+ Add Custom Industry',
   ];
 
-  // Job titles by industry
-  final Map<String, List<String>> _jobTitlesByIndustry = {
-    'Restaurant/Bar/Nightclub': [
-      'Server/Waiter',
-      'Bartender',
-      'Food Runner',
-      'Busser',
-      'Manager',
-      'Hostess',
-      'Chef/Sushi Chef',
-      'Bar Back',
-      'Sommelier',
-      'Line Cook',
-      'Prep Cook',
-      'Expeditor',
-      '+ Add Custom Job Title',
-    ],
-    'Construction/Trades': [
-      'Carpenter',
-      'Electrician',
-      'Plumber',
-      'HVAC Technician',
-      'General Contractor',
-      'Painter',
-      'Roofer',
-      'Mason',
-      'Welder',
-      'Landscaper',
-      'Drywall Installer',
-      'Tile Setter',
-      '+ Add Custom Job Title',
-    ],
-    'Freelancer/Consultant': [
-      'Graphic Designer',
-      'Web Developer',
-      'Photographer',
-      'Writer/Copywriter',
-      'Marketing Consultant',
-      'Business Consultant',
-      'Video Editor',
-      'Social Media Manager',
-      'Virtual Assistant',
-      'Translator',
-      '+ Add Custom Job Title',
-    ],
-    'Healthcare': [
-      'Nurse (RN/LPN)',
-      'CNA (Certified Nursing Assistant)',
-      'Medical Assistant',
-      'Phlebotomist',
-      'Home Health Aide',
-      'Physical Therapist',
-      'Dental Hygienist',
-      'Paramedic/EMT',
-      'Pharmacy Technician',
-      '+ Add Custom Job Title',
-    ],
-    'Gig Worker': [
-      'Musician',
-      'Band Member',
-      'DJ',
-      'Photographer',
-      'Photo Booth Operator',
-      'Event Performer',
-      'Artist',
-      'Rideshare Driver',
-      'Delivery Driver',
-      'Street Performer',
-      '+ Add Custom Job Title',
-    ],
-    'Rideshare & Delivery': [
-      'Uber Driver',
-      'Lyft Driver',
-      'DoorDash Driver',
-      'Uber Eats Driver',
-      'Grubhub Driver',
-      'Instacart Shopper',
-      'Amazon Flex Driver',
-      'Local Delivery Driver',
-      '+ Add Custom Job Title',
-    ],
-    'Music & Entertainment': [
-      'Musician',
-      'Band Member',
-      'DJ',
-      'Photographer',
-      'Photo Booth Operator',
-      'Event Performer',
-      'Sound Engineer',
-      'Live Streamer',
-      '+ Add Custom Job Title',
-    ],
-    'Artist & Crafts': [
-      'Painter/Artist',
-      'Sculptor',
-      'Jewelry Maker',
-      'Ceramicist',
-      'Street Performer',
-      'Craftsperson',
-      'Illustrator',
-      'Printmaker',
-      '+ Add Custom Job Title',
-    ],
-    'Retail/Sales': [
-      'Sales Associate',
-      'Cashier',
-      'Store Manager',
-      'Visual Merchandiser',
-      'Stock Associate',
-      'Department Manager',
-      'Loss Prevention',
-      'Sales Representative',
-      '+ Add Custom Job Title',
-    ],
-    'Salon/Spa': [
-      'Hair Stylist',
-      'Nail Technician',
-      'Massage Therapist',
-      'Esthetician',
-      'Barber',
-      'Makeup Artist',
-      'Spa Manager',
-      'Waxing Specialist',
-      '+ Add Custom Job Title',
-    ],
-    'Hospitality': [
-      'Hotel Front Desk',
-      'Concierge',
-      'Housekeeper',
-      'Bellhop/Porter',
-      'Event Coordinator',
-      'Catering Server',
-      'Valet Attendant',
-      'Hotel Manager',
-      '+ Add Custom Job Title',
-    ],
-    'Fitness': [
-      'Personal Trainer',
-      'Yoga Instructor',
-      'Gym Manager',
-      'Group Fitness Instructor',
-      'Spin Instructor',
-      'Pilates Instructor',
-      'Nutritionist/Dietitian',
-      'Fitness Coach',
-      '+ Add Custom Job Title',
-    ],
-  };
+  // Custom job titles added by user - map of industry -> list of custom titles
+  final Map<String, List<String>> _customJobTitles = {};
+
+  /// Get job titles for an industry (combines standard + custom)
+  List<String> _getJobTitlesForIndustry(String? industry) {
+    if (industry == null) return [];
+    
+    // Get standard titles from IndustryData
+    final standardTitles = List<String>.from(IndustryData.getJobTitles(industry));
+    
+    // Add custom titles if any exist for this industry
+    if (_customJobTitles.containsKey(industry)) {
+      standardTitles.addAll(_customJobTitles[industry]!);
+    }
+    
+    // Add the "Add Custom" option if not already there
+    if (!standardTitles.contains('+ Add Custom Job Title')) {
+      standardTitles.add('+ Add Custom Job Title');
+    }
+    
+    return standardTitles;
+  }
 
   @override
   void initState() {
@@ -270,11 +135,14 @@ class _AddJobScreenState extends State<AddJobScreen> {
     if (job.industry != null && _industries.contains(job.industry)) {
       _selectedIndustry = job.industry;
 
-      // Check if job title exists in the dropdown list for this industry
-      final jobTitles = _jobTitlesByIndustry[_selectedIndustry];
-      if (jobTitles != null && !jobTitles.contains(job.name)) {
-        // Add custom job title to the industry list (before the "+ Add" option)
-        jobTitles.insert(jobTitles.length - 1, job.name);
+      // Check if job title exists in the standard or custom job titles for this industry
+      final jobTitles = _getJobTitlesForIndustry(_selectedIndustry);
+      if (!jobTitles.contains(job.name)) {
+        // Add custom job title to the custom list
+        if (!_customJobTitles.containsKey(_selectedIndustry)) {
+          _customJobTitles[_selectedIndustry] = [];
+        }
+        _customJobTitles[_selectedIndustry]!.add(job.name);
       }
       _selectedJobTitle = job.name;
     } else {
@@ -758,7 +626,7 @@ class _AddJobScreenState extends State<AddJobScreen> {
                     color: AppTheme.textMuted,
                   ),
                 ),
-                items: (_jobTitlesByIndustry[_selectedIndustry] ?? [])
+                items: _getJobTitlesForIndustry(_selectedIndustry)
                     .map((jobTitle) {
                   return DropdownMenuItem(
                     value: jobTitle,
