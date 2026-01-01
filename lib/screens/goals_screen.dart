@@ -462,10 +462,10 @@ class _GoalsScreenState extends State<GoalsScreen>
                       ),
                     ),
                   ),
-          ),
+            ),
 
-          // Progress section (only if goal exists)
-          if (hasGoal) ...[
+            // Progress section (only if goal exists)
+            if (hasGoal) ...[
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 4, 20, 20),
               child: Column(
