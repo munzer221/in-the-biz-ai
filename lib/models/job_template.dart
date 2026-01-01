@@ -49,6 +49,68 @@ class JobTemplate {
   final bool
       showShiftDifferential; // For healthcare, hospitality: night/weekend bonus
 
+  // Rideshare & Delivery specific
+  final bool showRidesCount; // Number of rides/deliveries
+  final bool showDeadMiles; // Miles without passenger
+  final bool showFuelCost; // Fuel expenses
+  final bool showTollsParking; // Tolls and parking
+  final bool showSurgeMultiplier; // Surge pricing
+  final bool showBaseFare; // Base fare vs tips breakdown
+
+  // Music & Entertainment specific
+  final bool showSetupHours; // Setup time before performance
+  final bool showPerformanceHours; // Actual performance time
+  final bool showBreakdownHours; // Breakdown time after
+  final bool showEquipmentUsed; // What gear was needed
+  final bool showCrewPayment; // Split with bandmates/crew
+  final bool showMerchSales; // Merchandise revenue
+  final bool showAudienceSize; // Crowd/attendance
+
+  // Artist & Crafts specific
+  final bool showPiecesCreated; // Production count
+  final bool showPiecesSold; // Sales count
+  final bool showSalePrice; // Revenue per piece
+  final bool showVenueCommission; // Gallery/venue commission %
+
+  // Retail additional
+  final bool showItemsSold; // Count of items
+  final bool showTransactionsCount; // Number of customers
+
+  // Salon additional
+  final bool showServicesCount; // Number of services
+  final bool showNewClients; // New vs returning
+  final bool showWalkins; // Walk-in vs appointment
+
+  // Hospitality additional
+  final bool showRoomsCleaned; // For housekeeping
+  final bool showRoomUpgrades; // Upsells for front desk
+  final bool showGuestsCheckedIn; // Front desk
+  final bool showCarsParked; // Valet
+
+  // Healthcare additional
+  final bool showPatientCount; // Patients seen
+  final bool showProceduresCount; // Procedures performed
+
+  // Fitness additional
+  final bool showSessionsCount; // Sessions/classes taught
+  final bool showPackageSales; // Packages sold
+  final bool showSupplementSales; // Supplements sold
+
+  // Construction additional
+  final bool showLaborCost; // Crew wages
+  final bool showSubcontractorCost; // Specialist payments
+  final bool showSquareFootage; // Work completed
+  final bool showWeatherDelay; // Weather delay hours
+
+  // Freelancer additional
+  final bool showRevisionsCount; // Rounds of changes
+  final bool showClientType; // Startup/SMB/Enterprise
+  final bool showExpenses; // Software, equipment, travel
+  final bool showBillableHours; // Billable hours
+
+  // Restaurant additional
+  final bool showTableSection; // Which station/section
+
   JobTemplate({
     this.payStructure = PayStructure.hourly,
     this.flatRateAmount,
