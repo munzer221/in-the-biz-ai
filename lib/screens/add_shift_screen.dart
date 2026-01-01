@@ -2217,6 +2217,1054 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
               ),
             ),
           ),
+          const SizedBox(height: 12),
+        ],
+
+        // =====================================================
+        // RIDESHARE & DELIVERY FIELDS
+        // =====================================================
+        if (_template!.showRidesCount) ...[
+          TextFormField(
+            controller: _ridesCountController,
+            keyboardType: TextInputType.number,
+            style: AppTheme.bodyMedium,
+            decoration: InputDecoration(
+              hintText: 'Number of rides/deliveries',
+              prefixIcon: Icon(Icons.directions_car, color: AppTheme.primaryGreen),
+              suffixText: 'rides',
+              filled: true,
+              fillColor: AppTheme.cardBackgroundLight,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+        ],
+        if (_template!.showDeadMiles) ...[
+          TextFormField(
+            controller: _deadMilesController,
+            keyboardType: TextInputType.number,
+            style: AppTheme.bodyMedium,
+            decoration: InputDecoration(
+              hintText: 'Dead miles (without passenger)',
+              suffixText: 'miles',
+              filled: true,
+              fillColor: AppTheme.cardBackgroundLight,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+        ],
+        if (_template!.showFuelCost) ...[
+          TextFormField(
+            controller: _fuelCostController,
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            style: AppTheme.bodyMedium,
+            decoration: InputDecoration(
+              hintText: 'Fuel cost',
+              prefixText: '\$ ',
+              filled: true,
+              fillColor: AppTheme.cardBackgroundLight,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+        ],
+        if (_template!.showTollsParking) ...[
+          TextFormField(
+            controller: _tollsParkingController,
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            style: AppTheme.bodyMedium,
+            decoration: InputDecoration(
+              hintText: 'Tolls & parking',
+              prefixText: '\$ ',
+              filled: true,
+              fillColor: AppTheme.cardBackgroundLight,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+        ],
+        if (_template!.showSurgeMultiplier) ...[
+          TextFormField(
+            controller: _surgeMultiplierController,
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            style: AppTheme.bodyMedium,
+            decoration: InputDecoration(
+              hintText: 'Surge multiplier (e.g., 1.5, 2.0)',
+              suffixText: 'x',
+              filled: true,
+              fillColor: AppTheme.cardBackgroundLight,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+        ],
+        if (_template!.showBaseFare) ...[
+          TextFormField(
+            controller: _baseFareController,
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            style: AppTheme.bodyMedium,
+            decoration: InputDecoration(
+              hintText: 'Base fare (before tips)',
+              prefixText: '\$ ',
+              filled: true,
+              fillColor: AppTheme.cardBackgroundLight,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+        ],
+
+        // =====================================================
+        // MUSIC & ENTERTAINMENT FIELDS
+        // =====================================================
+        if (_template!.showGigType) ...[
+          TextFormField(
+            controller: _gigTypeController,
+            style: AppTheme.bodyMedium,
+            decoration: InputDecoration(
+              hintText: 'Gig type (Wedding, Corporate, Bar, Street)',
+              prefixIcon: Icon(Icons.music_note, color: AppTheme.primaryGreen),
+              filled: true,
+              fillColor: AppTheme.cardBackgroundLight,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+        ],
+        if (_template!.showSetupHours) ...[
+          TextFormField(
+            controller: _setupHoursController,
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            style: AppTheme.bodyMedium,
+            decoration: InputDecoration(
+              hintText: 'Setup time',
+              suffixText: 'hours',
+              filled: true,
+              fillColor: AppTheme.cardBackgroundLight,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+        ],
+        if (_template!.showPerformanceHours) ...[
+          TextFormField(
+            controller: _performanceHoursController,
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            style: AppTheme.bodyMedium,
+            decoration: InputDecoration(
+              hintText: 'Performance time',
+              suffixText: 'hours',
+              filled: true,
+              fillColor: AppTheme.cardBackgroundLight,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+        ],
+        if (_template!.showBreakdownHours) ...[
+          TextFormField(
+            controller: _breakdownHoursController,
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            style: AppTheme.bodyMedium,
+            decoration: InputDecoration(
+              hintText: 'Breakdown/teardown time',
+              suffixText: 'hours',
+              filled: true,
+              fillColor: AppTheme.cardBackgroundLight,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+        ],
+        if (_template!.showEquipmentUsed) ...[
+          TextFormField(
+            controller: _equipmentUsedController,
+            style: AppTheme.bodyMedium,
+            decoration: InputDecoration(
+              hintText: 'Equipment used (PA, lights, etc.)',
+              filled: true,
+              fillColor: AppTheme.cardBackgroundLight,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+        ],
+        if (_template!.showEquipmentRental) ...[
+          TextFormField(
+            controller: _equipmentRentalCostController,
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            style: AppTheme.bodyMedium,
+            decoration: InputDecoration(
+              hintText: 'Equipment rental cost',
+              prefixText: '\$ ',
+              filled: true,
+              fillColor: AppTheme.cardBackgroundLight,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+        ],
+        if (_template!.showCrewPayment) ...[
+          TextFormField(
+            controller: _crewPaymentController,
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            style: AppTheme.bodyMedium,
+            decoration: InputDecoration(
+              hintText: 'Crew/band payment',
+              prefixText: '\$ ',
+              filled: true,
+              fillColor: AppTheme.cardBackgroundLight,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+        ],
+        if (_template!.showMerchSales) ...[
+          TextFormField(
+            controller: _merchSalesController,
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            style: AppTheme.bodyMedium,
+            decoration: InputDecoration(
+              hintText: 'Merchandise/CD sales',
+              prefixText: '\$ ',
+              filled: true,
+              fillColor: AppTheme.cardBackgroundLight,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+        ],
+        if (_template!.showAudienceSize) ...[
+          TextFormField(
+            controller: _audienceSizeController,
+            keyboardType: TextInputType.number,
+            style: AppTheme.bodyMedium,
+            decoration: InputDecoration(
+              hintText: 'Audience/crowd size',
+              suffixText: 'people',
+              filled: true,
+              fillColor: AppTheme.cardBackgroundLight,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+        ],
+
+        // =====================================================
+        // ARTIST & CRAFTS FIELDS
+        // =====================================================
+        if (_template!.showPiecesCreated) ...[
+          TextFormField(
+            controller: _piecesCreatedController,
+            keyboardType: TextInputType.number,
+            style: AppTheme.bodyMedium,
+            decoration: InputDecoration(
+              hintText: 'Pieces created',
+              prefixIcon: Icon(Icons.palette, color: AppTheme.primaryGreen),
+              suffixText: 'pieces',
+              filled: true,
+              fillColor: AppTheme.cardBackgroundLight,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+        ],
+        if (_template!.showPiecesSold) ...[
+          TextFormField(
+            controller: _piecesSoldController,
+            keyboardType: TextInputType.number,
+            style: AppTheme.bodyMedium,
+            decoration: InputDecoration(
+              hintText: 'Pieces sold',
+              suffixText: 'pieces',
+              filled: true,
+              fillColor: AppTheme.cardBackgroundLight,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+        ],
+        if (_template!.showMaterialsCost) ...[
+          TextFormField(
+            controller: _materialsCostController,
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            style: AppTheme.bodyMedium,
+            decoration: InputDecoration(
+              hintText: 'Materials cost',
+              prefixText: '\$ ',
+              filled: true,
+              fillColor: AppTheme.cardBackgroundLight,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+        ],
+        if (_template!.showSalePrice) ...[
+          TextFormField(
+            controller: _salePriceController,
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            style: AppTheme.bodyMedium,
+            decoration: InputDecoration(
+              hintText: 'Average sale price',
+              prefixText: '\$ ',
+              filled: true,
+              fillColor: AppTheme.cardBackgroundLight,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+        ],
+        if (_template!.showVenueCommission) ...[
+          TextFormField(
+            controller: _venueCommissionPercentController,
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            style: AppTheme.bodyMedium,
+            decoration: InputDecoration(
+              hintText: 'Venue/gallery commission',
+              suffixText: '%',
+              filled: true,
+              fillColor: AppTheme.cardBackgroundLight,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+        ],
+
+        // =====================================================
+        // RETAIL/SALES FIELDS
+        // =====================================================
+        if (_template!.showItemsSold) ...[
+          TextFormField(
+            controller: _itemsSoldController,
+            keyboardType: TextInputType.number,
+            style: AppTheme.bodyMedium,
+            decoration: InputDecoration(
+              hintText: 'Items sold',
+              prefixIcon: Icon(Icons.shopping_cart, color: AppTheme.primaryGreen),
+              suffixText: 'items',
+              filled: true,
+              fillColor: AppTheme.cardBackgroundLight,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+        ],
+        if (_template!.showTransactionsCount) ...[
+          TextFormField(
+            controller: _transactionsCountController,
+            keyboardType: TextInputType.number,
+            style: AppTheme.bodyMedium,
+            decoration: InputDecoration(
+              hintText: 'Transactions/customers',
+              suffixText: 'customers',
+              filled: true,
+              fillColor: AppTheme.cardBackgroundLight,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+        ],
+        if (_template!.showUpsells) ...[
+          TextFormField(
+            controller: _upsellsCountController,
+            keyboardType: TextInputType.number,
+            style: AppTheme.bodyMedium,
+            decoration: InputDecoration(
+              hintText: 'Upsells (warranties, credit cards)',
+              suffixText: 'upsells',
+              filled: true,
+              fillColor: AppTheme.cardBackgroundLight,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+        ],
+        if (_template!.showReturns) ...[
+          TextFormField(
+            controller: _returnsCountController,
+            keyboardType: TextInputType.number,
+            style: AppTheme.bodyMedium,
+            decoration: InputDecoration(
+              hintText: 'Returns processed',
+              suffixText: 'returns',
+              filled: true,
+              fillColor: AppTheme.cardBackgroundLight,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+        ],
+        if (_template!.showShrink) ...[
+          TextFormField(
+            controller: _shrinkAmountController,
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            style: AppTheme.bodyMedium,
+            decoration: InputDecoration(
+              hintText: 'Shrink/loss amount',
+              prefixText: '\$ ',
+              filled: true,
+              fillColor: AppTheme.cardBackgroundLight,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+        ],
+
+        // =====================================================
+        // SALON/SPA FIELDS
+        // =====================================================
+        if (_template!.showServiceType) ...[
+          TextFormField(
+            controller: _serviceTypeController,
+            style: AppTheme.bodyMedium,
+            decoration: InputDecoration(
+              hintText: 'Service type (Cut, Color, Massage, etc.)',
+              prefixIcon: Icon(Icons.spa, color: AppTheme.primaryGreen),
+              filled: true,
+              fillColor: AppTheme.cardBackgroundLight,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+        ],
+        if (_template!.showServicesCount) ...[
+          TextFormField(
+            controller: _servicesCountController,
+            keyboardType: TextInputType.number,
+            style: AppTheme.bodyMedium,
+            decoration: InputDecoration(
+              hintText: 'Services performed',
+              suffixText: 'services',
+              filled: true,
+              fillColor: AppTheme.cardBackgroundLight,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+        ],
+        if (_template!.showProductSales) ...[
+          TextFormField(
+            controller: _productSalesController,
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            style: AppTheme.bodyMedium,
+            decoration: InputDecoration(
+              hintText: 'Product sales',
+              prefixText: '\$ ',
+              filled: true,
+              fillColor: AppTheme.cardBackgroundLight,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+        ],
+        if (_template!.showChairRental) ...[
+          TextFormField(
+            controller: _chairRentalController,
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            style: AppTheme.bodyMedium,
+            decoration: InputDecoration(
+              hintText: 'Chair/booth rental',
+              prefixText: '\$ ',
+              filled: true,
+              fillColor: AppTheme.cardBackgroundLight,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+        ],
+        if (_template!.showNewClients) ...[
+          TextFormField(
+            controller: _newClientsCountController,
+            keyboardType: TextInputType.number,
+            style: AppTheme.bodyMedium,
+            decoration: InputDecoration(
+              hintText: 'New clients',
+              suffixText: 'clients',
+              filled: true,
+              fillColor: AppTheme.cardBackgroundLight,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+        ],
+        if (_template!.showWalkins) ...[
+          TextFormField(
+            controller: _walkinCountController,
+            keyboardType: TextInputType.number,
+            style: AppTheme.bodyMedium,
+            decoration: InputDecoration(
+              hintText: 'Walk-ins',
+              suffixText: 'walk-ins',
+              filled: true,
+              fillColor: AppTheme.cardBackgroundLight,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+        ],
+
+        // =====================================================
+        // HOSPITALITY FIELDS
+        // =====================================================
+        if (_template!.showRoomType) ...[
+          TextFormField(
+            controller: _roomTypeController,
+            style: AppTheme.bodyMedium,
+            decoration: InputDecoration(
+              hintText: 'Room type (Standard, Suite, Deluxe)',
+              prefixIcon: Icon(Icons.hotel, color: AppTheme.primaryGreen),
+              filled: true,
+              fillColor: AppTheme.cardBackgroundLight,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+        ],
+        if (_template!.showRoomsCleaned) ...[
+          TextFormField(
+            controller: _roomsCleanedController,
+            keyboardType: TextInputType.number,
+            style: AppTheme.bodyMedium,
+            decoration: InputDecoration(
+              hintText: 'Rooms cleaned',
+              suffixText: 'rooms',
+              filled: true,
+              fillColor: AppTheme.cardBackgroundLight,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+        ],
+        if (_template!.showQualityScore) ...[
+          TextFormField(
+            controller: _qualityScoreController,
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            style: AppTheme.bodyMedium,
+            decoration: InputDecoration(
+              hintText: 'Quality score (1-10)',
+              suffixText: '/10',
+              filled: true,
+              fillColor: AppTheme.cardBackgroundLight,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+        ],
+        if (_template!.showShiftType) ...[
+          TextFormField(
+            controller: _shiftTypeController,
+            style: AppTheme.bodyMedium,
+            decoration: InputDecoration(
+              hintText: 'Shift type (Day, Night, Swing, Peak)',
+              filled: true,
+              fillColor: AppTheme.cardBackgroundLight,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+        ],
+        if (_template!.showGuestsCheckedIn) ...[
+          TextFormField(
+            controller: _guestsCheckedInController,
+            keyboardType: TextInputType.number,
+            style: AppTheme.bodyMedium,
+            decoration: InputDecoration(
+              hintText: 'Guests checked in',
+              suffixText: 'guests',
+              filled: true,
+              fillColor: AppTheme.cardBackgroundLight,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+        ],
+        if (_template!.showCarsParked) ...[
+          TextFormField(
+            controller: _carsParkedController,
+            keyboardType: TextInputType.number,
+            style: AppTheme.bodyMedium,
+            decoration: InputDecoration(
+              hintText: 'Cars parked (valet)',
+              suffixText: 'cars',
+              filled: true,
+              fillColor: AppTheme.cardBackgroundLight,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+        ],
+
+        // =====================================================
+        // HEALTHCARE FIELDS
+        // =====================================================
+        if (_template!.showPatientCount) ...[
+          TextFormField(
+            controller: _patientCountController,
+            keyboardType: TextInputType.number,
+            style: AppTheme.bodyMedium,
+            decoration: InputDecoration(
+              hintText: 'Patients seen',
+              prefixIcon: Icon(Icons.medical_services, color: AppTheme.primaryGreen),
+              suffixText: 'patients',
+              filled: true,
+              fillColor: AppTheme.cardBackgroundLight,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+        ],
+        if (_template!.showShiftDifferential) ...[
+          TextFormField(
+            controller: _shiftDifferentialController,
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            style: AppTheme.bodyMedium,
+            decoration: InputDecoration(
+              hintText: 'Shift differential (night/weekend bonus)',
+              prefixText: '\$ ',
+              filled: true,
+              fillColor: AppTheme.cardBackgroundLight,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+        ],
+        if (_template!.showOnCallHours) ...[
+          TextFormField(
+            controller: _onCallHoursController,
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            style: AppTheme.bodyMedium,
+            decoration: InputDecoration(
+              hintText: 'On-call hours',
+              suffixText: 'hours',
+              filled: true,
+              fillColor: AppTheme.cardBackgroundLight,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+        ],
+        if (_template!.showProceduresCount) ...[
+          TextFormField(
+            controller: _proceduresCountController,
+            keyboardType: TextInputType.number,
+            style: AppTheme.bodyMedium,
+            decoration: InputDecoration(
+              hintText: 'Procedures performed',
+              suffixText: 'procedures',
+              filled: true,
+              fillColor: AppTheme.cardBackgroundLight,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+        ],
+
+        // =====================================================
+        // FITNESS FIELDS
+        // =====================================================
+        if (_template!.showSessionsCount) ...[
+          TextFormField(
+            controller: _sessionsCountController,
+            keyboardType: TextInputType.number,
+            style: AppTheme.bodyMedium,
+            decoration: InputDecoration(
+              hintText: 'Sessions/classes taught',
+              prefixIcon: Icon(Icons.fitness_center, color: AppTheme.primaryGreen),
+              suffixText: 'sessions',
+              filled: true,
+              fillColor: AppTheme.cardBackgroundLight,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+        ],
+        if (_template!.showSessionType) ...[
+          TextFormField(
+            controller: _sessionTypeController,
+            style: AppTheme.bodyMedium,
+            decoration: InputDecoration(
+              hintText: 'Session type (1-on-1, Group, Online)',
+              filled: true,
+              fillColor: AppTheme.cardBackgroundLight,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+        ],
+        if (_template!.showClassSize) ...[
+          TextFormField(
+            controller: _classSizeController,
+            keyboardType: TextInputType.number,
+            style: AppTheme.bodyMedium,
+            decoration: InputDecoration(
+              hintText: 'Class size',
+              suffixText: 'students',
+              filled: true,
+              fillColor: AppTheme.cardBackgroundLight,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+        ],
+        if (_template!.showCancellations) ...[
+          TextFormField(
+            controller: _cancellationsCountController,
+            keyboardType: TextInputType.number,
+            style: AppTheme.bodyMedium,
+            decoration: InputDecoration(
+              hintText: 'Cancellations/no-shows',
+              suffixText: 'cancellations',
+              filled: true,
+              fillColor: AppTheme.cardBackgroundLight,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+        ],
+        if (_template!.showPackageSales) ...[
+          TextFormField(
+            controller: _packageSalesController,
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            style: AppTheme.bodyMedium,
+            decoration: InputDecoration(
+              hintText: 'Package sales',
+              prefixText: '\$ ',
+              filled: true,
+              fillColor: AppTheme.cardBackgroundLight,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+        ],
+        if (_template!.showSupplementSales) ...[
+          TextFormField(
+            controller: _supplementSalesController,
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            style: AppTheme.bodyMedium,
+            decoration: InputDecoration(
+              hintText: 'Supplement/product sales',
+              prefixText: '\$ ',
+              filled: true,
+              fillColor: AppTheme.cardBackgroundLight,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+        ],
+
+        // =====================================================
+        // CONSTRUCTION/TRADES FIELDS
+        // =====================================================
+        if (_template!.showLaborCost) ...[
+          TextFormField(
+            controller: _laborCostController,
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            style: AppTheme.bodyMedium,
+            decoration: InputDecoration(
+              hintText: 'Labor/crew cost',
+              prefixIcon: Icon(Icons.construction, color: AppTheme.primaryGreen),
+              prefixText: '\$ ',
+              filled: true,
+              fillColor: AppTheme.cardBackgroundLight,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+        ],
+        if (_template!.showSubcontractorCost) ...[
+          TextFormField(
+            controller: _subcontractorCostController,
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            style: AppTheme.bodyMedium,
+            decoration: InputDecoration(
+              hintText: 'Subcontractor cost',
+              prefixText: '\$ ',
+              filled: true,
+              fillColor: AppTheme.cardBackgroundLight,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+        ],
+        if (_template!.showSquareFootage) ...[
+          TextFormField(
+            controller: _squareFootageController,
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            style: AppTheme.bodyMedium,
+            decoration: InputDecoration(
+              hintText: 'Square footage completed',
+              suffixText: 'sq ft',
+              filled: true,
+              fillColor: AppTheme.cardBackgroundLight,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+        ],
+        if (_template!.showWeatherDelay) ...[
+          TextFormField(
+            controller: _weatherDelayHoursController,
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            style: AppTheme.bodyMedium,
+            decoration: InputDecoration(
+              hintText: 'Weather delay',
+              suffixText: 'hours',
+              filled: true,
+              fillColor: AppTheme.cardBackgroundLight,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+        ],
+
+        // =====================================================
+        // FREELANCER FIELDS
+        // =====================================================
+        if (_template!.showBillableHours) ...[
+          TextFormField(
+            controller: _billableHoursController,
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            style: AppTheme.bodyMedium,
+            decoration: InputDecoration(
+              hintText: 'Billable hours',
+              prefixIcon: Icon(Icons.computer, color: AppTheme.primaryGreen),
+              suffixText: 'hours',
+              filled: true,
+              fillColor: AppTheme.cardBackgroundLight,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+        ],
+        if (_template!.showRevisionsCount) ...[
+          TextFormField(
+            controller: _revisionsCountController,
+            keyboardType: TextInputType.number,
+            style: AppTheme.bodyMedium,
+            decoration: InputDecoration(
+              hintText: 'Revisions/rounds',
+              suffixText: 'revisions',
+              filled: true,
+              fillColor: AppTheme.cardBackgroundLight,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+        ],
+        if (_template!.showClientType) ...[
+          TextFormField(
+            controller: _clientTypeController,
+            style: AppTheme.bodyMedium,
+            decoration: InputDecoration(
+              hintText: 'Client type (Startup, SMB, Enterprise)',
+              filled: true,
+              fillColor: AppTheme.cardBackgroundLight,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+        ],
+        if (_template!.showExpenses) ...[
+          TextFormField(
+            controller: _expensesController,
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            style: AppTheme.bodyMedium,
+            decoration: InputDecoration(
+              hintText: 'Expenses (software, travel, etc.)',
+              prefixText: '\$ ',
+              filled: true,
+              fillColor: AppTheme.cardBackgroundLight,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+        ],
+
+        // =====================================================
+        // RESTAURANT ADDITIONAL FIELDS
+        // =====================================================
+        if (_template!.showTableSection) ...[
+          TextFormField(
+            controller: _tableSectionController,
+            style: AppTheme.bodyMedium,
+            decoration: InputDecoration(
+              hintText: 'Table section (Bar, Patio, Section A)',
+              prefixIcon: Icon(Icons.table_restaurant, color: AppTheme.primaryGreen),
+              filled: true,
+              fillColor: AppTheme.cardBackgroundLight,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
         ],
       ],
     );
