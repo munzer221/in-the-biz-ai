@@ -86,6 +86,7 @@ class _AddJobScreenState extends State<AddJobScreen> {
   double _overtimeMultiplier = 1.5;
 
   bool _isSaving = false;
+  bool _tipOutExpanded = false;
 
   // Industries - use IndustryData as source of truth
   late final List<String> _industries = [
@@ -841,7 +842,6 @@ class _AddJobScreenState extends State<AddJobScreen> {
 
   Widget _buildTipOutSection() {
     return Container(
-      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: AppTheme.cardBackground.withOpacity(0.5),
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -849,135 +849,150 @@ class _AddJobScreenState extends State<AddJobScreen> {
           color: AppTheme.accentYellow.withOpacity(0.3),
         ),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Icon(Icons.people_outline,
-                  color: AppTheme.accentYellow, size: 20),
-              const SizedBox(width: 8),
-              Text(
-                'Tip Out Settings (Optional)',
-                style: AppTheme.titleMedium.copyWith(
-                  color: AppTheme.textPrimary,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ],
+      child: Theme(
+        data: Theme.of(context).copyWith(
+          dividerColor: Colors.transparent,
+        ),
+        child: ExpansionTile(
+          initiallyExpanded: _tipOutExpanded,
+          onExpansionChanged: (expanded) {
+            setState(() => _tipOutExpanded = expanded);
+          },
+          tilePadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          childrenPadding: const EdgeInsets.only(
+            left: 16,
+            right: 16,
+            bottom: 16,
           ),
-          const SizedBox(height: 12),
-          Text(
-            'Set a default tip out percentage for support staff. You can adjust this per shift.',
-            style: AppTheme.labelSmall.copyWith(
-              color: AppTheme.textSecondary,
-              fontStyle: FontStyle.italic,
+          leading: Icon(
+            Icons.people_outline,
+            color: AppTheme.accentYellow,
+            size: 20,
+          ),
+          title: Text(
+            'Tip Out Settings (Optional)',
+            style: AppTheme.titleMedium.copyWith(
+              color: AppTheme.textPrimary,
+              fontWeight: FontWeight.w600,
             ),
           ),
-          const SizedBox(height: 16),
-          Row(
-            children: [
-              Expanded(
-                flex: 1,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Tip Out %',
-                      style: AppTheme.labelMedium.copyWith(
-                        color: AppTheme.textSecondary,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    TextField(
-                      controller: _tipoutPercentController,
-                      keyboardType:
-                          TextInputType.numberWithOptions(decimal: true),
-                      style: AppTheme.bodyMedium,
-                      decoration: InputDecoration(
-                        hintText: '0',
-                        suffix: Text('%',
-                            style: AppTheme.bodyMedium
-                                .copyWith(color: AppTheme.textSecondary)),
-                        filled: true,
-                        fillColor: AppTheme.cardBackground,
-                        border: OutlineInputBorder(
-                          borderRadius:
-                              BorderRadius.circular(AppTheme.radiusSmall),
-                          borderSide:
-                              BorderSide(color: AppTheme.cardBackgroundLight),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius:
-                              BorderRadius.circular(AppTheme.radiusSmall),
-                          borderSide:
-                              BorderSide(color: AppTheme.cardBackgroundLight),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius:
-                              BorderRadius.circular(AppTheme.radiusSmall),
-                          borderSide: BorderSide(color: AppTheme.primaryGreen),
-                        ),
-                        contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 12, vertical: 12),
-                      ),
-                      onChanged: (value) {
-                        final parsed = double.tryParse(value);
-                        if (parsed != null) {
-                          setState(() => _defaultTipoutPercent = parsed);
-                        }
-                      },
-                    ),
-                  ],
-                ),
+          iconColor: AppTheme.textSecondary,
+          collapsedIconColor: AppTheme.textSecondary,
+          children: [
+            Text(
+              'Set a default tip out percentage for support staff. You can adjust this per shift.',
+              style: AppTheme.labelSmall.copyWith(
+                color: AppTheme.textSecondary,
+                fontStyle: FontStyle.italic,
               ),
-              const SizedBox(width: 12),
-              Expanded(
-                flex: 2,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Who gets tipped out?',
-                      style: AppTheme.labelMedium.copyWith(
-                        color: AppTheme.textSecondary,
+            ),
+            const SizedBox(height: 16),
+            Row(
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Tip Out %',
+                        style: AppTheme.labelMedium.copyWith(
+                          color: AppTheme.textSecondary,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 8),
-                    TextField(
-                      controller: _tipoutDescriptionController,
-                      style: AppTheme.bodyMedium,
-                      decoration: InputDecoration(
-                        hintText: '',
-                        filled: true,
-                        fillColor: AppTheme.cardBackground,
-                        border: OutlineInputBorder(
-                          borderRadius:
-                              BorderRadius.circular(AppTheme.radiusSmall),
-                          borderSide:
-                              BorderSide(color: AppTheme.cardBackgroundLight),
+                      const SizedBox(height: 8),
+                      TextField(
+                        controller: _tipoutPercentController,
+                        keyboardType:
+                            TextInputType.numberWithOptions(decimal: true),
+                        style: AppTheme.bodyMedium,
+                        decoration: InputDecoration(
+                          hintText: '0',
+                          suffix: Text('%',
+                              style: AppTheme.bodyMedium
+                                  .copyWith(color: AppTheme.textSecondary)),
+                          filled: true,
+                          fillColor: AppTheme.cardBackground,
+                          border: OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.circular(AppTheme.radiusSmall),
+                            borderSide:
+                                BorderSide(color: AppTheme.cardBackgroundLight),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.circular(AppTheme.radiusSmall),
+                            borderSide:
+                                BorderSide(color: AppTheme.cardBackgroundLight),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.circular(AppTheme.radiusSmall),
+                            borderSide:
+                                BorderSide(color: AppTheme.primaryGreen),
+                          ),
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 12),
                         ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius:
-                              BorderRadius.circular(AppTheme.radiusSmall),
-                          borderSide:
-                              BorderSide(color: AppTheme.cardBackgroundLight),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius:
-                              BorderRadius.circular(AppTheme.radiusSmall),
-                          borderSide: BorderSide(color: AppTheme.primaryGreen),
-                        ),
-                        contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 12, vertical: 12),
+                        onChanged: (value) {
+                          final parsed = double.tryParse(value);
+                          if (parsed != null) {
+                            setState(() => _defaultTipoutPercent = parsed);
+                          }
+                        },
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          ),
-        ],
+                const SizedBox(width: 12),
+                Expanded(
+                  flex: 2,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Who gets tipped out?',
+                        style: AppTheme.labelMedium.copyWith(
+                          color: AppTheme.textSecondary,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      TextField(
+                        controller: _tipoutDescriptionController,
+                        style: AppTheme.bodyMedium,
+                        decoration: InputDecoration(
+                          hintText: '',
+                          filled: true,
+                          fillColor: AppTheme.cardBackground,
+                          border: OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.circular(AppTheme.radiusSmall),
+                            borderSide:
+                                BorderSide(color: AppTheme.cardBackgroundLight),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.circular(AppTheme.radiusSmall),
+                            borderSide:
+                                BorderSide(color: AppTheme.cardBackgroundLight),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.circular(AppTheme.radiusSmall),
+                            borderSide:
+                                BorderSide(color: AppTheme.primaryGreen),
+                          ),
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 12),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
