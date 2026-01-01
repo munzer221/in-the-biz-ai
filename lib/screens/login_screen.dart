@@ -40,7 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<void> _initializeGoogleSignInWeb() async {
     try {
-      // Generate initial nonce
+      // Generate initial nonce - send RAW nonce to Google
       _currentNonce = _generateNonce();
       _currentHashedNonce =
           sha256.convert(utf8.encode(_currentNonce!)).toString();
@@ -50,7 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
             '30441285456-pkvqkagh3fcv0b6n71t5tpnuda94l8d5.apps.googleusercontent.com',
         serverClientId:
             '30441285456-pkvqkagh3fcv0b6n71t5tpnuda94l8d5.apps.googleusercontent.com',
-        nonce: _currentHashedNonce,
+        nonce: _currentNonce, // Send RAW nonce to Google, it will hash it
       );
 
       GoogleSignIn.instance.authenticationEvents.listen((event) async {
@@ -69,7 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
             final googleAuth = await user.authentication;
 
             if (googleAuth.idToken != null) {
-              // Use the nonce that was set during initialize()
+              // Send RAW nonce to Supabase, it will hash and compare to token
               final response = await AuthService.signInWithIdToken(
                 idToken: googleAuth.idToken!,
                 nonce: _currentNonce,
