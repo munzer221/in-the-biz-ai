@@ -372,8 +372,16 @@ class _GoalsScreenState extends State<GoalsScreen>
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       if (isComplete)
-                        Icon(Icons.check_circle,
-                            color: AppTheme.primaryGreen, size: 20),
+                        Container(
+                          padding: const EdgeInsets.all(6),
+                          decoration: BoxDecoration(
+                            color: AppTheme.primaryGreen.withOpacity(0.2),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(Icons.check_circle,
+                              color: AppTheme.primaryGreen, size: 20),
+                        ),
+                      const SizedBox(width: 4),
                       IconButton(
                         icon: const Icon(Icons.edit_outlined, size: 20),
                         color: AppTheme.textSecondary,
@@ -386,80 +394,251 @@ class _GoalsScreenState extends State<GoalsScreen>
                       ),
                     ],
                   )
-                : TextButton(
-                    onPressed: () => _createGoal(type, jobId),
-                    child: const Text('SET GOAL'),
+                : Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
+                    ),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          AppTheme.primaryGreen.withOpacity(0.2),
+                          AppTheme.accentBlue.withOpacity(0.15),
+                        ],
+                      ),
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                        color: AppTheme.primaryGreen.withOpacity(0.3),
+                        width: 1,
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.add_circle_outline,
+                            color: AppTheme.primaryGreen, size: 16),
+                        const SizedBox(width: 6),
+                        Text(
+                          'SET GOAL',
+                          style: AppTheme.labelSmall.copyWith(
+                            color: AppTheme.primaryGreen,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ).copyWith(
+                    child: InkWell(
+                      onTap: () => _createGoal(type, jobId),
+                      borderRadius: BorderRadius.circular(20),
+                      child: (child as Container).child,
+                    ),
                   ),
           ),
 
           // Progress section (only if goal exists)
           if (hasGoal) ...[
             Padding(
-              padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+              padding: const EdgeInsets.fromLTRB(20, 4, 20, 20),
               child: Column(
                 children: [
-                  // Progress bar
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(4),
-                    child: LinearProgressIndicator(
-                      value: progressPercent.clamp(0.0, 1.0),
-                      backgroundColor: AppTheme.cardBackgroundLight,
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                        isComplete
-                            ? AppTheme.primaryGreen
-                            : AppTheme.accentBlue,
-                      ),
-                      minHeight: 8,
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  // Progress stats
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  // Progress bar with glow effect
+                  Stack(
                     children: [
-                      Text(
-                        _currencyFormat.format(progress),
-                        style: AppTheme.titleMedium.copyWith(
-                          color: isComplete
-                              ? AppTheme.primaryGreen
-                              : AppTheme.textPrimary,
+                      // Background glow for completed goals
+                      if (isComplete)
+                        Container(
+                          height: 12,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(6),
+                            boxShadow: [
+                              BoxShadow(
+                                color: AppTheme.primaryGreen.withOpacity(0.4),
+                                blurRadius: 12,
+                                spreadRadius: 2,
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      Text(
-                        '${(progressPercent * 100).toInt()}%',
-                        style: AppTheme.bodyLarge.copyWith(
-                          color: isComplete
-                              ? AppTheme.primaryGreen
-                              : AppTheme.textSecondary,
-                          fontWeight: FontWeight.w600,
+                      // Progress bar
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(6),
+                        child: Container(
+                          height: 12,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                AppTheme.cardBackgroundLight,
+                                AppTheme.cardBackgroundLight.withOpacity(0.5),
+                              ],
+                            ),
+                          ),
+                          child: FractionallySizedBox(
+                            alignment: Alignment.centerLeft,
+                            widthFactor: progressPercent.clamp(0.0, 1.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.centerRight,
+                                  colors: isComplete
+                                      ? [
+                                          AppTheme.primaryGreen,
+                                          AppTheme.accentBlue,
+                                        ]
+                                      : progressPercent > 0.7
+                                          ? [
+                                              AppTheme.accentOrange,
+                                              AppTheme.primaryGreen,
+                                            ]
+                                          : [
+                                              AppTheme.accentBlue,
+                                              AppTheme.primaryGreen,
+                                            ],
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     ],
                   ),
-                  if (isComplete) ...[
-                    const SizedBox(height: 8),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 6,
-                      ),
-                      decoration: BoxDecoration(
-                        color: AppTheme.primaryGreen.withOpacity(0.15),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
+                  const SizedBox(height: 16),
+                  // Progress stats
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Icon(Icons.celebration,
-                              color: AppTheme.primaryGreen, size: 16),
-                          const SizedBox(width: 6),
                           Text(
-                            'Goal reached!',
+                            'Current',
                             style: AppTheme.labelSmall.copyWith(
-                              color: AppTheme.primaryGreen,
-                              fontWeight: FontWeight.w600,
+                              color: AppTheme.textMuted,
+                              fontSize: 11,
                             ),
                           ),
+                          const SizedBox(height: 2),
+                          Text(
+                            _currencyFormat.format(progress),
+                            style: AppTheme.titleMedium.copyWith(
+                              color: isComplete
+                                  ? AppTheme.primaryGreen
+                                  : AppTheme.textPrimary,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
+                        ),
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: isComplete
+                                ? [
+                                    AppTheme.primaryGreen.withOpacity(0.3),
+                                    AppTheme.accentBlue.withOpacity(0.2),
+                                  ]
+                                : [
+                                    AppTheme.cardBackgroundLight,
+                                    AppTheme.cardBackgroundLight.withOpacity(0.5),
+                                  ],
+                          ),
+                          borderRadius: BorderRadius.circular(20),
+                          border: isComplete
+                              ? Border.all(
+                                  color: AppTheme.primaryGreen.withOpacity(0.4),
+                                  width: 1,
+                                )
+                              : null,
+                        ),
+                        child: Text(
+                          '${(progressPercent * 100).toInt()}%',
+                          style: AppTheme.titleSmall.copyWith(
+                            color: isComplete
+                                ? AppTheme.primaryGreen
+                                : AppTheme.textSecondary,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                            'Remaining',
+                            style: AppTheme.labelSmall.copyWith(
+                              color: AppTheme.textMuted,
+                              fontSize: 11,
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            isComplete
+                                ? '🎉'
+                                : _currencyFormat
+                                    .format(goal.targetAmount - progress),
+                            style: AppTheme.titleMedium.copyWith(
+                              color: AppTheme.textSecondary,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  if (isComplete) ...[
+                    const SizedBox(height: 16),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 12,
+                      ),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            AppTheme.primaryGreen.withOpacity(0.25),
+                            AppTheme.accentYellow.withOpacity(0.15),
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: AppTheme.primaryGreen.withOpacity(0.4),
+                          width: 1.5,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppTheme.primaryGreen.withOpacity(0.2),
+                            blurRadius: 8,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.celebration,
+                              color: AppTheme.accentYellow, size: 24),
+                          const SizedBox(width: 10),
+                          Text(
+                            'Goal Achieved!',
+                            style: AppTheme.titleSmall.copyWith(
+                              color: AppTheme.primaryGreen,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          Icon(Icons.emoji_events,
+                              color: AppTheme.accentYellow, size: 24),
                         ],
                       ),
                     ),
