@@ -292,9 +292,9 @@ class _GoalsScreenState extends State<GoalsScreen>
           ),
         ),
         child: Column(
-        children: [
-          // Header row
-          ListTile(
+          children: [
+            // Header row
+            ListTile(
             contentPadding:
                 const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
             leading: Container(
