@@ -34,7 +34,7 @@ class _AddJobScreenState extends State<AddJobScreen> {
   PayStructure _payStructure = PayStructure.hourly;
   double _defaultTipoutPercent = 0.0;
 
-  // Template toggles
+  // Template toggles - Core fields
   bool _showTips = true;
   bool _showCommission = false;
   bool _showEventName = false;
@@ -47,8 +47,42 @@ class _AddJobScreenState extends State<AddJobScreen> {
   bool _showPhotos = true;
   bool _showNotes = true;
   bool _tracksOvertime = false;
-  bool _showSales = false; // NEW: Track sales
-  bool _showEventCost = false; // NEW: Track event cost
+  bool _showSales = false;
+  bool _showEventCost = false;
+  
+  // Rideshare-specific fields
+  bool? _showRidesCount;
+  bool? _showDeadMiles;
+  bool? _showFuelCost;
+  bool? _showTollsParking;
+  bool? _showSurgeMultiplier;
+  bool? _showBaseFare;
+  
+  // Music & Entertainment fields
+  bool? _showGigType;
+  bool? _showSetupHours;
+  bool? _showPerformanceHours;
+  bool? _showBreakdownHours;
+  bool? _showEquipmentUsed;
+  bool? _showEquipmentRentalCost;
+  bool? _showCrewPayment;
+  bool? _showMerchSales;
+  bool? _showAudienceSize;
+  
+  // Art & Crafts fields
+  bool? _showPiecesCreated;
+  bool? _showPiecesSold;
+  bool? _showMaterialsCost;
+  bool? _showSalePrice;
+  bool? _showVenueCommissionPercent;
+  
+  // Retail & Sales fields
+  bool? _showItemsSold;
+  bool? _showTransactionsCount;
+  bool? _showUpsellsCount;
+  bool? _showReturnsCount;
+  bool? _showShrinkAmount;
+
   double _overtimeMultiplier = 1.5;
 
   bool _isSaving = false;
