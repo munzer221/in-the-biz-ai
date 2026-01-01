@@ -390,6 +390,26 @@ git push origin gh-pages
 
 ---
 
+## 🚀 ALTERNATIVE WEB DEPLOYMENT OPTIONS (NEW - January 1, 2026)
+
+Consider switching to Vercel or using GitHub Actions for automated deployments.
+
+### Option 1: Switch to Vercel (Recommended - Fastest)
+- One-click publish from VS Code
+- Auto-deploys on push to main
+- 25-30 second deploys
+- Free tier available
+- Keeps your custom domain `inthebiz.app`
+
+### Option 2: GitHub Actions (Automate current setup)
+- Auto-builds and deploys when you push to main
+- No manual copying/committing needed
+- Still uses GitHub Pages
+- ~2-3 minute deploy time
+- Free
+
+---
+
 ## 🗄️ SUPABASE DATABASE MIGRATIONS (NEW - December 31, 2025)
 
 **DO NOT use `supabase db push` or `supabase migration up`** - these require Docker and are unreliable on Windows.
@@ -761,32 +781,9 @@ ALTER TABLE public.shifts ADD COLUMN (
   source_checkout_id UUID REFERENCES server_checkouts(id)  -- Track origin if imported
 );
 ```
-
 ---
 
-## 🎯 Post-Scan Verification Flow
+## 💻 DEVELOPMENT ENVIRONMENT
 
-### User Journey After Scanning
-
-```
-1. User scans checkout receipt(s)
-   ↓
-2. AI analyzes (possibly multi-page)
-   ↓
-3. VERIFICATION SCREEN APPEARS
-   ├─ Checkout Preview Card (top)
-   │  └─ Shows all extracted data with confidence badges
-   │
-   ├─ Questions Section (scrollable)
-   │  ├─ "X questions need your help"
-   │  ├─ 2-4 questions per view (responsive layout)
-   │  └─ Each question has input field + hint text
-   │
-   └─ Action Buttons
-      ├─ [Approve as-is] (skip unanswered questions)
-      ├─ [Answer Questions] (fill in blanks)
-      └─ [Discard]
-   ↓
-4. Data saved to server_checkouts table
-   ↓
-5. Optional: User can "Import
+### Vercel CLI Installation
+- Install the Vercel CLI to enable one-click publishing from VS Code.
