@@ -421,6 +421,11 @@ class JobTemplate {
       showEventName: false,
       showHostess: false,
       showGuestCount: false,
+      // Construction-specific fields
+      showLaborCost: true,
+      showSubcontractorCost: true,
+      showSquareFootage: true,
+      showWeatherDelay: true,
     );
   }
 
@@ -437,6 +442,11 @@ class JobTemplate {
       showEventName: false,
       showHostess: false,
       showGuestCount: false,
+      // Freelancer-specific fields
+      showRevisionsCount: true,
+      showClientType: true,
+      showExpenses: true,
+      showBillableHours: true,
     );
   }
 
