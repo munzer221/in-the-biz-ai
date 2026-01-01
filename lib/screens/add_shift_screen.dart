@@ -345,7 +345,8 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
     _performanceHoursController.text = shift.performanceHours?.toString() ?? '';
     _breakdownHoursController.text = shift.breakdownHours?.toString() ?? '';
     _equipmentUsedController.text = shift.equipmentUsed ?? '';
-    _equipmentRentalCostController.text = shift.equipmentRentalCost?.toString() ?? '';
+    _equipmentRentalCostController.text =
+        shift.equipmentRentalCost?.toString() ?? '';
     _crewPaymentController.text = shift.crewPayment?.toString() ?? '';
     _merchSalesController.text = shift.merchSales?.toString() ?? '';
     _audienceSizeController.text = shift.audienceSize?.toString() ?? '';
@@ -357,13 +358,15 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
     _piecesSoldController.text = shift.piecesSold?.toString() ?? '';
     _materialsCostController.text = shift.materialsCost?.toString() ?? '';
     _salePriceController.text = shift.salePrice?.toString() ?? '';
-    _venueCommissionPercentController.text = shift.venueCommissionPercent?.toString() ?? '';
+    _venueCommissionPercentController.text =
+        shift.venueCommissionPercent?.toString() ?? '';
 
     // =====================================================
     // RETAIL/SALES FIELDS
     // =====================================================
     _itemsSoldController.text = shift.itemsSold?.toString() ?? '';
-    _transactionsCountController.text = shift.transactionsCount?.toString() ?? '';
+    _transactionsCountController.text =
+        shift.transactionsCount?.toString() ?? '';
     _upsellsCountController.text = shift.upsellsCount?.toString() ?? '';
     _upsellsAmountController.text = shift.upsellsAmount?.toString() ?? '';
     _returnsCountController.text = shift.returnsCount?.toString() ?? '';
@@ -377,10 +380,12 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
     _serviceTypeController.text = shift.serviceType ?? '';
     _servicesCountController.text = shift.servicesCount?.toString() ?? '';
     _productSalesController.text = shift.productSales?.toString() ?? '';
-    _repeatClientPercentController.text = shift.repeatClientPercent?.toString() ?? '';
+    _repeatClientPercentController.text =
+        shift.repeatClientPercent?.toString() ?? '';
     _chairRentalController.text = shift.chairRental?.toString() ?? '';
     _newClientsCountController.text = shift.newClientsCount?.toString() ?? '';
-    _returningClientsCountController.text = shift.returningClientsCount?.toString() ?? '';
+    _returningClientsCountController.text =
+        shift.returningClientsCount?.toString() ?? '';
     _walkinCountController.text = shift.walkinCount?.toString() ?? '';
     _appointmentCountController.text = shift.appointmentCount?.toString() ?? '';
 
@@ -399,7 +404,8 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
     // HEALTHCARE FIELDS
     // =====================================================
     _patientCountController.text = shift.patientCount?.toString() ?? '';
-    _shiftDifferentialController.text = shift.shiftDifferential?.toString() ?? '';
+    _shiftDifferentialController.text =
+        shift.shiftDifferential?.toString() ?? '';
     _onCallHoursController.text = shift.onCallHours?.toString() ?? '';
     _proceduresCountController.text = shift.proceduresCount?.toString() ?? '';
     _specializationController.text = shift.specialization ?? '';
@@ -411,7 +417,8 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
     _sessionTypeController.text = shift.sessionType ?? '';
     _classSizeController.text = shift.classSize?.toString() ?? '';
     _retentionRateController.text = shift.retentionRate?.toString() ?? '';
-    _cancellationsCountController.text = shift.cancellationsCount?.toString() ?? '';
+    _cancellationsCountController.text =
+        shift.cancellationsCount?.toString() ?? '';
     _packageSalesController.text = shift.packageSales?.toString() ?? '';
     _supplementSalesController.text = shift.supplementSales?.toString() ?? '';
 
@@ -419,9 +426,11 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
     // CONSTRUCTION/TRADES FIELDS
     // =====================================================
     _laborCostController.text = shift.laborCost?.toString() ?? '';
-    _subcontractorCostController.text = shift.subcontractorCost?.toString() ?? '';
+    _subcontractorCostController.text =
+        shift.subcontractorCost?.toString() ?? '';
     _squareFootageController.text = shift.squareFootage?.toString() ?? '';
-    _weatherDelayHoursController.text = shift.weatherDelayHours?.toString() ?? '';
+    _weatherDelayHoursController.text =
+        shift.weatherDelayHours?.toString() ?? '';
 
     // =====================================================
     // FREELANCER FIELDS
@@ -747,7 +756,8 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
         equipmentUsed: _equipmentUsedController.text.trim().isNotEmpty
             ? _equipmentUsedController.text.trim()
             : null,
-        equipmentRentalCost: double.tryParse(_equipmentRentalCostController.text),
+        equipmentRentalCost:
+            double.tryParse(_equipmentRentalCostController.text),
         crewPayment: double.tryParse(_crewPaymentController.text),
         merchSales: double.tryParse(_merchSalesController.text),
         audienceSize: int.tryParse(_audienceSizeController.text),
@@ -758,7 +768,8 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
         piecesSold: int.tryParse(_piecesSoldController.text),
         materialsCost: double.tryParse(_materialsCostController.text),
         salePrice: double.tryParse(_salePriceController.text),
-        venueCommissionPercent: double.tryParse(_venueCommissionPercentController.text),
+        venueCommissionPercent:
+            double.tryParse(_venueCommissionPercentController.text),
         // =====================================================
         // RETAIL/SALES FIELDS
         // =====================================================
@@ -780,10 +791,12 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
             : null,
         servicesCount: int.tryParse(_servicesCountController.text),
         productSales: double.tryParse(_productSalesController.text),
-        repeatClientPercent: double.tryParse(_repeatClientPercentController.text),
+        repeatClientPercent:
+            double.tryParse(_repeatClientPercentController.text),
         chairRental: double.tryParse(_chairRentalController.text),
         newClientsCount: int.tryParse(_newClientsCountController.text),
-        returningClientsCount: int.tryParse(_returningClientsCountController.text),
+        returningClientsCount:
+            int.tryParse(_returningClientsCountController.text),
         walkinCount: int.tryParse(_walkinCountController.text),
         appointmentCount: int.tryParse(_appointmentCountController.text),
         // =====================================================
@@ -2550,7 +2563,8 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
             style: AppTheme.bodyMedium,
             decoration: InputDecoration(
               hintText: 'Number of rides/deliveries',
-              prefixIcon: Icon(Icons.directions_car, color: AppTheme.primaryGreen),
+              prefixIcon:
+                  Icon(Icons.directions_car, color: AppTheme.primaryGreen),
               suffixText: 'rides',
               filled: true,
               fillColor: AppTheme.cardBackgroundLight,
@@ -2921,7 +2935,8 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
             style: AppTheme.bodyMedium,
             decoration: InputDecoration(
               hintText: 'Items sold',
-              prefixIcon: Icon(Icons.shopping_cart, color: AppTheme.primaryGreen),
+              prefixIcon:
+                  Icon(Icons.shopping_cart, color: AppTheme.primaryGreen),
               suffixText: 'items',
               filled: true,
               fillColor: AppTheme.cardBackgroundLight,
@@ -3236,7 +3251,8 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
             style: AppTheme.bodyMedium,
             decoration: InputDecoration(
               hintText: 'Patients seen',
-              prefixIcon: Icon(Icons.medical_services, color: AppTheme.primaryGreen),
+              prefixIcon:
+                  Icon(Icons.medical_services, color: AppTheme.primaryGreen),
               suffixText: 'patients',
               filled: true,
               fillColor: AppTheme.cardBackgroundLight,
@@ -3313,7 +3329,8 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
             style: AppTheme.bodyMedium,
             decoration: InputDecoration(
               hintText: 'Sessions/classes taught',
-              prefixIcon: Icon(Icons.fitness_center, color: AppTheme.primaryGreen),
+              prefixIcon:
+                  Icon(Icons.fitness_center, color: AppTheme.primaryGreen),
               suffixText: 'sessions',
               filled: true,
               fillColor: AppTheme.cardBackgroundLight,
@@ -3424,7 +3441,8 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
             style: AppTheme.bodyMedium,
             decoration: InputDecoration(
               hintText: 'Labor/crew cost',
-              prefixIcon: Icon(Icons.construction, color: AppTheme.primaryGreen),
+              prefixIcon:
+                  Icon(Icons.construction, color: AppTheme.primaryGreen),
               prefixText: '\$ ',
               filled: true,
               fillColor: AppTheme.cardBackgroundLight,
@@ -3575,7 +3593,8 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
             style: AppTheme.bodyMedium,
             decoration: InputDecoration(
               hintText: 'Table section (Bar, Patio, Section A)',
-              prefixIcon: Icon(Icons.table_restaurant, color: AppTheme.primaryGreen),
+              prefixIcon:
+                  Icon(Icons.table_restaurant, color: AppTheme.primaryGreen),
               filled: true,
               fillColor: AppTheme.cardBackgroundLight,
               border: OutlineInputBorder(

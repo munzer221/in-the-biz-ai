@@ -786,7 +786,8 @@ class JobTemplate {
       showVenueCommission: showVenueCommission ?? this.showVenueCommission,
       // Retail additional
       showItemsSold: showItemsSold ?? this.showItemsSold,
-      showTransactionsCount: showTransactionsCount ?? this.showTransactionsCount,
+      showTransactionsCount:
+          showTransactionsCount ?? this.showTransactionsCount,
       // Salon additional
       showServicesCount: showServicesCount ?? this.showServicesCount,
       showNewClients: showNewClients ?? this.showNewClients,
@@ -805,7 +806,8 @@ class JobTemplate {
       showSupplementSales: showSupplementSales ?? this.showSupplementSales,
       // Construction additional
       showLaborCost: showLaborCost ?? this.showLaborCost,
-      showSubcontractorCost: showSubcontractorCost ?? this.showSubcontractorCost,
+      showSubcontractorCost:
+          showSubcontractorCost ?? this.showSubcontractorCost,
       showSquareFootage: showSquareFootage ?? this.showSquareFootage,
       showWeatherDelay: showWeatherDelay ?? this.showWeatherDelay,
       // Freelancer additional
