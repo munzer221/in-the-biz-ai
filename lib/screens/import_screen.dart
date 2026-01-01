@@ -985,7 +985,7 @@ class _ImportScreenState extends State<ImportScreen> {
                               ..._existingJobs.map((job) {
                                 final jobId = job['id']?.toString() ?? '';
                                 final jobName =
-                                    job['title']?.toString() ?? 'Unknown Job';
+                                    job['name']?.toString() ?? 'Unknown Job';
                                 if (jobId.isEmpty)
                                   return const SizedBox.shrink();
                                 return ChoiceChip(
