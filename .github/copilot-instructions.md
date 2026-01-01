@@ -390,7 +390,7 @@ git push origin gh-pages
 
 ---
 
-## 🚀 ALTERNATIVE WEB DEPLOYMENT OPTIONS (NEW - January 1, 2026)
+## 🚀 ALTERNATIVE WEB DEPLOYMENT OPTIONS (UPDATED - January 1, 2026)
 
 Consider switching to Vercel or using GitHub Actions for automated deployments.
 
@@ -452,7 +452,7 @@ node_modules/
     -   "Link to existing project?" → `no`
     -   "Project name?" → `in-the-biz-ai` (or just press Enter)
     -   "Which directory is your code?" → `./` (just press Enter)
-    -   "Want to modify settings?" → `N`
+    -   "Want to modify these settings?" → `N`
 6.  Run `vercel --prod` to deploy to Vercel.
 
 ### Option 2: GitHub Actions (Automate current setup)
@@ -799,4 +799,4 @@ CREATE TABLE public.server_checkouts (
   pos_system TEXT,  -- "Toast", "Square", "Aloha", "Clover", etc.
 
   -- AI Metadata
-  ai_confidence_scores JSONB,  -- { "tips": 0.45, "sales": 0.95, ...
+  ai_confidence_scores JSONB,  -- { "tips": 0.45, "sales": 0.95
