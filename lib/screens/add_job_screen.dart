@@ -1607,6 +1607,8 @@ class _AddJobScreenState extends State<AddJobScreen> {
                     _customJobTitles[_selectedIndustry]!.add(customJobTitle);
                   }
                   _selectedJobTitle = customJobTitle;
+                  // Reapply template to ensure fields are set for this job
+                  _applyIndustryTemplate(_selectedIndustry);
                 });
                 Navigator.pop(context);
               }
