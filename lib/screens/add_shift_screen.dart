@@ -526,6 +526,128 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
             : null,
         imageUrl: _capturedPhotos.isNotEmpty ? _capturedPhotos.join(',') : null,
         jobId: _selectedJob!.id,
+        // =====================================================
+        // RIDESHARE & DELIVERY FIELDS
+        // =====================================================
+        ridesCount: int.tryParse(_ridesCountController.text),
+        deliveriesCount: int.tryParse(_deliveriesCountController.text),
+        deadMiles: double.tryParse(_deadMilesController.text),
+        fuelCost: double.tryParse(_fuelCostController.text),
+        tollsParking: double.tryParse(_tollsParkingController.text),
+        surgeMultiplier: double.tryParse(_surgeMultiplierController.text),
+        acceptanceRate: double.tryParse(_acceptanceRateController.text),
+        baseFare: double.tryParse(_baseFareController.text),
+        // =====================================================
+        // MUSIC & ENTERTAINMENT FIELDS
+        // =====================================================
+        gigType: _gigTypeController.text.trim().isNotEmpty
+            ? _gigTypeController.text.trim()
+            : null,
+        setupHours: double.tryParse(_setupHoursController.text),
+        performanceHours: double.tryParse(_performanceHoursController.text),
+        breakdownHours: double.tryParse(_breakdownHoursController.text),
+        equipmentUsed: _equipmentUsedController.text.trim().isNotEmpty
+            ? _equipmentUsedController.text.trim()
+            : null,
+        equipmentRentalCost: double.tryParse(_equipmentRentalCostController.text),
+        crewPayment: double.tryParse(_crewPaymentController.text),
+        merchSales: double.tryParse(_merchSalesController.text),
+        audienceSize: int.tryParse(_audienceSizeController.text),
+        // =====================================================
+        // ARTIST & CRAFTS FIELDS
+        // =====================================================
+        piecesCreated: int.tryParse(_piecesCreatedController.text),
+        piecesSold: int.tryParse(_piecesSoldController.text),
+        materialsCost: double.tryParse(_materialsCostController.text),
+        salePrice: double.tryParse(_salePriceController.text),
+        venueCommissionPercent: double.tryParse(_venueCommissionPercentController.text),
+        // =====================================================
+        // RETAIL/SALES FIELDS
+        // =====================================================
+        itemsSold: int.tryParse(_itemsSoldController.text),
+        transactionsCount: int.tryParse(_transactionsCountController.text),
+        upsellsCount: int.tryParse(_upsellsCountController.text),
+        upsellsAmount: double.tryParse(_upsellsAmountController.text),
+        returnsCount: int.tryParse(_returnsCountController.text),
+        returnsAmount: double.tryParse(_returnsAmountController.text),
+        shrinkAmount: double.tryParse(_shrinkAmountController.text),
+        department: _departmentController.text.trim().isNotEmpty
+            ? _departmentController.text.trim()
+            : null,
+        // =====================================================
+        // SALON/SPA FIELDS
+        // =====================================================
+        serviceType: _serviceTypeController.text.trim().isNotEmpty
+            ? _serviceTypeController.text.trim()
+            : null,
+        servicesCount: int.tryParse(_servicesCountController.text),
+        productSales: double.tryParse(_productSalesController.text),
+        repeatClientPercent: double.tryParse(_repeatClientPercentController.text),
+        chairRental: double.tryParse(_chairRentalController.text),
+        newClientsCount: int.tryParse(_newClientsCountController.text),
+        returningClientsCount: int.tryParse(_returningClientsCountController.text),
+        walkinCount: int.tryParse(_walkinCountController.text),
+        appointmentCount: int.tryParse(_appointmentCountController.text),
+        // =====================================================
+        // HOSPITALITY FIELDS
+        // =====================================================
+        roomType: _roomTypeController.text.trim().isNotEmpty
+            ? _roomTypeController.text.trim()
+            : null,
+        roomsCleaned: int.tryParse(_roomsCleanedController.text),
+        qualityScore: double.tryParse(_qualityScoreController.text),
+        shiftType: _shiftTypeController.text.trim().isNotEmpty
+            ? _shiftTypeController.text.trim()
+            : null,
+        roomUpgrades: int.tryParse(_roomUpgradesController.text),
+        guestsCheckedIn: int.tryParse(_guestsCheckedInController.text),
+        carsParked: int.tryParse(_carsParkedController.text),
+        // =====================================================
+        // HEALTHCARE FIELDS
+        // =====================================================
+        patientCount: int.tryParse(_patientCountController.text),
+        shiftDifferential: double.tryParse(_shiftDifferentialController.text),
+        onCallHours: double.tryParse(_onCallHoursController.text),
+        proceduresCount: int.tryParse(_proceduresCountController.text),
+        specialization: _specializationController.text.trim().isNotEmpty
+            ? _specializationController.text.trim()
+            : null,
+        // =====================================================
+        // FITNESS FIELDS
+        // =====================================================
+        sessionsCount: int.tryParse(_sessionsCountController.text),
+        sessionType: _sessionTypeController.text.trim().isNotEmpty
+            ? _sessionTypeController.text.trim()
+            : null,
+        classSize: int.tryParse(_classSizeController.text),
+        retentionRate: double.tryParse(_retentionRateController.text),
+        cancellationsCount: int.tryParse(_cancellationsCountController.text),
+        packageSales: double.tryParse(_packageSalesController.text),
+        supplementSales: double.tryParse(_supplementSalesController.text),
+        // =====================================================
+        // CONSTRUCTION/TRADES FIELDS
+        // =====================================================
+        laborCost: double.tryParse(_laborCostController.text),
+        subcontractorCost: double.tryParse(_subcontractorCostController.text),
+        squareFootage: double.tryParse(_squareFootageController.text),
+        weatherDelayHours: double.tryParse(_weatherDelayHoursController.text),
+        // =====================================================
+        // FREELANCER FIELDS
+        // =====================================================
+        revisionsCount: int.tryParse(_revisionsCountController.text),
+        clientType: _clientTypeController.text.trim().isNotEmpty
+            ? _clientTypeController.text.trim()
+            : null,
+        expenses: double.tryParse(_expensesController.text),
+        billableHours: double.tryParse(_billableHoursController.text),
+        // =====================================================
+        // RESTAURANT ADDITIONAL FIELDS
+        // =====================================================
+        tableSection: _tableSectionController.text.trim().isNotEmpty
+            ? _tableSectionController.text.trim()
+            : null,
+        cashSales: double.tryParse(_cashSalesController.text),
+        cardSales: double.tryParse(_cardSalesController.text),
       );
 
       // Debug logging
