@@ -73,27 +73,16 @@ serve(async (req) => {
     }
 
     console.log("Auth header present, length:", authHeader.length);
-    console.log("Auth header starts with:", authHeader.substring(0, 20));
 
-    // Create Supabase client with ANON key and user's auth header
-    const supabaseAnonKey = Deno.env.get("SUPABASE_ANON_KEY");
-    if (!supabaseAnonKey) {
-      console.error("SUPABASE_ANON_KEY not found in environment");
-      return new Response(
-        JSON.stringify({ error: "Server configuration error" }),
-        { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
-    }
-
-    console.log("Creating Supabase client with ANON key");
-    const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+    // Create Supabase client WITH SERVICE ROLE KEY for admin operations
+    const supabase = createClient(supabaseUrl, supabaseServiceKey, {
       global: {
         headers: { Authorization: authHeader },
       },
     });
 
     console.log("Calling getUser()...");
-    // Get the authenticated user from the session
+    // Get the authenticated user from the JWT in the Authorization header
     const { data: { user }, error: authError } = await supabase.auth.getUser();
 
     console.log("getUser() result - user:", !!user, "error:", !!authError);
