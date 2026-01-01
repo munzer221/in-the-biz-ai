@@ -65,13 +65,14 @@ class ResponsiveWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        // If screen width > 600px (tablet/desktop), constrain to mobile width
-        if (constraints.maxWidth > 600) {
+        // If screen width > 800px (desktop), constrain to tablet/mobile width
+        if (constraints.maxWidth > 800) {
           return Container(
             color: Colors.black, // Background color for desktop
             child: Center(
               child: Container(
-                width: 400, // Mobile width constraint
+                width: 480, // Wider mobile/tablet width
+                constraints: const BoxConstraints(maxWidth: 480),
                 decoration: BoxDecoration(
                   boxShadow: [
                     BoxShadow(
@@ -86,7 +87,7 @@ class ResponsiveWrapper extends StatelessWidget {
             ),
           );
         }
-        // On mobile, show full width
+        // On mobile/tablet, show full width
         return child;
       },
     );
