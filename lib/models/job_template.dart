@@ -336,6 +336,57 @@ class JobTemplate {
       'show_room_type': showRoomType,
       'show_shift_type': showShiftType,
       'show_shift_differential': showShiftDifferential,
+      // Rideshare & Delivery
+      'show_rides_count': showRidesCount,
+      'show_dead_miles': showDeadMiles,
+      'show_fuel_cost': showFuelCost,
+      'show_tolls_parking': showTollsParking,
+      'show_surge_multiplier': showSurgeMultiplier,
+      'show_base_fare': showBaseFare,
+      // Music & Entertainment
+      'show_setup_hours': showSetupHours,
+      'show_performance_hours': showPerformanceHours,
+      'show_breakdown_hours': showBreakdownHours,
+      'show_equipment_used': showEquipmentUsed,
+      'show_crew_payment': showCrewPayment,
+      'show_merch_sales': showMerchSales,
+      'show_audience_size': showAudienceSize,
+      // Artist & Crafts
+      'show_pieces_created': showPiecesCreated,
+      'show_pieces_sold': showPiecesSold,
+      'show_sale_price': showSalePrice,
+      'show_venue_commission': showVenueCommission,
+      // Retail additional
+      'show_items_sold': showItemsSold,
+      'show_transactions_count': showTransactionsCount,
+      // Salon additional
+      'show_services_count': showServicesCount,
+      'show_new_clients': showNewClients,
+      'show_walkins': showWalkins,
+      // Hospitality additional
+      'show_rooms_cleaned': showRoomsCleaned,
+      'show_room_upgrades': showRoomUpgrades,
+      'show_guests_checked_in': showGuestsCheckedIn,
+      'show_cars_parked': showCarsParked,
+      // Healthcare additional
+      'show_patient_count': showPatientCount,
+      'show_procedures_count': showProceduresCount,
+      // Fitness additional
+      'show_sessions_count': showSessionsCount,
+      'show_package_sales': showPackageSales,
+      'show_supplement_sales': showSupplementSales,
+      // Construction additional
+      'show_labor_cost': showLaborCost,
+      'show_subcontractor_cost': showSubcontractorCost,
+      'show_square_footage': showSquareFootage,
+      'show_weather_delay': showWeatherDelay,
+      // Freelancer additional
+      'show_revisions_count': showRevisionsCount,
+      'show_client_type': showClientType,
+      'show_expenses': showExpenses,
+      'show_billable_hours': showBillableHours,
+      // Restaurant additional
+      'show_table_section': showTableSection,
     };
   }
 
