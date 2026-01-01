@@ -778,65 +778,74 @@ lib/services/
   - [✅] Index on goals.type and goals.job_id
 
 - [✅] Add database functions for bulk operations
-  - [ ] `bulk_update_shifts(ids[], updates)`
-  - [ ] `bulk_delete_shifts(ids[])`
+  - [✅] `bulk_update_shifts(ids[], updates)`
+  - [✅] `bulk_delete_shifts(ids[])`
 
-- [ ] Verify Row Level Security policies
-  - [ ] Ensure all functions respect user_id filtering
-  - [ ] Test with multiple users
+- [✅] Verify Row Level Security policies
+  - [✅] Ensure all functions respect user_id filtering
+  - [✅] Test with multiple users
 
 ### Phase 8: Testing
-- [ ] Test each function individually
-  - [ ] Test with valid inputs
-  - [ ] Test with invalid inputs (expect graceful errors)
-  - [ ] Test with edge cases (empty strings, null values)
+- [✅] Test each function individually
+  - [✅] Test with valid inputs
+  - [✅] Test with invalid inputs (expect graceful errors)
+  - [✅] Test with edge cases (empty strings, null values)
 
-- [ ] Test multi-turn conversations
-  - [ ] Test follow-up questions
-  - [ ] Test context retention
+- [✅] Test multi-turn conversations
+  - [✅] Test follow-up questions
+  - [✅] Test context retention
 
-- [ ] Test parallel function calling
-  - [ ] "Add shift and set goal" (2 functions)
-  - [ ] "Add 3 shifts" (should batch)
+- [✅] Test parallel function calling
+  - [✅] "Add shift and set goal" (2 functions)
+  - [✅] "Add 3 shifts" (should batch)
 
-- [ ] Test sequential function calling
-  - [ ] "Get my best job and make it default"
-  - [ ] "Compare my jobs and delete the worst one"
+- [✅] Test sequential function calling
+  - [✅] "Get my best job and make it default"
+  - [✅] "Compare my jobs and delete the worst one"
 
-- [ ] Test smart features
-  - [ ] Job auto-detection (1 job vs. 2+ jobs)
-  - [ ] Natural date parsing
-  - [ ] Industry inference
-  - [ ] Confirmation prompts
+- [✅] Test smart features
+  - [✅] Job auto-detection (1 job vs. 2+ jobs)
+  - [✅] Natural date parsing
+  - [✅] Industry inference
+  - [✅] Confirmation prompts
 
-- [ ] Test error scenarios
-  - [ ] Invalid date
-  - [ ] Non-existent job ID
-  - [ ] Duplicate goal creation
-  - [ ] Database connection failures
+- [✅] Test error scenarios
+  - [✅] Invalid date
+  - [✅] Non-existent job ID
+  - [✅] Duplicate goal creation
+  - [✅] Database connection failures
 
-- [ ] Test security
-  - [ ] User A cannot access User B's data
-  - [ ] SQL injection attempts fail
-  - [ ] Destructive actions require confirmation
+- [✅] Test security
+  - [✅] User A cannot access User B's data
+  - [✅] SQL injection attempts fail
+  - [✅] Destructive actions require confirmation
 
 ### Phase 9: Deployment
-- [ ] Deploy edge function to production
+- [✅] Deploy edge function to production
   ```bash
   npx supabase functions deploy ai-agent --project-ref bokdjidrybwxbomemmrg
   ```
 
-- [ ] Test in production environment
-  - [ ] Test on Android phone (Seeker)
-  - [ ] Test on Android tablet
-  - [ ] Test with real user data
+- [✅] Test in production environment
+  - [✅] Test on Android phone (Seeker)
+  - [✅] Test on Android tablet
+  - [✅] Test with real user data
 
-- [ ] Monitor performance
-  - [ ] Check function execution times
-  - [ ] Monitor API costs (Gemini token usage)
-  - [ ] Check error rates
+- [✅] Monitor performance
+  - [✅] Check function execution times
+  - [✅] Monitor API costs (Gemini token usage)
+  - [✅] Check error rates
 
-### Phase 10: Documentation & Polish
+### Phase 10: Industry-Specific Fields (Added December 31, 2025)
+- [✅] Add database columns for all industries (migration: `20251231_add_industry_fields.sql`)
+- [✅] Update `add_shift` function declaration with 50+ new field parameters
+- [✅] Update `shift-executor.ts` to handle all industry fields in add/edit/bulk operations
+- [✅] Verify Flutter `Shift` model has all fields
+- [✅] Verify `JobTemplate` has all show flags for industry-specific UI
+- [✅] Verify `AddShiftScreen` has controllers and UI for all fields
+- [✅] Deploy updated Edge Function (Version 30)
+
+### Phase 11: Documentation & Polish
 - [ ] Update user-facing documentation
   - [ ] Add examples of AI commands to help screen
   - [ ] Create tutorial for first-time users
@@ -1062,4 +1071,4 @@ After reviewing this document:
 - [✅] Completed
 - [❌] Blocked/Issue
 
-**Last Updated:** December 29, 2025
+**Last Updated:** December 31, 2025
