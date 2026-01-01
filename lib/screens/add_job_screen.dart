@@ -49,7 +49,7 @@ class _AddJobScreenState extends State<AddJobScreen> {
   bool _tracksOvertime = false;
   bool _showSales = false;
   bool _showEventCost = false;
-  
+
   // Rideshare-specific fields
   bool? _showRidesCount;
   bool? _showDeadMiles;
@@ -57,7 +57,7 @@ class _AddJobScreenState extends State<AddJobScreen> {
   bool? _showTollsParking;
   bool? _showSurgeMultiplier;
   bool? _showBaseFare;
-  
+
   // Music & Entertainment fields
   bool? _showGigType;
   bool? _showSetupHours;
@@ -68,14 +68,14 @@ class _AddJobScreenState extends State<AddJobScreen> {
   bool? _showCrewPayment;
   bool? _showMerchSales;
   bool? _showAudienceSize;
-  
+
   // Art & Crafts fields
   bool? _showPiecesCreated;
   bool? _showPiecesSold;
   bool? _showMaterialsCost;
   bool? _showSalePrice;
   bool? _showVenueCommissionPercent;
-  
+
   // Retail & Sales fields
   bool? _showItemsSold;
   bool? _showTransactionsCount;
@@ -1111,8 +1111,8 @@ class _AddJobScreenState extends State<AddJobScreen> {
                 setState(() => _showCommission = !_showCommission);
               }),
             if (currentTemplate.showBaseFare)
-              _buildToggleItem('Base Fare', _showBaseFare ?? true, Icons.trending_up,
-                  () {
+              _buildToggleItem(
+                  'Base Fare', _showBaseFare ?? true, Icons.trending_up, () {
                 setState(() => _showBaseFare = !(_showBaseFare ?? false));
               }),
           ].where((w) => w != null).cast<Widget>().toList(),
@@ -1130,11 +1130,13 @@ class _AddJobScreenState extends State<AddJobScreen> {
                 setState(() => _showEventName = !_showEventName);
               }),
             if (currentTemplate.showEventCost)
-              _buildToggleItem('Event Cost', _showEventCost, Icons.payments, () {
+              _buildToggleItem('Event Cost', _showEventCost, Icons.payments,
+                  () {
                 setState(() => _showEventCost = !_showEventCost);
               }),
             if (currentTemplate.showLocation)
-              _buildToggleItem('Location', _showLocation, Icons.location_on, () {
+              _buildToggleItem('Location', _showLocation, Icons.location_on,
+                  () {
                 setState(() => _showLocation = !_showLocation);
               }),
             if (currentTemplate.showClientName)
@@ -1160,7 +1162,8 @@ class _AddJobScreenState extends State<AddJobScreen> {
                 setState(() => _showHostess = !_showHostess);
               }),
             if (currentTemplate.showGuestCount)
-              _buildToggleItem('Guest Count', _showGuestCount, Icons.groups, () {
+              _buildToggleItem('Guest Count', _showGuestCount, Icons.groups,
+                  () {
                 setState(() => _showGuestCount = !_showGuestCount);
               }),
           ].where((w) => w != null).cast<Widget>().toList(),
@@ -1178,30 +1181,32 @@ class _AddJobScreenState extends State<AddJobScreen> {
             '🚗 Rideshare & Delivery',
             [
               if (currentTemplate.showRidesCount)
-                _buildToggleItem('Rides Count', _showRidesCount ?? true,
-                    Icons.local_taxi, () {
+                _buildToggleItem(
+                    'Rides Count', _showRidesCount ?? true, Icons.local_taxi,
+                    () {
                   setState(() => _showRidesCount = !(_showRidesCount ?? false));
                 }),
               if (currentTemplate.showDeadMiles)
                 _buildToggleItem('Deadhead Miles', _showDeadMiles ?? true,
                     Icons.trending_down, () {
-                  setState(
-                      () => _showDeadMiles = !(_showDeadMiles ?? false));
+                  setState(() => _showDeadMiles = !(_showDeadMiles ?? false));
                 }),
               if (currentTemplate.showFuelCost)
-                _buildToggleItem('Fuel Cost', _showFuelCost ?? true,
-                    Icons.local_gas_station, () {
+                _buildToggleItem(
+                    'Fuel Cost', _showFuelCost ?? true, Icons.local_gas_station,
+                    () {
                   setState(() => _showFuelCost = !(_showFuelCost ?? false));
                 }),
               if (currentTemplate.showTollsParking)
-                _buildToggleItem('Tolls & Parking', _showTollsParking ?? true,
-                    Icons.paid, () {
+                _buildToggleItem(
+                    'Tolls & Parking', _showTollsParking ?? true, Icons.paid,
+                    () {
                   setState(
                       () => _showTollsParking = !(_showTollsParking ?? false));
                 }),
               if (currentTemplate.showSurgeMultiplier)
-                _buildToggleItem('Surge Multiplier', _showSurgeMultiplier ?? true,
-                    Icons.trending_up, () {
+                _buildToggleItem('Surge Multiplier',
+                    _showSurgeMultiplier ?? true, Icons.trending_up, () {
                   setState(() =>
                       _showSurgeMultiplier = !(_showSurgeMultiplier ?? false));
                 }),
@@ -1234,22 +1239,21 @@ class _AddJobScreenState extends State<AddJobScreen> {
             '🎵 Music & Entertainment',
             [
               if (currentTemplate.showGigType)
-                _buildToggleItem('Gig Type', _showGigType ?? true,
-                    Icons.music_note, () {
+                _buildToggleItem(
+                    'Gig Type', _showGigType ?? true, Icons.music_note, () {
                   setState(() => _showGigType = !(_showGigType ?? false));
                 }),
               if (currentTemplate.showSetupHours)
-                _buildToggleItem('Setup Hours', _showSetupHours ?? true,
-                    Icons.construction, () {
-                  setState(
-                      () => _showSetupHours = !(_showSetupHours ?? false));
+                _buildToggleItem(
+                    'Setup Hours', _showSetupHours ?? true, Icons.construction,
+                    () {
+                  setState(() => _showSetupHours = !(_showSetupHours ?? false));
                 }),
               if (currentTemplate.showPerformanceHours)
-                _buildToggleItem('Performance Hours', _showPerformanceHours ?? true,
-                    Icons.play_circle, () {
-                  setState(() =>
-                      _showPerformanceHours =
-                          !(_showPerformanceHours ?? false));
+                _buildToggleItem('Performance Hours',
+                    _showPerformanceHours ?? true, Icons.play_circle, () {
+                  setState(() => _showPerformanceHours =
+                      !(_showPerformanceHours ?? false));
                 }),
               if (currentTemplate.showBreakdownHours)
                 _buildToggleItem('Breakdown Hours', _showBreakdownHours ?? true,
@@ -1258,26 +1262,26 @@ class _AddJobScreenState extends State<AddJobScreen> {
                       _showBreakdownHours = !(_showBreakdownHours ?? false));
                 }),
               if (currentTemplate.showEquipmentRentalCost)
-                _buildToggleItem('Equipment Rental', _showEquipmentRentalCost ?? true,
-                    Icons.devices, () {
-                  setState(() =>
-                      _showEquipmentRentalCost =
-                          !(_showEquipmentRentalCost ?? false));
+                _buildToggleItem('Equipment Rental',
+                    _showEquipmentRentalCost ?? true, Icons.devices, () {
+                  setState(() => _showEquipmentRentalCost =
+                      !(_showEquipmentRentalCost ?? false));
                 }),
               if (currentTemplate.showCrewPayment)
-                _buildToggleItem('Crew Payment', _showCrewPayment ?? true,
-                    Icons.people, () {
+                _buildToggleItem(
+                    'Crew Payment', _showCrewPayment ?? true, Icons.people, () {
                   setState(
                       () => _showCrewPayment = !(_showCrewPayment ?? false));
                 }),
               if (currentTemplate.showMerchSales)
-                _buildToggleItem('Merch Sales', _showMerchSales ?? true,
-                    Icons.store, () {
+                _buildToggleItem(
+                    'Merch Sales', _showMerchSales ?? true, Icons.store, () {
                   setState(() => _showMerchSales = !(_showMerchSales ?? false));
                 }),
               if (currentTemplate.showAudienceSize)
-                _buildToggleItem('Audience Size', _showAudienceSize ?? true,
-                    Icons.groups, () {
+                _buildToggleItem(
+                    'Audience Size', _showAudienceSize ?? true, Icons.groups,
+                    () {
                   setState(
                       () => _showAudienceSize = !(_showAudienceSize ?? false));
                 }),
@@ -1305,16 +1309,17 @@ class _AddJobScreenState extends State<AddJobScreen> {
             '🎨 Art & Crafts',
             [
               if (currentTemplate.showPiecesCreated)
-                _buildToggleItem('Pieces Created', _showPiecesCreated ?? true,
-                    Icons.palette, () {
+                _buildToggleItem(
+                    'Pieces Created', _showPiecesCreated ?? true, Icons.palette,
+                    () {
                   setState(() =>
                       _showPiecesCreated = !(_showPiecesCreated ?? false));
                 }),
               if (currentTemplate.showPiecesSold)
-                _buildToggleItem('Pieces Sold', _showPiecesSold ?? true,
-                    Icons.shopping_cart, () {
-                  setState(
-                      () => _showPiecesSold = !(_showPiecesSold ?? false));
+                _buildToggleItem(
+                    'Pieces Sold', _showPiecesSold ?? true, Icons.shopping_cart,
+                    () {
+                  setState(() => _showPiecesSold = !(_showPiecesSold ?? false));
                 }),
               if (currentTemplate.showMaterialsCost)
                 _buildToggleItem('Materials Cost', _showMaterialsCost ?? true,
@@ -1323,16 +1328,16 @@ class _AddJobScreenState extends State<AddJobScreen> {
                       _showMaterialsCost = !(_showMaterialsCost ?? false));
                 }),
               if (currentTemplate.showSalePrice)
-                _buildToggleItem('Sale Price', _showSalePrice ?? true,
-                    Icons.attach_money, () {
+                _buildToggleItem(
+                    'Sale Price', _showSalePrice ?? true, Icons.attach_money,
+                    () {
                   setState(() => _showSalePrice = !(_showSalePrice ?? false));
                 }),
               if (currentTemplate.showVenueCommissionPercent)
                 _buildToggleItem('Venue Commission %',
                     _showVenueCommissionPercent ?? true, Icons.percent, () {
-                  setState(() =>
-                      _showVenueCommissionPercent =
-                          !(_showVenueCommissionPercent ?? false));
+                  setState(() => _showVenueCommissionPercent =
+                      !(_showVenueCommissionPercent ?? false));
                 }),
             ].where((w) => w != null).cast<Widget>().toList(),
           ),
@@ -1354,33 +1359,34 @@ class _AddJobScreenState extends State<AddJobScreen> {
             '💼 Retail & Sales',
             [
               if (currentTemplate.showItemsSold)
-                _buildToggleItem('Items Sold', _showItemsSold ?? true,
-                    Icons.shopping_cart, () {
-                  setState(
-                      () => _showItemsSold = !(_showItemsSold ?? false));
+                _buildToggleItem(
+                    'Items Sold', _showItemsSold ?? true, Icons.shopping_cart,
+                    () {
+                  setState(() => _showItemsSold = !(_showItemsSold ?? false));
                 }),
               if (currentTemplate.showTransactionsCount)
                 _buildToggleItem('Transactions', _showTransactionsCount ?? true,
                     Icons.receipt, () {
-                  setState(() =>
-                      _showTransactionsCount =
-                          !(_showTransactionsCount ?? false));
+                  setState(() => _showTransactionsCount =
+                      !(_showTransactionsCount ?? false));
                 }),
               if (currentTemplate.showUpsellsCount)
-                _buildToggleItem('Upsells', _showUpsellsCount ?? true,
-                    Icons.trending_up, () {
+                _buildToggleItem(
+                    'Upsells', _showUpsellsCount ?? true, Icons.trending_up,
+                    () {
                   setState(
                       () => _showUpsellsCount = !(_showUpsellsCount ?? false));
                 }),
               if (currentTemplate.showReturnsCount)
-                _buildToggleItem('Returns', _showReturnsCount ?? true,
-                    Icons.keyboard_return, () {
+                _buildToggleItem(
+                    'Returns', _showReturnsCount ?? true, Icons.keyboard_return,
+                    () {
                   setState(
                       () => _showReturnsCount = !(_showReturnsCount ?? false));
                 }),
               if (currentTemplate.showShrinkAmount)
-                _buildToggleItem('Shrink', _showShrinkAmount ?? true,
-                    Icons.warning, () {
+                _buildToggleItem(
+                    'Shrink', _showShrinkAmount ?? true, Icons.warning, () {
                   setState(
                       () => _showShrinkAmount = !(_showShrinkAmount ?? false));
                 }),
@@ -1418,7 +1424,6 @@ class _AddJobScreenState extends State<AddJobScreen> {
                   () {
                 setState(() => _tracksOvertime = !_tracksOvertime);
               }),
-
           ],
         ),
       ],
