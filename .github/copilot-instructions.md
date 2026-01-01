@@ -162,15 +162,6 @@ pause
 *   Seeker: `flutter run -d 10.0.0.65:5555`
 *   SN339D: `flutter run -d 10.0.0.98:5555`
 
-**Making IP Addresses Permanent (DHCP Reservation):**
-
-1.  Log into your router (usually `192.168.1.1` or `10.0.0.1` in a browser).
-2.  Find **DHCP Reservation** or **Static IP Assignment**.
-3.  Reserve these IPs for each device's MAC address:
-    *   Tablet: `10.0.0.50`
-    *   Seeker: `10.0.0.65`
-    *   SN339D: `10.0.0.98`
-
 **Important Notes:**
 
 *   Keep both devices on the same Wi-Fi network.
@@ -816,3 +807,20 @@ ALTER TABLE public.shifts ADD COLUMN (
   - [ ] 🧾 BEO (Event Details)
   - [ ] 📊 Server Checkout
 - [ ]
+
+---
+
+## ⚙️ GIT & DEPLOYMENT RULES
+
+### Understanding Sync Changes:
+
+-   When you click the **"Sync Changes"** button in VS Code's Git panel, it:
+    1.  **Commits** your changes to the local branch (typically `gh-pages`).
+    2.  **Pulls** any remote changes from the remote branch.
+    3.  **Pushes** your local commits to the remote branch on GitHub.
+
+-   **"Sync Changes" alone does NOT update your website.**
+
+### Deploying Updates to the Website:
+
+-   You need to run the `deploy-web
