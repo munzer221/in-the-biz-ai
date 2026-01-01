@@ -462,6 +462,13 @@ node_modules/
 - ~2-3 minute deploy time
 - Free
 
+**Note:** To connect your GitHub repo to Vercel, you may need to give Vercel access to "All repositories" in your GitHub settings:
+1. Go to: https://github.com/settings/installations
+2. Find **Vercel** in the list
+3. Click **Configure**
+4. Under "Repository access", select **"All repositories"**
+5. Click **Save**
+
 ---
 
 ## 🗄️ SUPABASE DATABASE MIGRATIONS (NEW - December 31, 2025)
@@ -790,13 +797,4 @@ CREATE TABLE public.server_checkouts (
   tax_amount DECIMAL(10, 2),
   tips_amount DECIMAL(10, 2),
   service_charge DECIMAL(10, 2),
-  total_amount DECIMAL(10, 2),
-
-  -- Context Information
-  server_name TEXT,
-  table_number TEXT,
-  covers INT,
-  pos_system TEXT,  -- "Toast", "Square", "Aloha", "Clover", etc.
-
-  -- AI Metadata
-  ai_confidence_scores JSONB,  -- { "tips": 0.45, "sales": 0.95
+  total_amount DECIMAL(
