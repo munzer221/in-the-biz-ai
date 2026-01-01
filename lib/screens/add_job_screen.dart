@@ -74,16 +74,14 @@ class _AddJobScreenState extends State<AddJobScreen> {
   bool? _showPiecesSold;
   bool? _showMaterialsCost;
   bool? _showSalePrice;
-  bool? _showVenueCommissionPercent;
-
+  bool? _showVenueCommission;
+  
   // Retail & Sales fields
   bool? _showItemsSold;
   bool? _showTransactionsCount;
-  bool? _showUpsellsCount;
-  bool? _showReturnsCount;
-  bool? _showShrinkAmount;
-
-  double _overtimeMultiplier = 1.5;
+  bool? _showUpsells;
+  bool? _showReturns;
+  bool? _showShrink;  double _overtimeMultiplier = 1.5;
 
   bool _isSaving = false;
 
