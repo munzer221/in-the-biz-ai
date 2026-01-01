@@ -1053,6 +1053,9 @@ class _AddJobScreenState extends State<AddJobScreen> {
   }
 
   Widget _buildOrganizedShiftFields() {
+    // Build the template based on current selections to show all available fields
+    final currentTemplate = _buildTemplate();
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -1060,17 +1063,25 @@ class _AddJobScreenState extends State<AddJobScreen> {
         _buildFieldCategory(
           '💰 Income Tracking',
           [
-            _buildToggleItem('Tips', _showTips, Icons.attach_money, () {
-              setState(() => _showTips = !_showTips);
-            }),
-            _buildToggleItem('Sales Amount', _showSales, Icons.shopping_cart,
-                () {
-              setState(() => _showSales = !_showSales);
-            }),
-            _buildToggleItem('Commission', _showCommission, Icons.sell, () {
-              setState(() => _showCommission = !_showCommission);
-            }),
-          ],
+            if (currentTemplate.showTips)
+              _buildToggleItem('Tips', _showTips, Icons.attach_money, () {
+                setState(() => _showTips = !_showTips);
+              }),
+            if (currentTemplate.showSales)
+              _buildToggleItem('Sales Amount', _showSales, Icons.shopping_cart,
+                  () {
+                setState(() => _showSales = !_showSales);
+              }),
+            if (currentTemplate.showCommission)
+              _buildToggleItem('Commission', _showCommission, Icons.sell, () {
+                setState(() => _showCommission = !_showCommission);
+              }),
+            if (currentTemplate.showBaseFare)
+              _buildToggleItem('Base Fare', _showBaseFare ?? true, Icons.trending_up,
+                  () {
+                setState(() => _showBaseFare = !(_showBaseFare ?? false));
+              }),
+          ].where((w) => w != null).cast<Widget>().toList(),
         ),
 
         const SizedBox(height: 20),
@@ -1079,24 +1090,29 @@ class _AddJobScreenState extends State<AddJobScreen> {
         _buildFieldCategory(
           '📋 Job Details',
           [
-            _buildToggleItem('Event Name', _showEventName, Icons.celebration,
-                () {
-              setState(() => _showEventName = !_showEventName);
-            }),
-            _buildToggleItem('Event Cost', _showEventCost, Icons.payments, () {
-              setState(() => _showEventCost = !_showEventCost);
-            }),
-            _buildToggleItem('Location', _showLocation, Icons.location_on, () {
-              setState(() => _showLocation = !_showLocation);
-            }),
-            _buildToggleItem(
-                'Client Name', _showClientName, Icons.person_outline, () {
-              setState(() => _showClientName = !_showClientName);
-            }),
-            _buildToggleItem('Project', _showProjectName, Icons.folder, () {
-              setState(() => _showProjectName = !_showProjectName);
-            }),
-          ],
+            if (currentTemplate.showEventName)
+              _buildToggleItem('Event Name', _showEventName, Icons.celebration,
+                  () {
+                setState(() => _showEventName = !_showEventName);
+              }),
+            if (currentTemplate.showEventCost)
+              _buildToggleItem('Event Cost', _showEventCost, Icons.payments, () {
+                setState(() => _showEventCost = !_showEventCost);
+              }),
+            if (currentTemplate.showLocation)
+              _buildToggleItem('Location', _showLocation, Icons.location_on, () {
+                setState(() => _showLocation = !_showLocation);
+              }),
+            if (currentTemplate.showClientName)
+              _buildToggleItem(
+                  'Client Name', _showClientName, Icons.person_outline, () {
+                setState(() => _showClientName = !_showClientName);
+              }),
+            if (currentTemplate.showProjectName)
+              _buildToggleItem('Project', _showProjectName, Icons.folder, () {
+                setState(() => _showProjectName = !_showProjectName);
+              }),
+          ].where((w) => w != null).cast<Widget>().toList(),
         ),
 
         const SizedBox(height: 20),
@@ -1105,37 +1121,256 @@ class _AddJobScreenState extends State<AddJobScreen> {
         _buildFieldCategory(
           '👥 People & Guests',
           [
-            _buildToggleItem('Hostess', _showHostess, Icons.person, () {
-              setState(() => _showHostess = !_showHostess);
-            }),
-            _buildToggleItem('Guest Count', _showGuestCount, Icons.groups, () {
-              setState(() => _showGuestCount = !_showGuestCount);
-            }),
-          ],
+            if (currentTemplate.showHostess)
+              _buildToggleItem('Hostess', _showHostess, Icons.person, () {
+                setState(() => _showHostess = !_showHostess);
+              }),
+            if (currentTemplate.showGuestCount)
+              _buildToggleItem('Guest Count', _showGuestCount, Icons.groups, () {
+                setState(() => _showGuestCount = !_showGuestCount);
+              }),
+          ].where((w) => w != null).cast<Widget>().toList(),
         ),
 
         const SizedBox(height: 20),
 
-        // 🚗 Expenses
-        _buildFieldCategory(
-          '🚗 Expenses',
-          [
-            _buildToggleItem('Mileage', _showMileage, Icons.directions_car, () {
-              setState(() => _showMileage = !_showMileage);
-            }),
-          ],
-        ),
+        // 🚗 Expenses & Rideshare
+        if (currentTemplate.showMileage ||
+            currentTemplate.showRidesCount ||
+            currentTemplate.showDeadMiles ||
+            currentTemplate.showFuelCost ||
+            currentTemplate.showTollsParking)
+          _buildFieldCategory(
+            '🚗 Rideshare & Delivery',
+            [
+              if (currentTemplate.showRidesCount)
+                _buildToggleItem('Rides Count', _showRidesCount ?? true,
+                    Icons.local_taxi, () {
+                  setState(() => _showRidesCount = !(_showRidesCount ?? false));
+                }),
+              if (currentTemplate.showDeadMiles)
+                _buildToggleItem('Deadhead Miles', _showDeadMiles ?? true,
+                    Icons.trending_down, () {
+                  setState(
+                      () => _showDeadMiles = !(_showDeadMiles ?? false));
+                }),
+              if (currentTemplate.showFuelCost)
+                _buildToggleItem('Fuel Cost', _showFuelCost ?? true,
+                    Icons.local_gas_station, () {
+                  setState(() => _showFuelCost = !(_showFuelCost ?? false));
+                }),
+              if (currentTemplate.showTollsParking)
+                _buildToggleItem('Tolls & Parking', _showTollsParking ?? true,
+                    Icons.paid, () {
+                  setState(
+                      () => _showTollsParking = !(_showTollsParking ?? false));
+                }),
+              if (currentTemplate.showSurgeMultiplier)
+                _buildToggleItem('Surge Multiplier', _showSurgeMultiplier ?? true,
+                    Icons.trending_up, () {
+                  setState(() =>
+                      _showSurgeMultiplier = !(_showSurgeMultiplier ?? false));
+                }),
+              if (currentTemplate.showMileage)
+                _buildToggleItem('Mileage', _showMileage, Icons.directions_car,
+                    () {
+                  setState(() => _showMileage = !_showMileage);
+                }),
+            ].where((w) => w != null).cast<Widget>().toList(),
+          ),
 
-        const SizedBox(height: 20),
+        if (currentTemplate.showMileage ||
+            currentTemplate.showRidesCount ||
+            currentTemplate.showDeadMiles ||
+            currentTemplate.showFuelCost ||
+            currentTemplate.showTollsParking)
+          const SizedBox(height: 20),
+
+        // 🎵 Music & Entertainment
+        if (currentTemplate.showGigType ||
+            currentTemplate.showSetupHours ||
+            currentTemplate.showPerformanceHours ||
+            currentTemplate.showBreakdownHours ||
+            currentTemplate.showEquipmentUsed ||
+            currentTemplate.showEquipmentRentalCost ||
+            currentTemplate.showCrewPayment ||
+            currentTemplate.showMerchSales ||
+            currentTemplate.showAudienceSize)
+          _buildFieldCategory(
+            '🎵 Music & Entertainment',
+            [
+              if (currentTemplate.showGigType)
+                _buildToggleItem('Gig Type', _showGigType ?? true,
+                    Icons.music_note, () {
+                  setState(() => _showGigType = !(_showGigType ?? false));
+                }),
+              if (currentTemplate.showSetupHours)
+                _buildToggleItem('Setup Hours', _showSetupHours ?? true,
+                    Icons.construction, () {
+                  setState(
+                      () => _showSetupHours = !(_showSetupHours ?? false));
+                }),
+              if (currentTemplate.showPerformanceHours)
+                _buildToggleItem('Performance Hours', _showPerformanceHours ?? true,
+                    Icons.play_circle, () {
+                  setState(() =>
+                      _showPerformanceHours =
+                          !(_showPerformanceHours ?? false));
+                }),
+              if (currentTemplate.showBreakdownHours)
+                _buildToggleItem('Breakdown Hours', _showBreakdownHours ?? true,
+                    Icons.storage, () {
+                  setState(() =>
+                      _showBreakdownHours = !(_showBreakdownHours ?? false));
+                }),
+              if (currentTemplate.showEquipmentRentalCost)
+                _buildToggleItem('Equipment Rental', _showEquipmentRentalCost ?? true,
+                    Icons.devices, () {
+                  setState(() =>
+                      _showEquipmentRentalCost =
+                          !(_showEquipmentRentalCost ?? false));
+                }),
+              if (currentTemplate.showCrewPayment)
+                _buildToggleItem('Crew Payment', _showCrewPayment ?? true,
+                    Icons.people, () {
+                  setState(
+                      () => _showCrewPayment = !(_showCrewPayment ?? false));
+                }),
+              if (currentTemplate.showMerchSales)
+                _buildToggleItem('Merch Sales', _showMerchSales ?? true,
+                    Icons.store, () {
+                  setState(() => _showMerchSales = !(_showMerchSales ?? false));
+                }),
+              if (currentTemplate.showAudienceSize)
+                _buildToggleItem('Audience Size', _showAudienceSize ?? true,
+                    Icons.groups, () {
+                  setState(
+                      () => _showAudienceSize = !(_showAudienceSize ?? false));
+                }),
+            ].where((w) => w != null).cast<Widget>().toList(),
+          ),
+
+        if (currentTemplate.showGigType ||
+            currentTemplate.showSetupHours ||
+            currentTemplate.showPerformanceHours ||
+            currentTemplate.showBreakdownHours ||
+            currentTemplate.showEquipmentUsed ||
+            currentTemplate.showEquipmentRentalCost ||
+            currentTemplate.showCrewPayment ||
+            currentTemplate.showMerchSales ||
+            currentTemplate.showAudienceSize)
+          const SizedBox(height: 20),
+
+        // 🎨 Art & Crafts
+        if (currentTemplate.showPiecesCreated ||
+            currentTemplate.showPiecesSold ||
+            currentTemplate.showMaterialsCost ||
+            currentTemplate.showSalePrice ||
+            currentTemplate.showVenueCommissionPercent)
+          _buildFieldCategory(
+            '🎨 Art & Crafts',
+            [
+              if (currentTemplate.showPiecesCreated)
+                _buildToggleItem('Pieces Created', _showPiecesCreated ?? true,
+                    Icons.palette, () {
+                  setState(() =>
+                      _showPiecesCreated = !(_showPiecesCreated ?? false));
+                }),
+              if (currentTemplate.showPiecesSold)
+                _buildToggleItem('Pieces Sold', _showPiecesSold ?? true,
+                    Icons.shopping_cart, () {
+                  setState(
+                      () => _showPiecesSold = !(_showPiecesSold ?? false));
+                }),
+              if (currentTemplate.showMaterialsCost)
+                _buildToggleItem('Materials Cost', _showMaterialsCost ?? true,
+                    Icons.shopping_bag, () {
+                  setState(() =>
+                      _showMaterialsCost = !(_showMaterialsCost ?? false));
+                }),
+              if (currentTemplate.showSalePrice)
+                _buildToggleItem('Sale Price', _showSalePrice ?? true,
+                    Icons.attach_money, () {
+                  setState(() => _showSalePrice = !(_showSalePrice ?? false));
+                }),
+              if (currentTemplate.showVenueCommissionPercent)
+                _buildToggleItem('Venue Commission %',
+                    _showVenueCommissionPercent ?? true, Icons.percent, () {
+                  setState(() =>
+                      _showVenueCommissionPercent =
+                          !(_showVenueCommissionPercent ?? false));
+                }),
+            ].where((w) => w != null).cast<Widget>().toList(),
+          ),
+
+        if (currentTemplate.showPiecesCreated ||
+            currentTemplate.showPiecesSold ||
+            currentTemplate.showMaterialsCost ||
+            currentTemplate.showSalePrice ||
+            currentTemplate.showVenueCommissionPercent)
+          const SizedBox(height: 20),
+
+        // 💼 Retail & Sales
+        if (currentTemplate.showItemsSold ||
+            currentTemplate.showTransactionsCount ||
+            currentTemplate.showUpsellsCount ||
+            currentTemplate.showReturnsCount ||
+            currentTemplate.showShrinkAmount)
+          _buildFieldCategory(
+            '💼 Retail & Sales',
+            [
+              if (currentTemplate.showItemsSold)
+                _buildToggleItem('Items Sold', _showItemsSold ?? true,
+                    Icons.shopping_cart, () {
+                  setState(
+                      () => _showItemsSold = !(_showItemsSold ?? false));
+                }),
+              if (currentTemplate.showTransactionsCount)
+                _buildToggleItem('Transactions', _showTransactionsCount ?? true,
+                    Icons.receipt, () {
+                  setState(() =>
+                      _showTransactionsCount =
+                          !(_showTransactionsCount ?? false));
+                }),
+              if (currentTemplate.showUpsellsCount)
+                _buildToggleItem('Upsells', _showUpsellsCount ?? true,
+                    Icons.trending_up, () {
+                  setState(
+                      () => _showUpsellsCount = !(_showUpsellsCount ?? false));
+                }),
+              if (currentTemplate.showReturnsCount)
+                _buildToggleItem('Returns', _showReturnsCount ?? true,
+                    Icons.keyboard_return, () {
+                  setState(
+                      () => _showReturnsCount = !(_showReturnsCount ?? false));
+                }),
+              if (currentTemplate.showShrinkAmount)
+                _buildToggleItem('Shrink', _showShrinkAmount ?? true,
+                    Icons.warning, () {
+                  setState(
+                      () => _showShrinkAmount = !(_showShrinkAmount ?? false));
+                }),
+            ].where((w) => w != null).cast<Widget>().toList(),
+          ),
+
+        if (currentTemplate.showItemsSold ||
+            currentTemplate.showTransactionsCount ||
+            currentTemplate.showUpsellsCount ||
+            currentTemplate.showReturnsCount ||
+            currentTemplate.showShrinkAmount)
+          const SizedBox(height: 20),
 
         // 📝 Documentation
         _buildFieldCategory(
           '📝 Documentation',
           [
-            _buildToggleItem('Notes', _showNotes, Icons.note, () {
-              setState(() => _showNotes = !_showNotes);
-            }),
-          ],
+            if (currentTemplate.showNotes)
+              _buildToggleItem('Notes', _showNotes, Icons.note, () {
+                setState(() => _showNotes = !_showNotes);
+              }),
+            if (currentTemplate.showPhotos)
+              _buildToggleItem('Photos', true, Icons.camera_alt, () {}),
+          ].where((w) => w != null).cast<Widget>().toList(),
         ),
 
         const SizedBox(height: 20),
@@ -1144,10 +1379,12 @@ class _AddJobScreenState extends State<AddJobScreen> {
         _buildFieldCategory(
           '⏰ Time Tracking',
           [
-            _buildToggleItem('Overtime', _tracksOvertime, Icons.access_time,
-                () {
-              setState(() => _tracksOvertime = !_tracksOvertime);
-            }),
+            if (currentTemplate.tracksOvertime)
+              _buildToggleItem('Overtime', _tracksOvertime, Icons.access_time,
+                  () {
+                setState(() => _tracksOvertime = !_tracksOvertime);
+              }),
+
           ],
         ),
       ],
