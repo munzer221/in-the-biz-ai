@@ -205,9 +205,39 @@ class _GoalsScreenState extends State<GoalsScreen>
     return ListView(
       padding: const EdgeInsets.all(16),
       children: [
-        Text(
-          subtitle,
-          style: AppTheme.bodyMedium.copyWith(color: AppTheme.textSecondary),
+        Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                AppTheme.primaryGreen.withOpacity(0.1),
+                AppTheme.accentBlue.withOpacity(0.05),
+              ],
+            ),
+            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+            border: Border.all(
+              color: AppTheme.primaryGreen.withOpacity(0.2),
+              width: 1,
+            ),
+          ),
+          child: Row(
+            children: [
+              Icon(Icons.track_changes,
+                  color: AppTheme.primaryGreen, size: 20),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  subtitle,
+                  style: AppTheme.bodyMedium.copyWith(
+                    color: AppTheme.textSecondary,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
         const SizedBox(height: 24),
         ...GoalType.values.map((type) => Padding(
@@ -394,44 +424,42 @@ class _GoalsScreenState extends State<GoalsScreen>
                       ),
                     ],
                   )
-                : Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 8,
-                    ),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          AppTheme.primaryGreen.withOpacity(0.2),
-                          AppTheme.accentBlue.withOpacity(0.15),
+                : InkWell(
+                    onTap: () => _createGoal(type, jobId),
+                    borderRadius: BorderRadius.circular(20),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 8,
+                      ),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            AppTheme.primaryGreen.withOpacity(0.2),
+                            AppTheme.accentBlue.withOpacity(0.15),
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: AppTheme.primaryGreen.withOpacity(0.3),
+                          width: 1,
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(Icons.add_circle_outline,
+                              color: AppTheme.primaryGreen, size: 16),
+                          const SizedBox(width: 6),
+                          Text(
+                            'SET GOAL',
+                            style: AppTheme.labelSmall.copyWith(
+                              color: AppTheme.primaryGreen,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         ],
                       ),
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(
-                        color: AppTheme.primaryGreen.withOpacity(0.3),
-                        width: 1,
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(Icons.add_circle_outline,
-                            color: AppTheme.primaryGreen, size: 16),
-                        const SizedBox(width: 6),
-                        Text(
-                          'SET GOAL',
-                          style: AppTheme.labelSmall.copyWith(
-                            color: AppTheme.primaryGreen,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ).copyWith(
-                    child: InkWell(
-                      onTap: () => _createGoal(type, jobId),
-                      borderRadius: BorderRadius.circular(20),
-                      child: (child as Container).child,
                     ),
                   ),
           ),
