@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
 import '../models/job.dart';
 import '../models/job_template.dart';
+import '../models/industry_data.dart';
 import '../services/database_service.dart';
 import '../services/auth_service.dart';
 
