@@ -40,5 +40,9 @@ ios/Flutter/App.framework
 # Ignore SpecStory markdown chat logs
 .specstory/history/*.md
 
+# Documentation - keep locally only
+docs/
+*.md
+
 # Supabase CLI temp files
 supabase/.temp/
