@@ -401,6 +401,60 @@ Consider switching to Vercel or using GitHub Actions for automated deployments.
 - Free tier available
 - Keeps your custom domain `inthebiz.app`
 
+To set up Vercel deployment:
+1.  Install the Vercel CLI: `npm install -g vercel`
+2.  Create `vercel.json` with the following content:
+```json
+{
+  "buildCommand": "flutter build web --release",
+  "outputDirectory": "build/web",
+  "framework": null,
+  "installCommand": "flutter pub get",
+  "routes": [
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ]
+}
+```
+3.  Create `.vercelignore` with the following content:
+```
+.dart_tool/
+.git/
+.github/
+.idea/
+.vscode/
+android/
+ios/
+linux/
+macos/
+windows/
+docs/
+scripts/
+supabase/
+test/
+*.md
+pubspec.lock
+analysis_options.yaml
+*.bat
+*.ps1
+*.mjs
+node_modules/
+```
+4.  Run `vercel login` to log in to your Vercel account.
+5.  Run `vercel link` to link your project to Vercel. Answer the questions as follows:
+    -   "Set up this project?" → `yes` or just press Enter
+    -   "Which scope?" → `MUNZER DEVELOPMENTS` (or whatever your account name is)
+    -   "Link to existing project?" → `no`
+    -   "Project name?" → `in-the-biz-ai` (or just press Enter)
+    -   "Which directory is your code?" → `./` (just press Enter)
+    -   "Want to modify settings?" → `N`
+6.  Run `vercel --prod` to deploy to Vercel.
+
 ### Option 2: GitHub Actions (Automate current setup)
 - Auto-builds and deploys when you push to main
 - No manual copying/committing needed
@@ -745,47 +799,4 @@ CREATE TABLE public.server_checkouts (
   pos_system TEXT,  -- "Toast", "Square", "Aloha", "Clover", etc.
 
   -- AI Metadata
-  ai_confidence_scores JSONB,  -- { "tips": 0.45, "sales": 0.95, ... }
-  ai_notes TEXT,  -- "Handwritten tip, unclear" or system notes
-  overall_confidence DECIMAL(3, 2),  -- Average confidence (0.0-1.0)
-
-  -- User Verification
-  user_verified BOOLEAN DEFAULT FALSE,
-  user_verified_at TIMESTAMPTZ,
-  user_adjustments JSONB,  -- What user changed: { "tips": "95.00", "server_name": "John" }
-  user_questions_answered JSONB,  -- Answers to verification questions
-
-  -- Images (Multi-page Support)
-  image_urls TEXT[] NOT NULL,  -- Array of photo URLs
-  image_count INT,  -- Number of pages scanned
-
-  -- Linking
-  linked_shift_id UUID REFERENCES shifts(id) ON DELETE SET NULL,  -- If user imported to shift
-
-  -- Timestamps
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW()
-);
-
-CREATE INDEX idx_server_checkouts_user ON public.server_checkouts(user_id);
-CREATE INDEX idx_server_checkouts_date ON public.server_checkouts(checkout_date);
-CREATE INDEX idx_server_checkouts_verified ON public.server_checkouts(user_verified);
-```
-
-### No Changes to Shifts Table (MVP)
-
-MVP keeps shifts table unchanged. In Phase 2 (v1.1), we can add:
-
-```sql
-ALTER TABLE public.shifts ADD COLUMN (
-  source_checkout_id UUID REFERENCES server_checkouts(id)  -- Track origin if imported
-);
-```
----
-
-## 💻 DEVELOPMENT ENVIRONMENT
-
-### Vercel CLI Installation
-- Install the Vercel CLI to enable one-click publishing from VS Code.
-```powershell
-npm install -g vercel
+  ai_confidence_scores JSONB,  -- { "tips": 0.45, "sales": 0.95, ...
