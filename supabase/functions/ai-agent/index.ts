@@ -62,48 +62,31 @@ serve(async (req) => {
       );
     }
 
-    // Extract user from JWT token (optional - fallback to anon if not provided)
+    // Get user ID from auth header (required)
     const authHeader = req.headers.get("authorization");
-    let userId = null;
-    let supabase = null;
-    
-    if (authHeader) {
-      // Initialize Supabase client with service key
-      supabase = createClient(supabaseUrl, supabaseServiceKey, {
-        global: {
-          headers: { Authorization: authHeader },
-        },
-      });
-
-      // Try to get authenticated user
-      const token = authHeader.replace("Bearer ", "");
-      const {
-        data: { user },
-        error: userError,
-      } = await supabase.auth.getUser(token);
-
-      if (userError) {
-        console.error("Supabase getUser error:", userError);
-      }
-
-      if (user) {
-        userId = user.id;
-      } else {
-        console.log("No user found for token. Token length:", token.length);
-      }
-    }
-    
-    // If no user ID, this is an unauthenticated request - return error
-    if (!userId || !supabase) {
-      console.error("Authentication failed. UserId:", userId, "Supabase client initialized:", !!supabase);
+    if (!authHeader) {
       return new Response(
-        JSON.stringify({ error: "Authentication required - please log in to the app" }),
-        {
-          status: 401,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        }
+        JSON.stringify({ error: "Missing authorization header" }),
+        { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
+
+    // Create Supabase client with service role key for admin operations
+    const supabase = createClient(supabaseUrl, supabaseServiceKey);
+
+    // Verify the JWT and get user
+    const token = authHeader.replace("Bearer ", "");
+    const { data: { user }, error: authError } = await supabase.auth.getUser(token);
+
+    if (authError || !user) {
+      console.error("Auth error:", authError);
+      return new Response(
+        JSON.stringify({ error: "Invalid or expired token" }),
+        { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    const userId = user.id;
 
     // Initialize executors
     const shiftExecutor = new ShiftExecutor(supabase, userId);
