@@ -75,13 +75,14 @@ class _AddJobScreenState extends State<AddJobScreen> {
   bool? _showMaterialsCost;
   bool? _showSalePrice;
   bool? _showVenueCommission;
-  
+
   // Retail & Sales fields
   bool? _showItemsSold;
   bool? _showTransactionsCount;
   bool? _showUpsells;
   bool? _showReturns;
-  bool? _showShrink;  double _overtimeMultiplier = 1.5;
+  bool? _showShrink;
+  double _overtimeMultiplier = 1.5;
 
   bool _isSaving = false;
 
@@ -1334,8 +1335,8 @@ class _AddJobScreenState extends State<AddJobScreen> {
               if (currentTemplate.showVenueCommission)
                 _buildToggleItem('Venue Commission %',
                     _showVenueCommission ?? true, Icons.percent, () {
-                  setState(() => _showVenueCommission =
-                      !(_showVenueCommission ?? false));
+                  setState(() =>
+                      _showVenueCommission = !(_showVenueCommission ?? false));
                 }),
             ].where((w) => w != null).cast<Widget>().toList(),
           ),
@@ -1370,23 +1371,18 @@ class _AddJobScreenState extends State<AddJobScreen> {
                 }),
               if (currentTemplate.showUpsells)
                 _buildToggleItem(
-                    'Upsells', _showUpsells ?? true, Icons.trending_up,
-                    () {
-                  setState(
-                      () => _showUpsells = !(_showUpsells ?? false));
+                    'Upsells', _showUpsells ?? true, Icons.trending_up, () {
+                  setState(() => _showUpsells = !(_showUpsells ?? false));
                 }),
               if (currentTemplate.showReturns)
                 _buildToggleItem(
-                    'Returns', _showReturns ?? true, Icons.keyboard_return,
-                    () {
-                  setState(
-                      () => _showReturns = !(_showReturns ?? false));
+                    'Returns', _showReturns ?? true, Icons.keyboard_return, () {
+                  setState(() => _showReturns = !(_showReturns ?? false));
                 }),
               if (currentTemplate.showShrink)
-                _buildToggleItem(
-                    'Shrink', _showShrink ?? true, Icons.warning, () {
-                  setState(
-                      () => _showShrink = !(_showShrink ?? false));
+                _buildToggleItem('Shrink', _showShrink ?? true, Icons.warning,
+                    () {
+                  setState(() => _showShrink = !(_showShrink ?? false));
                 }),
             ].where((w) => w != null).cast<Widget>().toList(),
           ),
