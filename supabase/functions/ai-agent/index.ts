@@ -71,12 +71,15 @@ serve(async (req) => {
       );
     }
 
-    // Create Supabase client with service role key for admin operations
-    const supabase = createClient(supabaseUrl, supabaseServiceKey);
+    // Create Supabase client using the Authorization header to authenticate the user
+    const supabase = createClient(supabaseUrl, supabaseServiceKey, {
+      global: {
+        headers: { Authorization: authHeader },
+      },
+    });
 
-    // Verify the JWT and get user
-    const token = authHeader.replace("Bearer ", "");
-    const { data: { user }, error: authError } = await supabase.auth.getUser(token);
+    // Get the authenticated user from the session
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
 
     if (authError || !user) {
       console.error("Auth error:", authError);
