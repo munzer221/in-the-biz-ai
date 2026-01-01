@@ -42,7 +42,8 @@ class _LoginScreenState extends State<LoginScreen> {
     try {
       // Generate initial nonce
       _currentNonce = _generateNonce();
-      _currentHashedNonce = sha256.convert(utf8.encode(_currentNonce!)).toString();
+      _currentHashedNonce =
+          sha256.convert(utf8.encode(_currentNonce!)).toString();
 
       await GoogleSignIn.instance.initialize(
         clientId:
@@ -56,7 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
         // Handle sign-in event
         if (event is GoogleSignInAuthenticationEventSignIn) {
           if (!mounted) return;
-          
+
           // Set loading state immediately when user selects account
           setState(() {
             _isLoading = true;
@@ -73,16 +74,17 @@ class _LoginScreenState extends State<LoginScreen> {
                 idToken: googleAuth.idToken!,
                 nonce: _currentNonce,
               );
-              
+
               if (response != null && mounted) {
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(builder: (_) => const DashboardScreen()),
                 );
               }
-              
+
               // Generate new nonce for next sign-in attempt
               _currentNonce = _generateNonce();
-              _currentHashedNonce = sha256.convert(utf8.encode(_currentNonce!)).toString();
+              _currentHashedNonce =
+                  sha256.convert(utf8.encode(_currentNonce!)).toString();
             }
           } catch (e) {
             print('Supabase sign-in error: $e');
@@ -92,10 +94,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 _isLoading = false;
               });
             }
-            
+
             // Generate new nonce for retry attempt
             _currentNonce = _generateNonce();
-            _currentHashedNonce = sha256.convert(utf8.encode(_currentNonce!)).toString();
+            _currentHashedNonce =
+                sha256.convert(utf8.encode(_currentNonce!)).toString();
           }
         }
       });

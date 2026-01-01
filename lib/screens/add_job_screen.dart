@@ -1257,23 +1257,19 @@ class _AddJobScreenState extends State<AddJobScreen> {
     }
     // Add remaining sections (excluding pay, earnings, and industry-specific)
     sectionOrder.addAll(
-      allSections.keys
-          .where((k) => !sectionOrder.contains(k))
-          .toList(),
+      allSections.keys.where((k) => !sectionOrder.contains(k)).toList(),
     );
 
     return ListView(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      children: sectionOrder
-          .map<Widget>((key) {
-            final widget = allSections[key];
-            if (widget == null) return const SizedBox();
-            return Column(
-              children: [widget, const SizedBox(height: 16)],
-            );
-          })
-          .toList(),
+      children: sectionOrder.map<Widget>((key) {
+        final widget = allSections[key];
+        if (widget == null) return const SizedBox();
+        return Column(
+          children: [widget, const SizedBox(height: 16)],
+        );
+      }).toList(),
     );
   }
 
