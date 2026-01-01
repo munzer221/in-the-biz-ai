@@ -1480,10 +1480,8 @@ class _AddJobScreenState extends State<AddJobScreen> {
                   _industries.insert(_industries.length - 1, customIndustry);
                   _selectedIndustry = customIndustry;
                   _selectedJobTitle = null;
-                  // Add empty job titles list for custom industry
-                  _jobTitlesByIndustry[customIndustry] = [
-                    '+ Add Custom Job Title',
-                  ];
+                  // Initialize custom job titles list for this industry
+                  _customJobTitles[customIndustry] = [];
                 });
                 Navigator.pop(context);
               }
@@ -1532,9 +1530,13 @@ class _AddJobScreenState extends State<AddJobScreen> {
               final customJobTitle = controller.text.trim();
               if (customJobTitle.isNotEmpty && _selectedIndustry != null) {
                 setState(() {
-                  // Add custom job title to the industry list (before the "+ Add" option)
-                  final jobTitles = _jobTitlesByIndustry[_selectedIndustry!]!;
-                  jobTitles.insert(jobTitles.length - 1, customJobTitle);
+                  // Add custom job title to the custom list for this industry
+                  if (!_customJobTitles.containsKey(_selectedIndustry)) {
+                    _customJobTitles[_selectedIndustry!] = [];
+                  }
+                  if (!_customJobTitles[_selectedIndustry]!.contains(customJobTitle)) {
+                    _customJobTitles[_selectedIndustry]!.add(customJobTitle);
+                  }
                   _selectedJobTitle = customJobTitle;
                 });
                 Navigator.pop(context);
