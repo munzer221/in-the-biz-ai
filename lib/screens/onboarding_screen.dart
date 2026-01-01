@@ -1434,7 +1434,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             template.showChairRental)
           _buildTemplateSection(
             title: '💇 Salon & Spa',
-            icon: Icons.cutting,
+            icon: Icons.spa,
             children: [
               if (template.showServicesCount)
                 _buildTemplateToggle(
