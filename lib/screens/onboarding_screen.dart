@@ -1081,15 +1081,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               'Tips (Cash & Credit)',
               'Track tips received',
               template.showTips,
-              (value) => _updateTemplate(
-                  jobName, template.copyWith(showTips: value)),
+              (value) =>
+                  _updateTemplate(jobName, template.copyWith(showTips: value)),
             ),
             _buildTemplateToggle(
               'Sales Amount',
               'Track total sales for tip %',
               template.showSales,
-              (value) => _updateTemplate(
-                  jobName, template.copyWith(showSales: value)),
+              (value) =>
+                  _updateTemplate(jobName, template.copyWith(showSales: value)),
             ),
             _buildTemplateToggle(
               'Commission',
@@ -1119,34 +1119,34 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               'Name the event',
               template.showEventName,
               (value) => _updateTemplate(
-                      jobName, template.copyWith(showEventName: value)),
-                ),
-              if (template.showEventCost)
-                _buildTemplateToggle(
-                  'Event Cost',
-                  'Total cost of event (DJs, planners)',
-                  template.showEventCost,
-                  (value) => _updateTemplate(
-                      jobName, template.copyWith(showEventCost: value)),
-                ),
-              if (template.showHostess)
-                _buildTemplateToggle(
-                  'Hostess Name',
-                  'Track who hosted',
-                  template.showHostess,
-                  (value) => _updateTemplate(
-                      jobName, template.copyWith(showHostess: value)),
-                ),
-              if (template.showGuestCount)
-                _buildTemplateToggle(
-                  'Guest Count',
-                  'Number of guests',
-                  template.showGuestCount,
-                  (value) => _updateTemplate(
-                      jobName, template.copyWith(showGuestCount: value)),
-                ),
-            ],
-          ),
+                  jobName, template.copyWith(showEventName: value)),
+            ),
+            if (template.showEventCost)
+              _buildTemplateToggle(
+                'Event Cost',
+                'Total cost of event (DJs, planners)',
+                template.showEventCost,
+                (value) => _updateTemplate(
+                    jobName, template.copyWith(showEventCost: value)),
+              ),
+            if (template.showHostess)
+              _buildTemplateToggle(
+                'Hostess Name',
+                'Track who hosted',
+                template.showHostess,
+                (value) => _updateTemplate(
+                    jobName, template.copyWith(showHostess: value)),
+              ),
+            if (template.showGuestCount)
+              _buildTemplateToggle(
+                'Guest Count',
+                'Number of guests',
+                template.showGuestCount,
+                (value) => _updateTemplate(
+                    jobName, template.copyWith(showGuestCount: value)),
+              ),
+          ],
+        ),
         if (template.showEventName ||
             template.showEventCost ||
             template.showHostess ||
