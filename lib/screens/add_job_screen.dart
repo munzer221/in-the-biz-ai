@@ -1263,8 +1263,8 @@ class _AddJobScreenState extends State<AddJobScreen> {
               if (currentTemplate.showEquipmentRental)
                 _buildToggleItem('Equipment Rental',
                     _showEquipmentRental ?? true, Icons.devices, () {
-                  setState(() => _showEquipmentRental =
-                      !(_showEquipmentRental ?? false));
+                  setState(() =>
+                      _showEquipmentRental = !(_showEquipmentRental ?? false));
                 }),
               if (currentTemplate.showCrewPayment)
                 _buildToggleItem(
