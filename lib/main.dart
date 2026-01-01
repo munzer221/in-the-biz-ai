@@ -58,7 +58,7 @@ class InTheBizApp extends StatelessWidget {
 /// Wrapper that constrains width on desktop to mobile size
 class ResponsiveWrapper extends StatelessWidget {
   final Widget child;
-  
+
   const ResponsiveWrapper({super.key, required this.child});
 
   @override
