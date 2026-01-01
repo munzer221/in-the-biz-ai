@@ -114,13 +114,14 @@ Gemini 3 can receive **images, PDFs, and documents** as function responses, not 
 ```
 supabase/functions/ai-agent/
   ├── index.ts                    # Main edge function handler
-  ├── function-declarations.ts    # All 50+ function definitions
+  ├── function-declarations.ts    # All 55+ function definitions
   ├── executors/
   │   ├── shift-executor.ts       # Execute shift-related functions
   │   ├── job-executor.ts         # Execute job-related functions
   │   ├── goal-executor.ts        # Execute goal-related functions
   │   ├── settings-executor.ts    # Execute settings functions
-  │   └── analytics-executor.ts   # Execute query functions
+  │   ├── analytics-executor.ts   # Execute query functions
+  │   └── contact-executor.ts     # Execute event contact functions
   ├── utils/
   │   ├── context-builder.ts      # Build user context for AI
   │   ├── date-parser.ts          # Parse natural language dates
