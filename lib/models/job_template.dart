@@ -673,6 +673,57 @@ class JobTemplate {
     bool? showRoomType,
     bool? showShiftType,
     bool? showShiftDifferential,
+    // Rideshare & Delivery
+    bool? showRidesCount,
+    bool? showDeadMiles,
+    bool? showFuelCost,
+    bool? showTollsParking,
+    bool? showSurgeMultiplier,
+    bool? showBaseFare,
+    // Music & Entertainment
+    bool? showSetupHours,
+    bool? showPerformanceHours,
+    bool? showBreakdownHours,
+    bool? showEquipmentUsed,
+    bool? showCrewPayment,
+    bool? showMerchSales,
+    bool? showAudienceSize,
+    // Artist & Crafts
+    bool? showPiecesCreated,
+    bool? showPiecesSold,
+    bool? showSalePrice,
+    bool? showVenueCommission,
+    // Retail additional
+    bool? showItemsSold,
+    bool? showTransactionsCount,
+    // Salon additional
+    bool? showServicesCount,
+    bool? showNewClients,
+    bool? showWalkins,
+    // Hospitality additional
+    bool? showRoomsCleaned,
+    bool? showRoomUpgrades,
+    bool? showGuestsCheckedIn,
+    bool? showCarsParked,
+    // Healthcare additional
+    bool? showPatientCount,
+    bool? showProceduresCount,
+    // Fitness additional
+    bool? showSessionsCount,
+    bool? showPackageSales,
+    bool? showSupplementSales,
+    // Construction additional
+    bool? showLaborCost,
+    bool? showSubcontractorCost,
+    bool? showSquareFootage,
+    bool? showWeatherDelay,
+    // Freelancer additional
+    bool? showRevisionsCount,
+    bool? showClientType,
+    bool? showExpenses,
+    bool? showBillableHours,
+    // Restaurant additional
+    bool? showTableSection,
   }) {
     return JobTemplate(
       payStructure: payStructure ?? this.payStructure,
@@ -713,6 +764,57 @@ class JobTemplate {
       showShiftType: showShiftType ?? this.showShiftType,
       showShiftDifferential:
           showShiftDifferential ?? this.showShiftDifferential,
+      // Rideshare & Delivery
+      showRidesCount: showRidesCount ?? this.showRidesCount,
+      showDeadMiles: showDeadMiles ?? this.showDeadMiles,
+      showFuelCost: showFuelCost ?? this.showFuelCost,
+      showTollsParking: showTollsParking ?? this.showTollsParking,
+      showSurgeMultiplier: showSurgeMultiplier ?? this.showSurgeMultiplier,
+      showBaseFare: showBaseFare ?? this.showBaseFare,
+      // Music & Entertainment
+      showSetupHours: showSetupHours ?? this.showSetupHours,
+      showPerformanceHours: showPerformanceHours ?? this.showPerformanceHours,
+      showBreakdownHours: showBreakdownHours ?? this.showBreakdownHours,
+      showEquipmentUsed: showEquipmentUsed ?? this.showEquipmentUsed,
+      showCrewPayment: showCrewPayment ?? this.showCrewPayment,
+      showMerchSales: showMerchSales ?? this.showMerchSales,
+      showAudienceSize: showAudienceSize ?? this.showAudienceSize,
+      // Artist & Crafts
+      showPiecesCreated: showPiecesCreated ?? this.showPiecesCreated,
+      showPiecesSold: showPiecesSold ?? this.showPiecesSold,
+      showSalePrice: showSalePrice ?? this.showSalePrice,
+      showVenueCommission: showVenueCommission ?? this.showVenueCommission,
+      // Retail additional
+      showItemsSold: showItemsSold ?? this.showItemsSold,
+      showTransactionsCount: showTransactionsCount ?? this.showTransactionsCount,
+      // Salon additional
+      showServicesCount: showServicesCount ?? this.showServicesCount,
+      showNewClients: showNewClients ?? this.showNewClients,
+      showWalkins: showWalkins ?? this.showWalkins,
+      // Hospitality additional
+      showRoomsCleaned: showRoomsCleaned ?? this.showRoomsCleaned,
+      showRoomUpgrades: showRoomUpgrades ?? this.showRoomUpgrades,
+      showGuestsCheckedIn: showGuestsCheckedIn ?? this.showGuestsCheckedIn,
+      showCarsParked: showCarsParked ?? this.showCarsParked,
+      // Healthcare additional
+      showPatientCount: showPatientCount ?? this.showPatientCount,
+      showProceduresCount: showProceduresCount ?? this.showProceduresCount,
+      // Fitness additional
+      showSessionsCount: showSessionsCount ?? this.showSessionsCount,
+      showPackageSales: showPackageSales ?? this.showPackageSales,
+      showSupplementSales: showSupplementSales ?? this.showSupplementSales,
+      // Construction additional
+      showLaborCost: showLaborCost ?? this.showLaborCost,
+      showSubcontractorCost: showSubcontractorCost ?? this.showSubcontractorCost,
+      showSquareFootage: showSquareFootage ?? this.showSquareFootage,
+      showWeatherDelay: showWeatherDelay ?? this.showWeatherDelay,
+      // Freelancer additional
+      showRevisionsCount: showRevisionsCount ?? this.showRevisionsCount,
+      showClientType: showClientType ?? this.showClientType,
+      showExpenses: showExpenses ?? this.showExpenses,
+      showBillableHours: showBillableHours ?? this.showBillableHours,
+      // Restaurant additional
+      showTableSection: showTableSection ?? this.showTableSection,
     );
   }
 }
