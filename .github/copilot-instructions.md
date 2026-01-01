@@ -469,6 +469,12 @@ node_modules/
 4. Under "Repository access", select **"All repositories"**
 5. Click **Save**
 
+**To get the GitHub repository URL:**
+The GitHub repository URL is:
+```
+https://github.com/munzer221/in-the-biz-ai
+```
+
 ---
 
 ## 🗄️ SUPABASE DATABASE MIGRATIONS (NEW - December 31, 2025)
@@ -794,7 +800,4 @@ CREATE TABLE public.server_checkouts (
   checkout_time TIME,  -- If available on receipt, else NULL
 
   sales_amount DECIMAL(10, 2),
-  tax_amount DECIMAL(10, 2),
-  tips_amount DECIMAL(10, 2),
-  service_charge DECIMAL(10, 2),
-  total_amount DECIMAL(
+  tax_amount DECIMAL
