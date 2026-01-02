@@ -1675,7 +1675,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
     );
   }
 
-  Widget _buildTimeSection({Key? key}) {
+  Widget _buildTimeSection() {
     final hours = _calculateHours();
     final isUsingTimeRange = _startTime != null && _endTime != null;
     final manualHours = double.tryParse(_hoursWorkedController.text) ?? 0;
@@ -1683,7 +1683,6 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
     final hoursText = displayHours > 0 ? ': ${_formatHours(displayHours)}' : '';
 
     return CollapsibleSection(
-      key: key,
       title: 'Time & Hours$hoursText',
       icon: Icons.access_time,
       children: [
@@ -2060,7 +2059,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
     return sections;
   }
 
-  Widget _buildEarningsSection({Key? key}) {
+  Widget _buildEarningsSection() {
     final cashTips = double.tryParse(_cashTipsController.text) ?? 0;
     final creditTips = double.tryParse(_creditTipsController.text) ?? 0;
     final commission = double.tryParse(_commissionController.text) ?? 0;
@@ -2070,7 +2069,6 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
         totalEarnings > 0 ? ': ${_formatCurrency(totalEarnings)}' : '';
 
     return CollapsibleSection(
-      key: key,
       title: 'Earnings$earningsText',
       icon: Icons.attach_money,
       accentColor: AppTheme.primaryGreen,
@@ -2447,7 +2445,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
     );
   }
 
-  Widget _buildEventDetailsSection({Key? key}) {
+  Widget _buildEventDetailsSection() {
     final guestCount = int.tryParse(_guestCountController.text);
     String summary = 'Event Details';
 
@@ -2456,7 +2454,6 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
     }
 
     return CollapsibleSection(
-      key: key,
       title: summary,
       icon: Icons.celebration,
       accentColor: AppTheme.accentYellow,
@@ -2581,9 +2578,8 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
     );
   }
 
-  Widget _buildWorkDetailsSection({Key? key}) {
+  Widget _buildWorkDetailsSection() {
     return CollapsibleSection(
-      key: key,
       title: 'Work Details',
       icon: Icons.location_on,
       accentColor: AppTheme.accentBlue,
@@ -3711,9 +3707,8 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
     );
   }
 
-  Widget _buildDocumentationSection({Key? key}) {
+  Widget _buildDocumentationSection() {
     return CollapsibleSection(
-      key: key,
       title: 'Documentation',
       icon: Icons.description,
       accentColor: AppTheme.textSecondary,
