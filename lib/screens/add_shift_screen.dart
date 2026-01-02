@@ -1370,7 +1370,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
     );
   }
 
-  Widget _buildHeroCard({Key? key}) {
+  Widget _buildHeroCard() {
     final hours = double.tryParse(_hoursWorkedController.text) ?? 0;
     final cashTips = double.tryParse(_cashTipsController.text) ?? 0;
     final creditTips = double.tryParse(_creditTipsController.text) ?? 0;
@@ -1387,7 +1387,6 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
     final totalIncome = baseEarnings + totalTips + commission + flatRate;
 
     return HeroCard(
-      key: key,
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
       child: Row(
         children: [
@@ -1552,11 +1551,10 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
     );
   }
 
-  Widget _buildJobSelector({Key? key}) {
+  Widget _buildJobSelector() {
     final selectedJobName = _selectedJob?.name ?? 'Select a job';
     final selectedEmployer = _selectedJob?.employer;
     return CollapsibleSection(
-      key: key,
       title: 'My Job: $selectedJobName',
       icon: Icons.work,
       initiallyExpanded: false,
@@ -1628,9 +1626,8 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
     );
   }
 
-  Widget _buildDateSelector({Key? key}) {
+  Widget _buildDateSelector() {
     return GestureDetector(
-      key: key,
       onTap: () async {
         final date = await showDatePicker(
           context: context,
@@ -1921,9 +1918,8 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
     );
   }
 
-  Widget _buildRecurringSection({Key? key}) {
+  Widget _buildRecurringSection() {
     return CollapsibleSection(
-      key: key,
       title: 'Repeat Schedule',
       icon: Icons.repeat,
       initiallyExpanded: _isRecurring,
@@ -3785,9 +3781,8 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
     );
   }
 
-  Widget _buildPhotoThumbnails({Key? key}) {
+  Widget _buildPhotoThumbnails() {
     return Container(
-      key: key,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: AppTheme.cardBackground,
@@ -4148,11 +4143,10 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
     }
   }
 
-  Widget _buildEventTeamSection({Key? key}) {
+  Widget _buildEventTeamSection() {
     if (widget.existingShift == null) return const SizedBox.shrink();
 
     return Container(
-      key: key,
       decoration: BoxDecoration(
         color: AppTheme.cardBackground,
         borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
@@ -4534,11 +4528,10 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
     }
   }
 
-  Widget _buildAttachmentsSection({Key? key}) {
+  Widget _buildAttachmentsSection() {
     if (widget.existingShift == null) return const SizedBox.shrink();
 
     return Container(
-      key: key,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: AppTheme.cardBackground,
