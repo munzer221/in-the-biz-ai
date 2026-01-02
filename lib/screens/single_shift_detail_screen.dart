@@ -1695,8 +1695,9 @@ class _SingleShiftDetailScreenState extends State<SingleShiftDetailScreen>
     );
   }
 
-  Widget _buildBEOSection() {
+  Widget _buildBEOSection({Key? key}) {
     return Container(
+      key: key,
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: AppTheme.cardBackground,
@@ -2683,8 +2684,9 @@ class _SingleShiftDetailScreenState extends State<SingleShiftDetailScreen>
     );
   }
 
-  Widget _buildWorkDetailsCard() {
+  Widget _buildWorkDetailsCard({Key? key}) {
     return Container(
+      key: key,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: AppTheme.cardBackground,
@@ -2720,8 +2722,9 @@ class _SingleShiftDetailScreenState extends State<SingleShiftDetailScreen>
     );
   }
 
-  Widget _buildAdditionalEarningsCard() {
+  Widget _buildAdditionalEarningsCard({Key? key}) {
     return Container(
+      key: key,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: AppTheme.cardBackground,
@@ -2919,8 +2922,9 @@ class _SingleShiftDetailScreenState extends State<SingleShiftDetailScreen>
     }
   }
 
-  Widget _buildAttachmentsCard() {
+  Widget _buildAttachmentsCard({Key? key}) {
     return Container(
+      key: key,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: AppTheme.cardBackground,
