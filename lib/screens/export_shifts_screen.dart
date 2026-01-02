@@ -148,7 +148,8 @@ class _ExportShiftsScreenState extends State<ExportShiftsScreen> {
               onPressed: () {
                 setState(() {
                   _selectedJobIds = tempSelected;
-                  _selectedShiftIds.clear(); // Clear selection when filter changes
+                  _selectedShiftIds
+                      .clear(); // Clear selection when filter changes
                 });
                 Navigator.pop(context);
               },
@@ -186,11 +187,14 @@ class _ExportShiftsScreenState extends State<ExportShiftsScreen> {
           // Remove calendar event
           bool success;
           if (kIsWeb) {
-            success = await _googleCalendar.deleteCalendarEvent(shift.calendarEventId!);
+            success = await _googleCalendar
+                .deleteCalendarEvent(shift.calendarEventId!);
           } else {
             // Mobile - need calendar ID from prefs
-            final prefs = await _db.getJobs(); // Placeholder - need proper way to get calendar ID
-            success = await _calendarSync.deleteCalendarEvent('primary', shift.calendarEventId!);
+            final prefs = await _db
+                .getJobs(); // Placeholder - need proper way to get calendar ID
+            success = await _calendarSync.deleteCalendarEvent(
+                'primary', shift.calendarEventId!);
           }
 
           if (success) {
@@ -227,8 +231,10 @@ class _ExportShiftsScreenState extends State<ExportShiftsScreen> {
         final action = widget.isRemoveMode ? 'removed from' : 'exported to';
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('$successCount shifts $action calendar${failCount > 0 ? ', $failCount failed' : ''}'),
-            backgroundColor: failCount > 0 ? AppTheme.accentOrange : AppTheme.primaryGreen,
+            content: Text(
+                '$successCount shifts $action calendar${failCount > 0 ? ', $failCount failed' : ''}'),
+            backgroundColor:
+                failCount > 0 ? AppTheme.accentOrange : AppTheme.primaryGreen,
           ),
         );
 
@@ -256,11 +262,13 @@ class _ExportShiftsScreenState extends State<ExportShiftsScreen> {
         backgroundColor: AppTheme.darkBackground,
         title: Text(
           widget.isRemoveMode ? 'Remove Synced Events' : 'Export Shifts',
-          style: AppTheme.titleLarge.copyWith(color: AppTheme.adaptiveTextColor),
+          style:
+              AppTheme.titleLarge.copyWith(color: AppTheme.adaptiveTextColor),
         ),
       ),
       body: _isLoading
-          ? Center(child: CircularProgressIndicator(color: AppTheme.primaryGreen))
+          ? Center(
+              child: CircularProgressIndicator(color: AppTheme.primaryGreen))
           : Column(
               children: [
                 // Job filter button
@@ -269,10 +277,12 @@ class _ExportShiftsScreenState extends State<ExportShiftsScreen> {
                   child: InkWell(
                     onTap: _showJobFilterDialog,
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 12),
                       decoration: BoxDecoration(
                         color: AppTheme.cardBackground,
-                        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                        borderRadius:
+                            BorderRadius.circular(AppTheme.radiusMedium),
                         border: Border.all(
                           color: AppTheme.primaryGreen.withOpacity(0.3),
                           width: 1,
@@ -280,7 +290,8 @@ class _ExportShiftsScreenState extends State<ExportShiftsScreen> {
                       ),
                       child: Row(
                         children: [
-                          Icon(Icons.filter_list, color: AppTheme.primaryGreen, size: 20),
+                          Icon(Icons.filter_list,
+                              color: AppTheme.primaryGreen, size: 20),
                           const SizedBox(width: 12),
                           Expanded(
                             child: Text(
@@ -292,7 +303,8 @@ class _ExportShiftsScreenState extends State<ExportShiftsScreen> {
                               ),
                             ),
                           ),
-                          Icon(Icons.arrow_drop_down, color: AppTheme.textSecondary),
+                          Icon(Icons.arrow_drop_down,
+                              color: AppTheme.textSecondary),
                         ],
                       ),
                     ),
@@ -301,7 +313,8 @@ class _ExportShiftsScreenState extends State<ExportShiftsScreen> {
 
                 // Select all checkbox
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   child: Row(
                     children: [
                       Checkbox(
@@ -356,7 +369,8 @@ class _ExportShiftsScreenState extends State<ExportShiftsScreen> {
                             final shift = _filteredShifts[index];
                             final job = _jobs.firstWhere(
                               (j) => j.id == shift.jobId,
-                              orElse: () => Job(id: '', name: 'Unknown', color: ''),
+                              orElse: () =>
+                                  Job(id: '', name: 'Unknown', color: ''),
                             );
 
                             return CheckboxListTile(
@@ -381,12 +395,14 @@ class _ExportShiftsScreenState extends State<ExportShiftsScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    DateFormat('MMM d, yyyy').format(shift.date),
+                                    DateFormat('MMM d, yyyy')
+                                        .format(shift.date),
                                     style: AppTheme.bodyMedium.copyWith(
                                       color: AppTheme.textSecondary,
                                     ),
                                   ),
-                                  if (shift.startTime != null && shift.endTime != null)
+                                  if (shift.startTime != null &&
+                                      shift.endTime != null)
                                     Text(
                                       '${shift.startTime} - ${shift.endTime}',
                                       style: AppTheme.bodySmall.copyWith(
@@ -455,7 +471,8 @@ class _ExportShiftsScreenState extends State<ExportShiftsScreen> {
                               foregroundColor: Colors.white,
                               padding: const EdgeInsets.symmetric(vertical: 16),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                                borderRadius: BorderRadius.circular(
+                                    AppTheme.radiusMedium),
                               ),
                             ),
                             child: _isProcessing
@@ -464,7 +481,8 @@ class _ExportShiftsScreenState extends State<ExportShiftsScreen> {
                                     width: 20,
                                     child: CircularProgressIndicator(
                                       strokeWidth: 2,
-                                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                          Colors.white),
                                     ),
                                   )
                                 : Text(
