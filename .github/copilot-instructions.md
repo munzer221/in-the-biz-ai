@@ -505,6 +505,9 @@ git push origin gh-pages
 #         run: flutter pub get
 #
 #       - name: Build web
+#         run: flutter pub get
+#
+#       - name: Build web
 #         run: flutter build web --release --base-href /
 #
 #       - name: Deploy to gh-pages
@@ -712,3 +715,5 @@ When debugging calendar sync issues, remember:
 
 -   There may be differences in how calendar access is granted and handled between web and mobile platforms.
 -   Check the `_requestPermissions` method in the `calendar_sync_screen.dart` file for platform-specific logic.
+-   The `device_calendar` and `permission_handler` plugins **don't support web browsers**. They're native mobile plugins that require iOS/Android code.
+-   On the web, the "Grant Calendar Access" button will not work with the `device_calendar` and `permission_handler` plugins. A solution is to use the Google Calendar API (OAuth flow) on the web, while keeping the current device calendar integration for mobile.
