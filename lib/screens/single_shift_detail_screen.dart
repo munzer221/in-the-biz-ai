@@ -1354,11 +1354,12 @@ class _SingleShiftDetailScreenState extends State<SingleShiftDetailScreen>
     }
   }
 
-  Widget _buildCombinedHeroCard() {
+  Widget _buildCombinedHeroCard({Key? key}) {
     final baseEarnings = effectiveHourlyRate * shift.hoursWorked;
     final totalTips = shift.cashTips + shift.creditTips;
 
     return HeroCard(
+      key: key,
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 16), // Reduced padding
       borderRadius: AppTheme.radiusLarge,
       child: Row(
