@@ -322,6 +322,7 @@ class _EventContactsScreenState extends State<EventContactsScreen> {
                           return _buildContactCard(_filteredContacts[index]);
                         },
                       ),
+          ),
         ],
       ),
     );
