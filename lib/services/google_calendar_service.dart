@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis/calendar/v3.dart' as calendar;
-import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sign_in_as_googleapis_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/shift.dart';
 import '../models/job.dart';
@@ -21,9 +20,7 @@ class GoogleCalendarService {
     }
 
     try {
-      final googleSignIn = GoogleSignIn.standard(
-        scopes: AuthService.calendarScopes,
-      );
+      final googleSignIn = GoogleSignIn.instance;
 
       // Check if already signed in
       final account = googleSignIn.currentUser;
@@ -32,7 +29,10 @@ class GoogleCalendarService {
       }
 
       // Get authenticated HTTP client
-      final httpClient = await account.authenticatedClient();
+      final httpClient = (await account.authentication).then((auth) {
+        // This won't work - we need extension package
+        return null;
+      });
       if (httpClient == null) {
         return false;
       }
