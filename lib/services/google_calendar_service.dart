@@ -69,11 +69,11 @@ class GoogleCalendarService {
       }
 
       _calendarApi = calendar.CalendarApi(httpClient);
-      
+
       // Save that we have calendar access
       final prefs = await SharedPreferences.getInstance();
       await prefs.setBool('google_calendar_access', true);
-      
+
       return true;
     } catch (e) {
       print('Error requesting calendar access: $e');
@@ -91,7 +91,7 @@ class GoogleCalendarService {
 
     try {
       final prefs = await SharedPreferences.getInstance();
-      
+
       // Get job mappings
       final jobMappingsJson = prefs.getString('job_mappings');
       if (jobMappingsJson == null) {
@@ -99,8 +99,8 @@ class GoogleCalendarService {
       }
 
       // Parse job mappings
-      final Map<String, dynamic> jobMappingsData = 
-          Map<String, dynamic>.from(await SharedPreferences.getInstance().then((p) => {}));
+      final Map<String, dynamic> jobMappingsData = Map<String, dynamic>.from(
+          await SharedPreferences.getInstance().then((p) => {}));
       final Map<String, String> jobMappings =
           jobMappingsData.map((k, v) => MapEntry(k, v.toString()));
 
@@ -189,11 +189,14 @@ class GoogleCalendarService {
 
         // Calculate hours and times
         final startTime = event.start!.dateTime!.toLocal();
-        final endTime = event.end?.dateTime?.toLocal() ?? startTime.add(const Duration(hours: 8));
-        
+        final endTime = event.end?.dateTime?.toLocal() ??
+            startTime.add(const Duration(hours: 8));
+
         final hoursWorked = endTime.difference(startTime).inMinutes / 60.0;
-        final startTimeStr = '${startTime.hour.toString().padLeft(2, '0')}:${startTime.minute.toString().padLeft(2, '0')}';
-        final endTimeStr = '${endTime.hour.toString().padLeft(2, '0')}:${endTime.minute.toString().padLeft(2, '0')}';
+        final startTimeStr =
+            '${startTime.hour.toString().padLeft(2, '0')}:${startTime.minute.toString().padLeft(2, '0')}';
+        final endTimeStr =
+            '${endTime.hour.toString().padLeft(2, '0')}:${endTime.minute.toString().padLeft(2, '0')}';
 
         // Create new scheduled shift
         final shift = Shift(
@@ -238,7 +241,8 @@ class GoogleCalendarService {
     try {
       // Get job name
       final jobs = await _db.getJobs();
-      final job = jobs.firstWhere((j) => j.id == shift.jobId, orElse: () => Job(id: '', name: 'Work', color: ''));
+      final job = jobs.firstWhere((j) => j.id == shift.jobId,
+          orElse: () => Job(id: '', name: 'Work', color: ''));
       final jobName = job.name;
 
       // Build event
@@ -261,7 +265,8 @@ class GoogleCalendarService {
       if (shift.calendarEventId != null) {
         // Update existing event
         event.id = shift.calendarEventId;
-        final result = await _calendarApi!.events.update(event, 'primary', shift.calendarEventId!);
+        final result = await _calendarApi!.events
+            .update(event, 'primary', shift.calendarEventId!);
         return result.id;
       } else {
         // Create new event
@@ -300,7 +305,8 @@ class GoogleCalendarService {
       lines.add('💰 Total Earned: \$${shift.totalIncome.toStringAsFixed(2)}');
 
       if (shift.hourlyRate > 0 && shift.hoursWorked > 0) {
-        lines.add('⏱️ ${shift.hoursWorked.toStringAsFixed(1)} hrs @ \$${shift.hourlyRate.toStringAsFixed(2)}/hr');
+        lines.add(
+            '⏱️ ${shift.hoursWorked.toStringAsFixed(1)} hrs @ \$${shift.hourlyRate.toStringAsFixed(2)}/hr');
       }
 
       final totalTips = shift.cashTips + shift.creditTips;

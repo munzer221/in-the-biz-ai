@@ -109,7 +109,7 @@ class CalendarSyncService {
           if (event.eventId != null && shift.calendarEventId == event.eventId) {
             return true;
           }
-          
+
           // Secondary check: Same date + time + job (for events without ID or pre-existing shifts)
           return shift.jobId == jobId &&
               shift.date.year == event.start!.year &&
@@ -190,10 +190,11 @@ class CalendarSyncService {
 
   /// Export a shift to device calendar (Mobile only)
   /// Returns the calendar event ID if successful, null if failed
-  Future<String?> exportShiftToCalendar(Shift shift, {String? calendarId}) async {
+  Future<String?> exportShiftToCalendar(Shift shift,
+      {String? calendarId}) async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      
+
       // Get selected calendar ID if not provided
       calendarId ??= prefs.getString('selected_calendar_id');
       if (calendarId == null) {
@@ -210,7 +211,8 @@ class CalendarSyncService {
 
       // Get job name for event title
       final jobs = await _db.getJobs();
-      final job = jobs.firstWhere((j) => j.id == shift.jobId, orElse: () => null as Job);
+      final job = jobs.firstWhere((j) => j.id == shift.jobId,
+          orElse: () => null as Job);
       final jobName = job?.name ?? 'Work Shift';
 
       // Build event title and description
@@ -257,7 +259,8 @@ class CalendarSyncService {
   /// Delete a shift's calendar event (Mobile only)
   Future<bool> deleteCalendarEvent(String calendarId, String eventId) async {
     try {
-      final result = await _deviceCalendarPlugin.deleteEvent(calendarId, eventId);
+      final result =
+          await _deviceCalendarPlugin.deleteEvent(calendarId, eventId);
       return result?.isSuccess ?? false;
     } catch (e) {
       print('Error deleting calendar event: $e');
@@ -268,32 +271,33 @@ class CalendarSyncService {
   /// Build event description with shift details
   String _buildEventDescription(Shift shift, Job? job) {
     final lines = <String>[];
-    
+
     if (shift.status == 'scheduled') {
       lines.add('📅 Scheduled Shift');
     } else {
       // Include earnings for completed shifts
       lines.add('💰 Total Earned: \$${shift.totalIncome.toStringAsFixed(2)}');
-      
+
       if (shift.hourlyRate > 0 && shift.hoursWorked > 0) {
-        lines.add('⏱️ ${shift.hoursWorked.toStringAsFixed(1)} hrs @ \$${shift.hourlyRate.toStringAsFixed(2)}/hr');
+        lines.add(
+            '⏱️ ${shift.hoursWorked.toStringAsFixed(1)} hrs @ \$${shift.hourlyRate.toStringAsFixed(2)}/hr');
       }
-      
+
       final totalTips = shift.cashTips + shift.creditTips;
       if (totalTips > 0) {
         lines.add('💵 Tips: \$${totalTips.toStringAsFixed(2)}');
       }
     }
-    
+
     if (shift.notes != null && shift.notes!.isNotEmpty) {
       lines.add('');
       lines.add('📝 Notes:');
       lines.add(shift.notes!);
     }
-    
+
     lines.add('');
     lines.add('Created by In The Biz AI');
-    
+
     return lines.join('\n');
   }
 
@@ -302,7 +306,7 @@ class CalendarSyncService {
     if (timeString == null || timeString.isEmpty) {
       return date;
     }
-    
+
     try {
       final parts = timeString.split(':');
       if (parts.length == 2) {
@@ -313,7 +317,7 @@ class CalendarSyncService {
     } catch (e) {
       print('Error parsing time: $timeString');
     }
-    
+
     return date;
   }
 }
