@@ -43,6 +43,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool _isEndedJobsExpanded = false; // Collapsed by default
   bool _isJobsSectionExpanded = false; // MY JOBS collapsed by default
   bool _isTaxSectionExpanded = false; // TAX ESTIMATION collapsed by default
+  bool _isAutoSyncEnabled = false; // Calendar auto-sync toggle
 
   final List<String> _states = [
     'AL',
@@ -101,6 +102,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
   void initState() {
     super.initState();
     _loadData();
+    _loadAutoSyncPreference();
+  }
+
+  Future<void> _loadAutoSyncPreference() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _isAutoSyncEnabled = prefs.getBool('auto_sync_calendar') ?? false;
+    });
+  }
+
+  Future<void> _setAutoSyncPreference(bool value) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('auto_sync_calendar', value);
+    setState(() {
+      _isAutoSyncEnabled = value;
+    });
   }
 
   Future<void> _loadData() async {
