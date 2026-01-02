@@ -1030,25 +1030,43 @@ class _SingleShiftDetailScreenState extends State<SingleShiftDetailScreen>
     for (final sectionKey in fieldOrder) {
       switch (sectionKey) {
         case 'earnings_section':
-          widgets.add(_buildBreakdownCard(key: ValueKey('earnings_section')));
+          widgets.add(Padding(
+            key: ValueKey('earnings_section'),
+            padding: const EdgeInsets.only(bottom: 20),
+            child: _buildBreakdownCard(),
+          ));
           break;
 
         case 'event_details_section':
-          widgets.add(_buildBEOSection(key: ValueKey('event_details_section')));
+          widgets.add(Padding(
+            key: ValueKey('event_details_section'),
+            padding: const EdgeInsets.only(bottom: 20),
+            child: _buildBEOSection(),
+          ));
           break;
 
         case 'work_details_section':
-          widgets.add(
-              _buildWorkDetailsCard(key: ValueKey('work_details_section')));
+          widgets.add(Padding(
+            key: ValueKey('work_details_section'),
+            padding: const EdgeInsets.only(bottom: 20),
+            child: _buildWorkDetailsCard(),
+          ));
           break;
 
         case 'time_section':
-          widgets
-              .add(_buildAdditionalEarningsCard(key: ValueKey('time_section')));
+          widgets.add(Padding(
+            key: ValueKey('time_section'),
+            padding: const EdgeInsets.only(bottom: 20),
+            child: _buildAdditionalEarningsCard(),
+          ));
           break;
 
         case 'documentation_section':
-          widgets.add(_buildNotesCard(key: ValueKey('documentation_section')));
+          widgets.add(Padding(
+            key: ValueKey('documentation_section'),
+            padding: const EdgeInsets.only(bottom: 20),
+            child: _buildNotesCard(),
+          ));
           break;
       }
     }
@@ -2293,9 +2311,8 @@ class _SingleShiftDetailScreenState extends State<SingleShiftDetailScreen>
     );
   }
 
-  Widget _buildBreakdownCard({Key? key}) {
+  Widget _buildBreakdownCard() {
     return Container(
-      key: key,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: AppTheme.cardBackground,
@@ -2510,13 +2527,12 @@ class _SingleShiftDetailScreenState extends State<SingleShiftDetailScreen>
     );
   }
 
-  Widget _buildNotesCard({Key? key}) {
+  Widget _buildNotesCard() {
     final isEditing = _activeEditField == 'notes';
     final controller = _controllers['notes']!;
     final focusNode = _focusNodes['notes']!;
 
     return Container(
-      key: key,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: AppTheme.cardBackground,
@@ -2681,9 +2697,8 @@ class _SingleShiftDetailScreenState extends State<SingleShiftDetailScreen>
     );
   }
 
-  Widget _buildWorkDetailsCard({Key? key}) {
+  Widget _buildWorkDetailsCard() {
     return Container(
-      key: key,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: AppTheme.cardBackground,
@@ -2719,9 +2734,8 @@ class _SingleShiftDetailScreenState extends State<SingleShiftDetailScreen>
     );
   }
 
-  Widget _buildAdditionalEarningsCard({Key? key}) {
+  Widget _buildAdditionalEarningsCard() {
     return Container(
-      key: key,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: AppTheme.cardBackground,
