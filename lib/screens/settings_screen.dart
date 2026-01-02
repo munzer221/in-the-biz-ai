@@ -1888,15 +1888,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Widget _buildCalendarExportSection() {
-    return Container(
-      decoration: BoxDecoration(
-        color: AppTheme.cardBackground,
-        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
-      ),
-      child: Column(
-        children: [
-          // Auto-sync toggle
-          ListTile(
+    return Column(
+      children: [
+        // Auto-sync toggle card
+        Container(
+          decoration: BoxDecoration(
+            color: AppTheme.cardBackground,
+            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+          ),
+          child: ListTile(
             leading: Container(
               width: 40,
               height: 40,
@@ -1906,9 +1906,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               child: Icon(Icons.sync, color: AppTheme.primaryGreen),
             ),
-            title: Text('Auto-Sync to Calendar', style: AppTheme.bodyMedium),
+            title: Text('Auto-Sync to Google Calendar', style: AppTheme.bodyMedium),
             subtitle: Text(
-              'Automatically export shifts to your calendar',
+              'Automatically export new shifts to your calendar',
               style: AppTheme.labelSmall.copyWith(color: AppTheme.textMuted),
             ),
             trailing: Switch(
@@ -1917,108 +1917,145 @@ class _SettingsScreenState extends State<SettingsScreen> {
               onChanged: _setAutoSyncPreference,
             ),
           ),
+        ),
 
-          const Divider(height: 1),
+        const SizedBox(height: 8),
 
-          // Choose shifts to sync
-          ListTile(
-            onTap: () async {
-              final result = await Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => const ExportShiftsScreen(isRemoveMode: false),
-                ),
-              );
-              if (result == true && mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: const Text('Shifts exported successfully'),
-                    backgroundColor: AppTheme.primaryGreen,
+        // Sync actions card
+        Container(
+          decoration: BoxDecoration(
+            color: AppTheme.cardBackground,
+            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+          ),
+          child: Column(
+            children: [
+              // Choose shifts to sync
+              ListTile(
+                onTap: () async {
+                  final result = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const ExportShiftsScreen(isRemoveMode: false),
+                    ),
+                  );
+                  if (result == true && mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: const Text('Shifts synced to Google Calendar'),
+                        backgroundColor: AppTheme.primaryGreen,
+                      ),
+                    );
+                  }
+                },
+                leading: Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: AppTheme.accentBlue.withOpacity(0.15),
+                    borderRadius: BorderRadius.circular(8),
                   ),
-                );
-              }
-            },
-            leading: const SizedBox(width: 40), // Alignment with toggle
-            title: Text('Choose Shifts to Sync', style: AppTheme.bodyMedium),
-            subtitle: Text(
-              'Select specific shifts to export',
-              style: AppTheme.labelSmall.copyWith(color: AppTheme.textMuted),
-            ),
-            trailing: Icon(Icons.chevron_right, color: AppTheme.textMuted),
-          ),
-
-          const Divider(height: 1),
-
-          // Sync all shifts now
-          ListTile(
-            onTap: () => _syncAllShifts(),
-            leading: const SizedBox(width: 40),
-            title: Row(
-              children: [
-                Icon(Icons.flash_on, color: AppTheme.accentYellow, size: 18),
-                const SizedBox(width: 6),
-                Text('Sync All Shifts Now', style: AppTheme.bodyMedium),
-              ],
-            ),
-            subtitle: Text(
-              'Export all unsynced shifts',
-              style: AppTheme.labelSmall.copyWith(color: AppTheme.textMuted),
-            ),
-            trailing: Icon(Icons.chevron_right, color: AppTheme.textMuted),
-          ),
-
-          const Divider(height: 1),
-
-          // Choose events to remove
-          ListTile(
-            onTap: () async {
-              final result = await Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => const ExportShiftsScreen(isRemoveMode: true),
+                  child: Icon(Icons.check_circle_outline, color: AppTheme.accentBlue),
                 ),
-              );
-              if (result == true && mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: const Text('Calendar events removed'),
-                    backgroundColor: AppTheme.accentOrange,
+                title: Text('Choose Shifts to Sync', style: AppTheme.bodyMedium),
+                subtitle: Text(
+                  'Select specific shifts to export to Google Calendar',
+                  style: AppTheme.labelSmall.copyWith(color: AppTheme.textMuted),
+                ),
+                trailing: Icon(Icons.chevron_right, color: AppTheme.textMuted),
+              ),
+
+              // Sync all shifts now
+              ListTile(
+                onTap: () => _syncAllShifts(),
+                leading: Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: AppTheme.accentYellow.withOpacity(0.15),
+                    borderRadius: BorderRadius.circular(8),
                   ),
-                );
-              }
-            },
-            leading: const SizedBox(width: 40),
-            title: Text('Choose Events to Remove', style: AppTheme.bodyMedium),
-            subtitle: Text(
-              'Select synced events to delete',
-              style: AppTheme.labelSmall.copyWith(color: AppTheme.textMuted),
-            ),
-            trailing: Icon(Icons.chevron_right, color: AppTheme.textMuted),
+                  child: Icon(Icons.flash_on, color: AppTheme.accentYellow),
+                ),
+                title: Text('Sync All Shifts Now', style: AppTheme.bodyMedium),
+                subtitle: Text(
+                  'Export all unsynced shifts to Google Calendar',
+                  style: AppTheme.labelSmall.copyWith(color: AppTheme.textMuted),
+                ),
+                trailing: Icon(Icons.chevron_right, color: AppTheme.textMuted),
+              ),
+            ],
           ),
+        ),
 
-          const Divider(height: 1),
+        const SizedBox(height: 8),
 
-          // Remove all synced events
-          ListTile(
-            onTap: () => _removeAllSyncedEvents(),
-            leading: const SizedBox(width: 40),
-            title: Row(
-              children: [
-                Icon(Icons.warning_amber, color: AppTheme.accentRed, size: 18),
-                const SizedBox(width: 6),
-                Text('Remove All Synced Events',
-                    style: AppTheme.bodyMedium
-                        .copyWith(color: AppTheme.accentRed)),
-              ],
-            ),
-            subtitle: Text(
-              'Delete all exported calendar events',
-              style: AppTheme.labelSmall.copyWith(color: AppTheme.textMuted),
-            ),
-            trailing: Icon(Icons.chevron_right, color: AppTheme.textMuted),
+        // Unsync actions card
+        Container(
+          decoration: BoxDecoration(
+            color: AppTheme.cardBackground,
+            borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
           ),
-        ],
-      ),
+          child: Column(
+            children: [
+              // Unsync specific events
+              ListTile(
+                onTap: () async {
+                  final result = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const ExportShiftsScreen(isRemoveMode: true),
+                    ),
+                  );
+                  if (result == true && mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: const Text('Events removed from Google Calendar'),
+                        backgroundColor: AppTheme.accentOrange,
+                      ),
+                    );
+                  }
+                },
+                leading: Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: AppTheme.accentOrange.withOpacity(0.15),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Icon(Icons.remove_circle_outline, color: AppTheme.accentOrange),
+                ),
+                title: Text('Unsync Specific Events', style: AppTheme.bodyMedium),
+                subtitle: Text(
+                  'Choose synced shifts to remove from calendar',
+                  style: AppTheme.labelSmall.copyWith(color: AppTheme.textMuted),
+                ),
+                trailing: Icon(Icons.chevron_right, color: AppTheme.textMuted),
+              ),
+
+              // Remove all synced events
+              ListTile(
+                onTap: () => _removeAllSyncedEvents(),
+                leading: Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: AppTheme.accentRed.withOpacity(0.15),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Icon(Icons.warning_amber, color: AppTheme.accentRed),
+                ),
+                title: Text('Unsync All Events',
+                    style: AppTheme.bodyMedium.copyWith(color: AppTheme.accentRed)),
+                subtitle: Text(
+                  'Remove all synced shifts from Google Calendar',
+                  style: AppTheme.labelSmall.copyWith(color: AppTheme.textMuted),
+                ),
+                trailing: Icon(Icons.chevron_right, color: AppTheme.textMuted),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 
