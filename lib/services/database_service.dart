@@ -1060,4 +1060,40 @@ class DatabaseService {
         .delete()
         .eq('user_id', _supabase.auth.currentUser!.id);
   }
+
+  // ============================================
+  // CALENDAR AUTO-EXPORT
+  // ============================================
+
+  /// Auto-export shift to calendar if auto-sync is enabled
+  Future<void> _autoExportShift(Shift shift) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final autoSync = prefs.getBool('auto_sync_calendar') ?? false;
+      
+      if (!autoSync) return; // Auto-sync disabled
+      
+      // Export to calendar based on platform
+      String? eventId;
+      if (kIsWeb) {
+        final googleCalendar = GoogleCalendarService();
+        eventId = await googleCalendar.exportShiftToCalendar(shift);
+      } else {
+        final calendarSync = CalendarSyncService();
+        final calendarId = prefs.getString('selected_calendar_id');
+        eventId = await calendarSync.exportShiftToCalendar(shift, calendarId: calendarId);
+      }
+      
+      // If we got an event ID and it's different, update the shift
+      if (eventId != null && shift.calendarEventId != eventId) {
+        await _supabase.from('shifts').update({
+          'calendar_event_id': eventId,
+          'updated_at': DateTime.now().toIso8601String(),
+        }).eq('id', shift.id);
+      }
+    } catch (e) {
+      print('Auto-export to calendar failed: $e');
+      // Don't throw - we don't want to fail the shift save if calendar export fails
+    }
+  }
 }
