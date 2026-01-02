@@ -1063,7 +1063,7 @@ class _HomeScreenState extends State<_HomeScreen> {
         });
       },
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
         decoration: BoxDecoration(
           color: isSelected ? AppTheme.primaryGreen : AppTheme.cardBackground,
           borderRadius: BorderRadius.circular(8),
@@ -1072,7 +1072,7 @@ class _HomeScreenState extends State<_HomeScreen> {
           label,
           style: TextStyle(
             color: isSelected ? AppTheme.primaryOnDark : AppTheme.textSecondary,
-            fontSize: 11,
+            fontSize: 10,
             fontWeight: isSelected ? FontWeight.w700 : FontWeight.w600,
           ),
         ),
@@ -1092,7 +1092,7 @@ class _HomeScreenState extends State<_HomeScreen> {
         },
         child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 2),
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
           decoration: BoxDecoration(
             color: isSelected ? AppTheme.primaryGreen : AppTheme.cardBackground,
             borderRadius: BorderRadius.circular(8),
@@ -1105,7 +1105,7 @@ class _HomeScreenState extends State<_HomeScreen> {
             style: TextStyle(
               color:
                   isSelected ? AppTheme.primaryOnDark : AppTheme.textSecondary,
-              fontSize: 12,
+              fontSize: 11,
               fontWeight: FontWeight.w700,
             ),
           ),
