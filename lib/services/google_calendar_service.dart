@@ -26,7 +26,7 @@ class GoogleCalendarService {
       if (!_initialized) {
         await GoogleSignIn.instance.initialize();
         _initialized = true;
-        
+
         // Listen to authentication events
         GoogleSignIn.instance.authenticationEvents.listen((event) {
           if (event is GoogleSignInAuthenticationEventSignIn) {
@@ -39,10 +39,10 @@ class GoogleCalendarService {
 
       // Try lightweight authentication first
       await GoogleSignIn.instance.attemptLightweightAuthentication();
-      
+
       // Wait a moment for authentication to complete
       await Future.delayed(const Duration(milliseconds: 500));
-      
+
       if (_currentUser == null) {
         return false; // Not signed in
       }
@@ -50,14 +50,15 @@ class GoogleCalendarService {
       // Check if we already have authorization for calendar scopes
       final authorization = await _currentUser!.authorizationClient
           .authorizationForScopes(AuthService.calendarScopes);
-      
+
       if (authorization == null) {
         return false; // Not authorized yet
       }
 
       // Get authenticated HTTP client
-      final httpClient = authorization.authClient(scopes: AuthService.calendarScopes);
-      
+      final httpClient =
+          authorization.authClient(scopes: AuthService.calendarScopes);
+
       _calendarApi = calendar.CalendarApi(httpClient);
       return true;
     } catch (e) {
@@ -77,7 +78,7 @@ class GoogleCalendarService {
       if (!_initialized) {
         await GoogleSignIn.instance.initialize();
         _initialized = true;
-        
+
         // Listen to authentication events
         GoogleSignIn.instance.authenticationEvents.listen((event) {
           if (event is GoogleSignInAuthenticationEventSignIn) {
@@ -91,10 +92,10 @@ class GoogleCalendarService {
       // Authenticate user if not already signed in
       if (_currentUser == null) {
         await GoogleSignIn.instance.authenticate();
-        
+
         // Wait for authentication event
         await Future.delayed(const Duration(milliseconds: 500));
-        
+
         if (_currentUser == null) {
           return false;
         }
@@ -105,7 +106,8 @@ class GoogleCalendarService {
           .authorizeScopes(AuthService.calendarScopes);
 
       // Get authenticated HTTP client
-      final httpClient = authorization.authClient(scopes: AuthService.calendarScopes);
+      final httpClient =
+          authorization.authClient(scopes: AuthService.calendarScopes);
 
       _calendarApi = calendar.CalendarApi(httpClient);
 
