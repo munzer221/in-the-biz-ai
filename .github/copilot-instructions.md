@@ -680,7 +680,7 @@ To ensure the app looks good on both web and mobile devices, follow these guidel
 
 ### 1. Add Viewport Meta Tag (CRITICAL - January 2, 2026)
 Without this, mobile browsers can't properly scale or allow pinch-zoom.
-Add the following line to the `<head>` section of your `web/index.html` file:
+The following line MUST be in the `<head>` section of your `web/index.html` file:
 
 ```html
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
@@ -692,55 +692,40 @@ This tells the browser:
 - Allow users to zoom up to 5x
 - Enable pinch-to-zoom
 
-### 2. Use a Responsive Wrapper
+**This was the #1 cause of mobile scaling issues on Android devices with large text/accessibility settings enabled.**
 
-~~Wrap the `MaterialApp` with a `ResponsiveWrapper` widget to constrain the width on desktop:~~
-
-```dart
-import 'package:flutter/material.dart';
-
-class InTheBizApp extends StatelessWidget {
-  const InTheBizApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'In The Biz AI',
-      debugShowCheckedModeBanner: false,
-      home: const AuthWrapper(),
-    );
-  }
-}
-```
-
-### ~~3. ResponsiveWrapper Implementation~~
-   The ResponsiveWrapper implementation was removed because now it's making everything a vertical line.
-
-### 4. Responsive Values
-   If responsiveness is needed within screens, use LayoutBuilder to detect screen size and provide different values.
-
-### 5. Wrap Screens in SafeArea + SingleChildScrollView (January 2, 2026)
-Any screen with overflow issues needs to be scrollable:
+### 2. Always Use SafeArea
+All screens MUST wrap their body content in `SafeArea` to prevent overlap with system UI (notches, status bars, navigation gestures):
 
 ```dart
-SafeArea(
-  child: SingleChildScrollView(
+Scaffold(
+  body: SafeArea(
     child: YourContent(),
   ),
 )
 ```
 
-### 6. Respect Text Scale Factor (January 2, 2026)
-Flutter should automatically handle this, but we need to ensure `MediaQuery` isn't being overridden anywhere.
+### 3. Make Content Scrollable
+Any screen with content that could overflow MUST use one of these scrollable widgets:
+- `SingleChildScrollView` - For simple scrolling content
+- `ListView` / `ListView.builder` - For lists
+- `CustomScrollView` - For complex scrolling layouts
+- `Expanded(child: ListView)` - Inside Column/Row
 
-### 7. Use Flexible Layouts (January 2, 2026)
-Instead of fixed heights, use:
-- `Expanded` and `Flexible` widgets
-- `MediaQuery.of(context).size.height * 0.5` (percentage-based)
-- `LayoutBuilder` for responsive sizing
+### 4. Use Responsive Values
+- ✅ Use: `MediaQuery.of(context).size.height * 0.5` (percentage-based)
+- ✅ Use: `Expanded` and `Flexible` widgets
+- ✅ Use: `LayoutBuilder` for adaptive sizing
+- ❌ Avoid: Fixed pixel heights/widths that could overflow with large text
 
-### 8. Test on Multiple Devices
-   Make sure to test your application on various devices, including mobile phones, tablets and desktop browsers, to ensure a consistent and user-friendly experience.
+### 5. Respect Text Scale Factor
+Flutter automatically handles `MediaQuery.of(context).textScaleFactor`. Never override it unless absolutely necessary.
+
+### 6. Test on Multiple Devices
+Test your application on:
+- Mobile phones with large text enabled (Android Accessibility Settings)
+- Tablets
+- Desktop browsers at different zoom levels
 
 ---
 ## 📅 CALENDAR SYNC ISSUES (NEW - January 2, 2026)
