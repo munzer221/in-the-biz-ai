@@ -4,6 +4,8 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:in_the_biz_ai/screens/dashboard_screen.dart';
 import 'package:in_the_biz_ai/screens/login_screen.dart';
 import 'package:in_the_biz_ai/screens/onboarding_screen.dart';
+import 'package:in_the_biz_ai/screens/settings_screen.dart';
+import 'package:in_the_biz_ai/screens/quickbooks_callback_screen.dart';
 import 'package:in_the_biz_ai/providers/shift_provider.dart';
 import 'package:in_the_biz_ai/providers/theme_provider.dart';
 import 'package:in_the_biz_ai/providers/field_order_provider.dart';
@@ -60,6 +62,19 @@ class InTheBizApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           theme: themeProvider.getThemeData(),
           home: const AuthWrapper(),
+          routes: {
+            '/settings': (context) => const SettingsScreen(),
+            '/quickbooks-callback': (context) => const QuickBooksCallbackScreen(),
+          },
+          onGenerateRoute: (settings) {
+            // Handle /quickbooks-callback route for web
+            if (settings.name == '/quickbooks-callback') {
+              return MaterialPageRoute(
+                builder: (context) => const QuickBooksCallbackScreen(),
+              );
+            }
+            return null;
+          },
         );
       },
     );
