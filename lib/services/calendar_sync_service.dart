@@ -103,8 +103,14 @@ class CalendarSyncService {
             ? '${event.start!.hour.toString().padLeft(2, '0')}:${event.start!.minute.toString().padLeft(2, '0')}'
             : null;
 
-        // BULLETPROOF duplicate check: Same date + same start time + same job
+        // ENHANCED duplicate check: Check calendar event ID first, then date/time/job
         final isDuplicate = existingShifts.any((shift) {
+          // Primary check: If calendar event ID matches, it's definitely a duplicate
+          if (event.eventId != null && shift.calendarEventId == event.eventId) {
+            return true;
+          }
+          
+          // Secondary check: Same date + time + job (for events without ID or pre-existing shifts)
           return shift.jobId == jobId &&
               shift.date.year == event.start!.year &&
               shift.date.month == event.start!.month &&
