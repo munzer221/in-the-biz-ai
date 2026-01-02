@@ -1304,62 +1304,67 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
         ),
         body: Form(
           key: _formKey,
-          child: ListView(
-            padding: const EdgeInsets.fromLTRB(
-                16, 16, 16, 90), // Bottom padding for fixed AI bar
-            children: [
-              // Photo Thumbnails (if any photos captured)
-              if (_capturedPhotos.isNotEmpty) ...[
-                _buildPhotoThumbnails(),
-                const SizedBox(height: 16),
-              ],
+          child: Consumer<FieldOrderProvider>(
+            builder: (context, fieldOrderProvider, _) {
+              return ReorderableListView(
+                padding: const EdgeInsets.fromLTRB(
+                    16, 16, 16, 90), // Bottom padding for fixed AI bar
+                onReorder: (oldIndex, newIndex) {
+                  _handleReorder(
+                      oldIndex, newIndex, fieldOrderProvider.formFieldOrder);
+                },
+                children: [
+                  // Photo Thumbnails (if any photos captured) - NOT reorderable
+                  if (_capturedPhotos.isNotEmpty) ...[
+                    _buildPhotoThumbnails(key: const ValueKey('photos')),
+                    const SizedBox(
+                        key: ValueKey('photos_spacer'), height: 16),
+                  ],
 
-              // Hero Card - Income Summary (NOT collapsible)
-              _buildHeroCard(),
+                  // Hero Card - Income Summary (NOT reorderable)
+                  _buildHeroCard(key: const ValueKey('hero_card')),
 
-              const SizedBox(height: 16),
+                  const SizedBox(key: ValueKey('hero_spacer'), height: 16),
 
-              // My Job Selector (Collapsible)
-              _buildJobSelector(),
+                  // My Job Selector (NOT reorderable)
+                  _buildJobSelector(key: const ValueKey('job_selector')),
 
-              const SizedBox(height: 16),
+                  const SizedBox(key: ValueKey('job_spacer'), height: 16),
 
-              // Date (NOT collapsible, always visible)
-              _buildDateSelector(),
+                  // Date (NOT reorderable)
+                  _buildDateSelector(key: const ValueKey('date_selector')),
 
-              const SizedBox(height: 16),
+                  const SizedBox(key: ValueKey('date_spacer'), height: 16),
 
-              // Time Section (Collapsible)
-              _buildTimeSection(),
+                  // Recurring Shift Section (only for future dates) - NOT reorderable
+                  if (widget.existingShift == null &&
+                      _selectedDate.isAfter(DateTime.now())) ...[
+                    _buildRecurringSection(key: const ValueKey('recurring')),
+                    const SizedBox(
+                        key: ValueKey('recurring_spacer'), height: 16),
+                  ],
 
-              const SizedBox(height: 16),
+                  // Reorderable dynamic sections based on field order
+                  ..._buildOrderedSections(fieldOrderProvider.formFieldOrder),
 
-              // Recurring Shift Section (only for future dates without earnings)
-              if (widget.existingShift == null &&
-                  _selectedDate.isAfter(DateTime.now()))
-                _buildRecurringSection(),
+                  // Attachments Section (for existing shifts) - Could be reorderable
+                  if (widget.existingShift != null) ...[
+                    _buildAttachmentsSection(
+                        key: const ValueKey('attachments')),
+                    const SizedBox(
+                        key: ValueKey('attachments_spacer'), height: 16),
+                  ],
 
-              if (widget.existingShift == null &&
-                  _selectedDate.isAfter(DateTime.now()))
-                const SizedBox(height: 16),
-
-              // Dynamic sections based on job template
-              if (_template != null) ..._buildDynamicSections(),
-
-              const SizedBox(height: 16),
-
-              // Attachments Section (for existing shifts)
-              if (widget.existingShift != null) ...[
-                _buildAttachmentsSection(),
-                const SizedBox(height: 16),
-              ],
-
-              // Event Team Section (for existing shifts)
-              if (widget.existingShift != null) ...[
-                _buildEventTeamSection(),
-                const SizedBox(height: 16),
-              ],
-            ],
+                  // Event Team Section (for existing shifts) - Could be reorderable
+                  if (widget.existingShift != null) ...[
+                    _buildEventTeamSection(
+                        key: const ValueKey('event_team')),
+                    const SizedBox(
+                        key: ValueKey('event_team_spacer'), height: 16),
+                  ],
+                ],
+              );
+            },
           ),
         ),
       ),
@@ -1434,6 +1439,93 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
         ],
       ),
     );
+  }
+
+  /// Handle reordering of sections
+  void _handleReorder(int oldIndex, int newIndex, List<String> currentOrder) {
+    // Adjust indices if needed
+    if (newIndex > oldIndex) {
+      newIndex -= 1;
+    }
+
+    final updatedOrder = List<String>.from(currentOrder);
+    final item = updatedOrder.removeAt(oldIndex);
+    updatedOrder.insert(newIndex, item);
+
+    // Save the new order
+    final fieldOrderProvider =
+        Provider.of<FieldOrderProvider>(context, listen: false);
+    fieldOrderProvider.updateFormFieldOrder(updatedOrder);
+
+    // Show success snackbar
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: const Text('✓ Layout saved'),
+        backgroundColor: AppTheme.successColor,
+        duration: const Duration(seconds: 2),
+      ),
+    );
+  }
+
+  /// Build sections in the order specified by field order provider
+  List<Widget> _buildOrderedSections(List<String> fieldOrder) {
+    final widgets = <Widget>[];
+
+    for (final sectionKey in fieldOrder) {
+      // Only show sections if template allows them
+      if (_template == null) continue;
+
+      switch (sectionKey) {
+        case 'time_section':
+          widgets.add(_buildTimeSection(key: const ValueKey('time_section')));
+          widgets.add(const SizedBox(
+              key: ValueKey('time_section_spacer'), height: 16));
+          break;
+
+        case 'earnings_section':
+          if (_template!.showTips || _template!.showCommission) {
+            widgets.add(_buildEarningsSection(
+                key: const ValueKey('earnings_section')));
+            widgets.add(const SizedBox(
+                key: ValueKey('earnings_section_spacer'), height: 16));
+          }
+          break;
+
+        case 'event_details_section':
+          if (_template!.showEventName ||
+              _template!.showHostess ||
+              _template!.showGuestCount) {
+            widgets.add(_buildEventDetailsSection(
+                key: const ValueKey('event_details_section')));
+            widgets.add(const SizedBox(
+                key: ValueKey('event_details_section_spacer'), height: 16));
+          }
+          break;
+
+        case 'work_details_section':
+          if (_template!.showLocation ||
+              _template!.showClientName ||
+              _template!.showProjectName ||
+              _template!.showMileage) {
+            widgets.add(_buildWorkDetailsSection(
+                key: const ValueKey('work_details_section')));
+            widgets.add(const SizedBox(
+                key: ValueKey('work_details_section_spacer'), height: 16));
+          }
+          break;
+
+        case 'documentation_section':
+          if (_template!.showNotes || _template!.showPhotos) {
+            widgets.add(_buildDocumentationSection(
+                key: const ValueKey('documentation_section')));
+            widgets.add(const SizedBox(
+                key: ValueKey('documentation_section_spacer'), height: 16));
+          }
+          break;
+      }
+    }
+
+    return widgets;
   }
 
   Widget _buildHeroStat(String label, String value) {
