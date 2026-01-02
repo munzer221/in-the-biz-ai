@@ -1629,8 +1629,9 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
     );
   }
 
-  Widget _buildDateSelector() {
+  Widget _buildDateSelector({Key? key}) {
     return GestureDetector(
+      key: key,
       onTap: () async {
         final date = await showDatePicker(
           context: context,
@@ -1672,7 +1673,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
     );
   }
 
-  Widget _buildTimeSection() {
+  Widget _buildTimeSection({Key? key}) {
     final hours = _calculateHours();
     final isUsingTimeRange = _startTime != null && _endTime != null;
     final manualHours = double.tryParse(_hoursWorkedController.text) ?? 0;
@@ -1680,6 +1681,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
     final hoursText = displayHours > 0 ? ': ${_formatHours(displayHours)}' : '';
 
     return CollapsibleSection(
+      key: key,
       title: 'Time & Hours$hoursText',
       icon: Icons.access_time,
       children: [
@@ -1920,8 +1922,9 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
     );
   }
 
-  Widget _buildRecurringSection() {
+  Widget _buildRecurringSection({Key? key}) {
     return CollapsibleSection(
+      key: key,
       title: 'Repeat Schedule',
       icon: Icons.repeat,
       initiallyExpanded: _isRecurring,
@@ -2056,7 +2059,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
     return sections;
   }
 
-  Widget _buildEarningsSection() {
+  Widget _buildEarningsSection({Key? key}) {
     final cashTips = double.tryParse(_cashTipsController.text) ?? 0;
     final creditTips = double.tryParse(_creditTipsController.text) ?? 0;
     final commission = double.tryParse(_commissionController.text) ?? 0;
@@ -2066,6 +2069,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
         totalEarnings > 0 ? ': ${_formatCurrency(totalEarnings)}' : '';
 
     return CollapsibleSection(
+      key: key,
       title: 'Earnings$earningsText',
       icon: Icons.attach_money,
       accentColor: AppTheme.primaryGreen,
@@ -2575,8 +2579,9 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
     );
   }
 
-  Widget _buildWorkDetailsSection() {
+  Widget _buildWorkDetailsSection({Key? key}) {
     return CollapsibleSection(
+      key: key,
       title: 'Work Details',
       icon: Icons.location_on,
       accentColor: AppTheme.accentBlue,
@@ -3704,8 +3709,9 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
     );
   }
 
-  Widget _buildDocumentationSection() {
+  Widget _buildDocumentationSection({Key? key}) {
     return CollapsibleSection(
+      key: key,
       title: 'Documentation',
       icon: Icons.description,
       accentColor: AppTheme.textSecondary,
@@ -3779,8 +3785,9 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
     );
   }
 
-  Widget _buildPhotoThumbnails() {
+  Widget _buildPhotoThumbnails({Key? key}) {
     return Container(
+      key: key,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: AppTheme.cardBackground,
@@ -4526,10 +4533,11 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
     }
   }
 
-  Widget _buildAttachmentsSection() {
+  Widget _buildAttachmentsSection({Key? key}) {
     if (widget.existingShift == null) return const SizedBox.shrink();
 
     return Container(
+      key: key,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: AppTheme.cardBackground,
