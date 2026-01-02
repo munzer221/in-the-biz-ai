@@ -790,29 +790,96 @@ class _HomeScreenState extends State<_HomeScreen> {
                         ),
                       ),
                   ] else ...[
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 12),
                     if (_selectedPeriod != 'all' && previousTotal > 0)
                       Center(
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(
-                              percentChange >= 0
-                                  ? Icons.trending_up
-                                  : Icons.trending_down,
-                              color: Colors.black54,
-                              size: 18,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 10,
+                          ),
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: percentChange >= 0
+                                  ? [
+                                      AppTheme.primaryGreen.withOpacity(0.2),
+                                      AppTheme.primaryGreen.withOpacity(0.1),
+                                    ]
+                                  : [
+                                      AppTheme.accentRed.withOpacity(0.2),
+                                      AppTheme.accentRed.withOpacity(0.1),
+                                    ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
                             ),
-                            const SizedBox(width: 4),
-                            Text(
-                              '${percentChange >= 0 ? '+' : ''}${percentChange.toStringAsFixed(0)}% from last ${_selectedPeriod == 'day' ? 'day' : _selectedPeriod == 'week' ? 'week' : _selectedPeriod == 'month' ? 'month' : 'year'}',
-                              style: const TextStyle(
-                                color: Colors.black54,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(
+                              color: percentChange >= 0
+                                  ? AppTheme.primaryGreen.withOpacity(0.4)
+                                  : AppTheme.accentRed.withOpacity(0.4),
+                              width: 1.5,
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: (percentChange >= 0
+                                        ? AppTheme.primaryGreen
+                                        : AppTheme.accentRed)
+                                    .withOpacity(0.2),
+                                blurRadius: 8,
+                                offset: const Offset(0, 2),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.all(4),
+                                decoration: BoxDecoration(
+                                  color: percentChange >= 0
+                                      ? AppTheme.primaryGreen.withOpacity(0.2)
+                                      : AppTheme.accentRed.withOpacity(0.2),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Icon(
+                                  percentChange >= 0
+                                      ? Icons.trending_up
+                                      : Icons.trending_down,
+                                  color: percentChange >= 0
+                                      ? AppTheme.primaryGreen
+                                      : AppTheme.accentRed,
+                                  size: 20,
+                                ),
+                              ),
+                              const SizedBox(width: 10),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '${percentChange >= 0 ? '+' : ''}${percentChange.toStringAsFixed(0)}%',
+                                    style: TextStyle(
+                                      color: percentChange >= 0
+                                          ? AppTheme.primaryGreen
+                                          : AppTheme.accentRed,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      height: 1.0,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 2),
+                                  Text(
+                                    'from last ${_selectedPeriod == 'day' ? 'day' : _selectedPeriod == 'week' ? 'week' : _selectedPeriod == 'month' ? 'month' : 'year'}',
+                                    style: TextStyle(
+                                      color: AppTheme.textSecondary,
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.w600,
+                                      height: 1.0,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                   ],
