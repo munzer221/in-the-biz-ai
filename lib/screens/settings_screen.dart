@@ -15,6 +15,7 @@ import '../theme/app_theme.dart';
 import '../models/job.dart';
 import '../widgets/hero_card.dart';
 import '../widgets/navigation_wrapper.dart';
+import '../widgets/field_order_settings.dart';
 import 'goals_screen.dart';
 import 'login_screen.dart';
 import 'calendar_sync_screen.dart';
@@ -357,6 +358,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   _buildSectionHeader('APPEARANCE'),
                   const SizedBox(height: 12),
                   _buildAppearanceTile(),
+
+                  const SizedBox(height: 24),
+
+                  // Field Layout Section
+                  _buildSectionHeader('FIELD LAYOUT'),
+                  const SizedBox(height: 12),
+                  const FieldOrderSettings(),
 
                   const SizedBox(height: 24),
 

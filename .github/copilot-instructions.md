@@ -617,9 +617,11 @@ On Windows, configure Docker Desktop to start automatically to ensure the Supaba
 
 ---
 
-## 🤖 AI VISION FEATURES - UI DESIGN (NEW - December 31, 2025)
+## 🤖 AI VISION FEATURES - UI DESIGN (UPDATED - January 2, 2026)
 
 This section defines the UI placement strategy for the AI Vision features.
+
+**Consolidated Vision:** The AI Vision features and logic are now consolidated into `docs/AI_VISION_MASTER_BLUEPRINT.md`.
 
 **Core Principle:** A unified Scan button provides access to all AI-powered scanning functionalities.
 
@@ -732,6 +734,4 @@ Test your application on:
 
 When debugging calendar sync issues, remember:
 
--   The `device_calendar` and `permission_handler` plugins **don't support web browsers**. They're native mobile plugins that require iOS/Android code. When "Grant Calendar Access" is clicked on the web app, the code runs but silently fails because those APIs don't exist in browsers.
-- The best approach for Web Calendar Integration Options is:
-    - **For Web:** Use Google Calendar API
+-   The `device_calendar` and `permission_handler` plugins **don't support web browsers**. They're native mobile plugins that require iOS/Android code. When "Grant Calendar Access" is clicked on the web app, the code runs but silently fails because those APIs
