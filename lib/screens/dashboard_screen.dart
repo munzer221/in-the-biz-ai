@@ -10,7 +10,7 @@ import '../screens/all_shifts_screen.dart';
 import '../screens/better_calendar_screen.dart';
 import '../widgets/hero_card.dart';
 import '../screens/assistant_screen.dart';
-import '../screens/stats_screen.dart';
+import '../screens/stats_with_checkout_tab.dart';
 import '../screens/single_shift_detail_screen.dart';
 import '../screens/settings_screen.dart';
 import '../screens/goals_screen.dart';
@@ -45,7 +45,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     const _HomeScreen(),
     const BetterCalendarScreen(),
     const AssistantScreen(),
-    const StatsScreen(),
+    const StatsWithCheckoutTab(),
   ];
 
   @override
