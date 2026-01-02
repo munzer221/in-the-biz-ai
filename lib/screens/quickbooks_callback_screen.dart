@@ -9,7 +9,8 @@ class QuickBooksCallbackScreen extends StatefulWidget {
   const QuickBooksCallbackScreen({super.key});
 
   @override
-  State<QuickBooksCallbackScreen> createState() => _QuickBooksCallbackScreenState();
+  State<QuickBooksCallbackScreen> createState() =>
+      _QuickBooksCallbackScreenState();
 }
 
 class _QuickBooksCallbackScreenState extends State<QuickBooksCallbackScreen> {
@@ -52,7 +53,8 @@ class _QuickBooksCallbackScreenState extends State<QuickBooksCallbackScreen> {
       }
 
       // Exchange code for token
-      final success = await QuickBooksService.exchangeCodeForToken(code, realmId);
+      final success =
+          await QuickBooksService.exchangeCodeForToken(code, realmId);
 
       setState(() {
         _isProcessing = false;
@@ -66,7 +68,8 @@ class _QuickBooksCallbackScreenState extends State<QuickBooksCallbackScreen> {
       if (success) {
         await Future.delayed(const Duration(seconds: 2));
         if (mounted) {
-          Navigator.of(context).pushNamedAndRemoveUntil('/settings', (route) => false);
+          Navigator.of(context)
+              .pushNamedAndRemoveUntil('/settings', (route) => false);
         }
       }
     } catch (e) {

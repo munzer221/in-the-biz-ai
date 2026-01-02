@@ -64,7 +64,8 @@ class InTheBizApp extends StatelessWidget {
           home: const AuthWrapper(),
           routes: {
             '/settings': (context) => const SettingsScreen(),
-            '/quickbooks-callback': (context) => const QuickBooksCallbackScreen(),
+            '/quickbooks-callback': (context) =>
+                const QuickBooksCallbackScreen(),
           },
           onGenerateRoute: (settings) {
             // Handle /quickbooks-callback route for web
