@@ -416,11 +416,16 @@ class _ExportShiftsScreenState extends State<ExportShiftsScreen> {
                                     ),
                                 ],
                               ),
-                              secondary: Text(
-                                _currencyFormat.format(shift.totalIncome),
-                                style: AppTheme.bodyLarge.copyWith(
-                                  color: AppTheme.primaryGreen,
-                                  fontWeight: FontWeight.bold,
+                              secondary: Container(
+                                width: 80,
+                                alignment: Alignment.centerRight,
+                                child: Text(
+                                  _currencyFormat.format(shift.totalIncome),
+                                  style: AppTheme.bodyLarge.copyWith(
+                                    color: AppTheme.primaryGreen,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  textAlign: TextAlign.right,
                                 ),
                               ),
                             );
