@@ -2446,7 +2446,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
     );
   }
 
-  Widget _buildEventDetailsSection() {
+  Widget _buildEventDetailsSection({Key? key}) {
     final guestCount = int.tryParse(_guestCountController.text);
     String summary = 'Event Details';
 
@@ -2455,6 +2455,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
     }
 
     return CollapsibleSection(
+      key: key,
       title: summary,
       icon: Icons.celebration,
       accentColor: AppTheme.accentYellow,
