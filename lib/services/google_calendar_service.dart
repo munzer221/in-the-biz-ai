@@ -13,6 +13,7 @@ class GoogleCalendarService {
   final DatabaseService _db = DatabaseService();
   calendar.CalendarApi? _calendarApi;
   static bool _initialized = false;
+  GoogleSignInAccount? _currentUser;
 
   /// Initialize Google Calendar API with authenticated client
   Future<bool> initialize() async {
@@ -25,29 +26,39 @@ class GoogleCalendarService {
       if (!_initialized) {
         await GoogleSignIn.instance.initialize();
         _initialized = true;
+        
+        // Listen to authentication events
+        GoogleSignIn.instance.authenticationEvents.listen((event) {
+          if (event is GoogleSignInAuthenticationEventSignIn) {
+            _currentUser = event.user;
+          } else if (event is GoogleSignInAuthenticationEventSignOut) {
+            _currentUser = null;
+          }
+        });
       }
-
-      // Get the authentication events stream to check if user is signed in
-      final signInEvents = GoogleSignIn.instance.authenticationEvents;
 
       // Try lightweight authentication first
       await GoogleSignIn.instance.attemptLightweightAuthentication();
-
-      // Wait briefly for authentication event
-      final currentAuth = await signInEvents.first.timeout(
-        const Duration(seconds: 2),
-        onTimeout: () => null,
-      );
-
-      if (currentAuth == null) {
+      
+      // Wait a moment for authentication to complete
+      await Future.delayed(const Duration(milliseconds: 500));
+      
+      if (_currentUser == null) {
         return false; // Not signed in
       }
 
-      // Get authorized client using the current authorization
-      final authClient =
-          await currentAuth.authClient(scopes: AuthService.calendarScopes);
+      // Check if we already have authorization for calendar scopes
+      final authorization = await _currentUser!.authorizationClient
+          .authorizationForScopes(AuthService.calendarScopes);
+      
+      if (authorization == null) {
+        return false; // Not authorized yet
+      }
 
-      _calendarApi = calendar.CalendarApi(authClient);
+      // Get authenticated HTTP client
+      final httpClient = authorization.authClient(scopes: AuthService.calendarScopes);
+      
+      _calendarApi = calendar.CalendarApi(httpClient);
       return true;
     } catch (e) {
       print('Error initializing Google Calendar API: $e');
@@ -66,22 +77,35 @@ class GoogleCalendarService {
       if (!_initialized) {
         await GoogleSignIn.instance.initialize();
         _initialized = true;
+        
+        // Listen to authentication events
+        GoogleSignIn.instance.authenticationEvents.listen((event) {
+          if (event is GoogleSignInAuthenticationEventSignIn) {
+            _currentUser = event.user;
+          } else if (event is GoogleSignInAuthenticationEventSignOut) {
+            _currentUser = null;
+          }
+        });
       }
 
-      // Authenticate user
-      await GoogleSignIn.instance.authenticate();
-
-      // Get the authentication event
-      final auth = await GoogleSignIn.instance.authenticationEvents.first;
+      // Authenticate user if not already signed in
+      if (_currentUser == null) {
+        await GoogleSignIn.instance.authenticate();
+        
+        // Wait for authentication event
+        await Future.delayed(const Duration(milliseconds: 500));
+        
+        if (_currentUser == null) {
+          return false;
+        }
+      }
 
       // Request authorization for calendar scopes
-      final authorization = await auth.authorizationClient.authorizeScopes(
-        AuthService.calendarScopes,
-      );
+      final authorization = await _currentUser!.authorizationClient
+          .authorizeScopes(AuthService.calendarScopes);
 
       // Get authenticated HTTP client
-      final httpClient =
-          authorization.authClient(scopes: AuthService.calendarScopes);
+      final httpClient = authorization.authClient(scopes: AuthService.calendarScopes);
 
       _calendarApi = calendar.CalendarApi(httpClient);
 
