@@ -732,4 +732,6 @@ Test your application on:
 
 When debugging calendar sync issues, remember:
 
--   The `device
+-   The `device_calendar` and `permission_handler` plugins **don't support web browsers**. They're native mobile plugins that require iOS/Android code. When "Grant Calendar Access" is clicked on the web app, the code runs but silently fails because those APIs don't exist in browsers.
+- The best approach for Web Calendar Integration Options is:
+    - **For Web:** Use Google Calendar API
