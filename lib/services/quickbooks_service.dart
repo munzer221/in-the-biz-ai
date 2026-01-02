@@ -10,8 +10,10 @@ class QuickBooksService {
   static const String _clientId = 'YOUR_QB_CLIENT_ID'; // Set in production
   static const String _clientSecret = 'YOUR_QB_CLIENT_SECRET';
   static const String _redirectUri = 'https://inthebiz.app/quickbooks-callback';
-  static const String _authEndpoint = 'https://appcenter.intuit.com/connect/oauth2';
-  static const String _tokenEndpoint = 'https://oauth.platform.intuit.com/oauth2/v1/tokens/bearer';
+  static const String _authEndpoint =
+      'https://appcenter.intuit.com/connect/oauth2';
+  static const String _tokenEndpoint =
+      'https://oauth.platform.intuit.com/oauth2/v1/tokens/bearer';
   static const String _apiEndpoint = 'https://quickbooks.api.intuit.com/v3';
 
   // Storage keys
@@ -29,7 +31,8 @@ class QuickBooksService {
     if (accessToken == null || expiresAt == null) return false;
 
     // Check if token is still valid (with 5 min buffer)
-    final isValid = DateTime.now().millisecondsSinceEpoch < (expiresAt - 300000);
+    final isValid =
+        DateTime.now().millisecondsSinceEpoch < (expiresAt - 300000);
     return isValid;
   }
 
@@ -47,7 +50,8 @@ class QuickBooksService {
   /// Exchange authorization code for access token
   static Future<bool> exchangeCodeForToken(String code, String realmId) async {
     try {
-      final credentials = base64Encode(utf8.encode('$_clientId:$_clientSecret'));
+      final credentials =
+          base64Encode(utf8.encode('$_clientId:$_clientSecret'));
 
       final response = await http.post(
         Uri.parse(_tokenEndpoint),
@@ -89,7 +93,8 @@ class QuickBooksService {
 
       if (refreshToken == null) return false;
 
-      final credentials = base64Encode(utf8.encode('$_clientId:$_clientSecret'));
+      final credentials =
+          base64Encode(utf8.encode('$_clientId:$_clientSecret'));
 
       final response = await http.post(
         Uri.parse(_tokenEndpoint),
@@ -130,7 +135,8 @@ class QuickBooksService {
     required int expiresIn,
   }) async {
     final prefs = await SharedPreferences.getInstance();
-    final expiresAt = DateTime.now().millisecondsSinceEpoch + (expiresIn * 1000);
+    final expiresAt =
+        DateTime.now().millisecondsSinceEpoch + (expiresIn * 1000);
 
     await prefs.setString(_accessTokenKey, accessToken);
     await prefs.setString(_refreshTokenKey, refreshToken);
@@ -196,7 +202,10 @@ class QuickBooksService {
           'name': customerName,
         },
         'TxnDate': invoiceDate.toIso8601String().split('T')[0],
-        'DueDate': invoiceDate.add(const Duration(days: 30)).toIso8601String().split('T')[0],
+        'DueDate': invoiceDate
+            .add(const Duration(days: 30))
+            .toIso8601String()
+            .split('T')[0],
       };
 
       final response = await http.post(

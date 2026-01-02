@@ -181,9 +181,8 @@ class _EventPortfolioScreenState extends State<EventPortfolioScreen> {
     if (imageUrls != null && imageUrls.isNotEmpty) {
       final imagePath = imageUrls.first.toString();
       // Get public URL from Supabase storage
-      firstImageUrl = _db.supabase.storage
-          .from('beo-scans')
-          .getPublicUrl(imagePath);
+      firstImageUrl =
+          _db.supabase.storage.from('beo-scans').getPublicUrl(imagePath);
     }
 
     return GestureDetector(
