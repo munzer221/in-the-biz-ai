@@ -379,7 +379,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
                           color: AppTheme.accentBlue.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                          borderRadius:
+                              BorderRadius.circular(AppTheme.radiusMedium),
                           border: Border.all(
                             color: AppTheme.accentBlue.withOpacity(0.3),
                             width: 1,
@@ -1967,8 +1968,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               child: Icon(Icons.sync, color: AppTheme.primaryGreen),
             ),
-            title: Text('Auto-Sync to Calendar',
-                style: AppTheme.bodyMedium),
+            title: Text('Auto-Sync to Calendar', style: AppTheme.bodyMedium),
             subtitle: Text(
               kIsWeb
                   ? 'Automatically export new shifts to Google Calendar'
