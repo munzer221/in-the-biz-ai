@@ -18,6 +18,8 @@ import '../providers/shift_provider.dart';
 import '../providers/field_order_provider.dart';
 import '../services/database_service.dart';
 import '../services/notification_service.dart';
+import '../services/ad_service.dart';
+import '../services/subscription_service.dart';
 import '../theme/app_theme.dart';
 import '../widgets/collapsible_section.dart';
 import '../widgets/hero_card.dart';
@@ -686,6 +688,13 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
       return;
     }
 
+    // Check for Pro status and show ad if needed
+    final subscriptionService =
+        Provider.of<SubscriptionService>(context, listen: false);
+    if (!subscriptionService.isPro) {
+      await AdService().showInterstitialAd();
+    }
+
     setState(() => _isSaving = true);
 
     try {
@@ -1130,6 +1139,221 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
             title: Text('Choose File', style: AppTheme.bodyMedium),
             subtitle: Text(
               'PDF, Word, Excel, images, videos, etc.',
+              style: AppTheme.labelSmall.copyWith(color: AppTheme.textMuted),
+            ),
+            onTap: () {
+              Navigator.pop(context);
+              _pickFile();
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  // ============================================================================
+  // UNIFIED AI VISION SCANNER SYSTEM
+  // ============================================================================
+  
+  /// Handle scan type selection from the bottom sheet menu
+  void _handleScanTypeSelected(ScanType scanType) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => DocumentScannerScreen(
+          scanType: scanType,
+          onScanComplete: _handleScanComplete,
+        ),
+      ),
+    );
+  }
+
+  /// Handle completed scan session - process images with AI
+  Future<void> _handleScanComplete(DocumentScanSession session) async {
+    // Show loading indicator
+    if (!mounted) return;
+    
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Row(
+          children: [
+            SizedBox(
+              width: 20,
+              height: 20,
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+                color: Colors.white,
+              ),
+            ),
+            const SizedBox(width: 12),
+            Text('Processing ${session.pageCount} page${session.pageCount == 1 ? '' : 's'} with AI...'),
+          ],
+        ),
+        duration: const Duration(seconds: 30),
+        backgroundColor: AppTheme.primaryGreen.withOpacity(0.9),
+      ),
+    );
+
+    try {
+      // Route to appropriate handler based on scan type
+      switch (session.scanType) {
+        case ScanType.beo:
+          await _processBEOScan(session);
+          break;
+        case ScanType.checkout:
+          await _processCheckoutScan(session);
+          break;
+        case ScanType.businessCard:
+          await _processBusinessCardScan(session);
+          break;
+        case ScanType.paycheck:
+          await _processPaycheckScan(session);
+          break;
+        case ScanType.invoice:
+          await _processInvoiceScan(session);
+          break;
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).clearSnackBars();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Scan processing failed: $e'),
+            backgroundColor: AppTheme.dangerColor,
+          ),
+        );
+      }
+    }
+  }
+
+  /// Process BEO scan - Extract event details
+  Future<void> _processBEOScan(DocumentScanSession session) async {
+    // TODO: Call analyze-beo Edge Function
+    // TODO: Show verification screen with extracted data
+    // TODO: Pre-fill shift form fields
+    if (mounted) {
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('BEO Scanner: Coming soon!')),
+      );
+    }
+  }
+
+  /// Process server checkout scan - Extract financial data
+  Future<void> _processCheckoutScan(DocumentScanSession session) async {
+    // TODO: Call analyze-checkout Edge Function
+    // TODO: Detect POS system
+    // TODO: Extract sales, tips, tipout
+    // TODO: Validate math (Net Tips = Gross - Tipout)
+    // TODO: Show verification screen
+    if (mounted) {
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Checkout Scanner: Coming soon!')),
+      );
+    }
+  }
+
+  /// Process business card scan - Add contact
+  Future<void> _processBusinessCardScan(DocumentScanSession session) async {
+    // TODO: Call scan-business-card Edge Function
+    // TODO: Extract name, company, role, phone, email, socials
+    // TODO: Show add contact screen pre-filled
+    if (mounted) {
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Business Card Scanner: Coming soon!')),
+      );
+    }
+  }
+
+  /// Process paycheck scan - Track W-2 income
+  Future<void> _processPaycheckScan(DocumentScanSession session) async {
+    // TODO: Call analyze-paycheck Edge Function
+    // TODO: Extract pay period, gross, taxes, YTD
+    // TODO: Run Reality Check (compare to logged shifts)
+    // TODO: Show verification screen
+    if (mounted) {
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Paycheck Scanner: Coming soon!')),
+      );
+    }
+  }
+
+  /// Process invoice scan - Track freelancer income
+  Future<void> _processInvoiceScan(DocumentScanSession session) async {
+    // TODO: Call analyze-invoice Edge Function
+    // TODO: Extract client, amount, due date
+    // TODO: QuickBooks integration
+    // TODO: Show verification screen
+    if (mounted) {
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Invoice Scanner: Coming soon!')),
+      );
+    }
+  }
+
+  /// Consolidated attachment menu - Take Photo, Record Video, Pick from Gallery, Attach File
+  Future<void> _showConsolidatedAttachmentMenu() async {
+    await showMenu(
+      context: context,
+      position: RelativeRect.fromLTRB(
+        MediaQuery.of(context).size.width - 250, // Right side
+        kToolbarHeight + 10, // Just below the app bar
+        10,
+        0,
+      ),
+      color: AppTheme.cardBackground,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+      ),
+      items: [
+        PopupMenuItem(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: ListTile(
+            contentPadding: const EdgeInsets.symmetric(horizontal: 8),
+            leading: Icon(Icons.camera_alt, color: AppTheme.primaryGreen),
+            title: Text('Take Photo', style: AppTheme.bodyMedium),
+            onTap: () {
+              Navigator.pop(context);
+              _pickImageFromCamera();
+            },
+          ),
+        ),
+        PopupMenuItem(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: ListTile(
+            contentPadding: const EdgeInsets.symmetric(horizontal: 8),
+            leading: Icon(Icons.videocam, color: AppTheme.accentBlue),
+            title: Text('Record Video', style: AppTheme.bodyMedium),
+            onTap: () {
+              Navigator.pop(context);
+              _pickVideoFromCamera();
+            },
+          ),
+        ),
+        PopupMenuItem(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: ListTile(
+            contentPadding: const EdgeInsets.symmetric(horizontal: 8),
+            leading: Icon(Icons.photo_library, color: AppTheme.primaryGreen),
+            title: Text('Pick from Gallery', style: AppTheme.bodyMedium),
+            onTap: () {
+              Navigator.pop(context);
+              _pickImageFromGallery();
+            },
+          ),
+        ),
+        PopupMenuItem(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: ListTile(
+            contentPadding: const EdgeInsets.symmetric(horizontal: 8),
+            leading: Icon(Icons.insert_drive_file, color: AppTheme.accentOrange),
+            title: Text('Choose File', style: AppTheme.bodyMedium),
+            subtitle: Text(
+              'PDF, Word, Excel, etc.',
               style: AppTheme.labelSmall.copyWith(color: AppTheme.textMuted),
             ),
             onTap: () {
