@@ -576,7 +576,7 @@ class _HomeScreenState extends State<_HomeScreen> {
             enabled: themeProvider.shimmerEffects,
             child: HeroCard(
               margin: const EdgeInsets.symmetric(horizontal: 16),
-              padding: const EdgeInsets.all(18),
+              padding: const EdgeInsets.all(14),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -649,7 +649,7 @@ class _HomeScreenState extends State<_HomeScreen> {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 8),
                   ],
                   // Period Selector Chips (smaller, distinct style)
                   Center(
@@ -671,13 +671,13 @@ class _HomeScreenState extends State<_HomeScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 8),
                   Center(
                     child: Text(
                       currencyFormat.format(periodTotal),
                       style: TextStyle(
                         color: AppTheme.primaryGreen,
-                        fontSize: 32,
+                        fontSize: 28,
                         fontWeight: FontWeight.bold,
                         letterSpacing: -1,
                         shadows: AppTheme.textShadow,
@@ -693,7 +693,7 @@ class _HomeScreenState extends State<_HomeScreen> {
                         '💰 ${currencyFormat.format(netTips)} net (${currencyFormat.format(grossTips)} - ${currencyFormat.format(totalTipout)} tipout)',
                         style: TextStyle(
                           color: AppTheme.textSecondary,
-                          fontSize: 11,
+                          fontSize: 10,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -702,11 +702,11 @@ class _HomeScreenState extends State<_HomeScreen> {
 
                   // Goal progress bar with percentage and target inside
                   if (_activeGoal != null) ...[
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 8),
                     Stack(
                       children: [
                         Container(
-                          height: 32,
+                          height: 28,
                           decoration: BoxDecoration(
                             color: AppTheme.primaryGreen.withOpacity(0.25),
                             borderRadius: BorderRadius.circular(16),
@@ -723,13 +723,13 @@ class _HomeScreenState extends State<_HomeScreen> {
                               valueColor: AlwaysStoppedAnimation<Color>(
                                 AppTheme.primaryGreen,
                               ),
-                              minHeight: 32,
+                              minHeight: 28,
                             ),
                           ),
                         ),
                         Positioned.fill(
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 14),
+                            padding: const EdgeInsets.symmetric(horizontal: 12),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -737,7 +737,7 @@ class _HomeScreenState extends State<_HomeScreen> {
                                   '${(goalPercent * 100).toInt()}% of goal',
                                   style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: 11,
+                                    fontSize: 10,
                                     fontWeight: FontWeight.w700,
                                     shadows: [
                                       Shadow(
@@ -753,7 +753,7 @@ class _HomeScreenState extends State<_HomeScreen> {
                                       .format(_activeGoal!.targetAmount),
                                   style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: 11,
+                                    fontSize: 10,
                                     fontWeight: FontWeight.w700,
                                     shadows: [
                                       Shadow(
@@ -772,7 +772,7 @@ class _HomeScreenState extends State<_HomeScreen> {
                     ),
                     if (goalPercent >= 1.0)
                       Padding(
-                        padding: const EdgeInsets.only(top: 6),
+                        padding: const EdgeInsets.only(top: 4),
                         child: Row(
                           children: [
                             Icon(Icons.celebration,
@@ -782,7 +782,7 @@ class _HomeScreenState extends State<_HomeScreen> {
                               'Goal reached! +${currencyFormat.format(goalProgress - _activeGoal!.targetAmount)} over',
                               style: TextStyle(
                                 color: AppTheme.primaryGreen,
-                                fontSize: 11,
+                                fontSize: 10,
                                 fontWeight: FontWeight.w600,
                                 shadows: AppTheme.textShadow,
                               ),
@@ -832,16 +832,16 @@ class _HomeScreenState extends State<_HomeScreen> {
                                 color: percentChange >= 0
                                     ? AppTheme.primaryGreen
                                     : AppTheme.accentRed,
-                                size: 16,
+                                size: 14,
                               ),
-                              const SizedBox(width: 6),
+                              const SizedBox(width: 5),
                               Text(
                                 '${percentChange >= 0 ? '+' : ''}${percentChange.toStringAsFixed(0)}% from last ${_selectedPeriod == 'day' ? 'day' : _selectedPeriod == 'week' ? 'week' : _selectedPeriod == 'month' ? 'month' : 'year'}',
                                 style: TextStyle(
                                   color: percentChange >= 0
                                       ? AppTheme.primaryGreen
                                       : AppTheme.accentRed,
-                                  fontSize: 11,
+                                  fontSize: 10,
                                   fontWeight: FontWeight.w700,
                                   shadows: [
                                     Shadow(
@@ -863,7 +863,7 @@ class _HomeScreenState extends State<_HomeScreen> {
           ),
         ),
 
-        const SliverToBoxAdapter(child: SizedBox(height: 16)),
+        const SliverToBoxAdapter(child: SizedBox(height: 12)),
 
         // Quick Stats Row
         SliverToBoxAdapter(
@@ -1063,7 +1063,7 @@ class _HomeScreenState extends State<_HomeScreen> {
         });
       },
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
         decoration: BoxDecoration(
           color: isSelected ? AppTheme.primaryGreen : AppTheme.cardBackground,
           borderRadius: BorderRadius.circular(8),
@@ -1072,7 +1072,7 @@ class _HomeScreenState extends State<_HomeScreen> {
           label,
           style: TextStyle(
             color: isSelected ? AppTheme.primaryOnDark : AppTheme.textSecondary,
-            fontSize: 10,
+            fontSize: 9,
             fontWeight: isSelected ? FontWeight.w700 : FontWeight.w600,
           ),
         ),
@@ -1092,7 +1092,7 @@ class _HomeScreenState extends State<_HomeScreen> {
         },
         child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 2),
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+          padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 5),
           decoration: BoxDecoration(
             color: isSelected ? AppTheme.primaryGreen : AppTheme.cardBackground,
             borderRadius: BorderRadius.circular(8),
@@ -1105,7 +1105,7 @@ class _HomeScreenState extends State<_HomeScreen> {
             style: TextStyle(
               color:
                   isSelected ? AppTheme.primaryOnDark : AppTheme.textSecondary,
-              fontSize: 11,
+              fontSize: 10,
               fontWeight: FontWeight.w700,
             ),
           ),
