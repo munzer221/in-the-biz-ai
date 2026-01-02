@@ -30,8 +30,10 @@ import 'settings_screen.dart';
 import 'event_contacts_screen.dart';
 import 'add_edit_contact_screen.dart';
 import 'document_scanner_screen.dart';
+import 'scan_verification_screen.dart';
 import '../widgets/scan_type_menu.dart';
 import '../models/vision_scan.dart';
+import '../services/vision_scanner_service.dart';
 
 class AddShiftScreen extends StatefulWidget {
   final Shift? existingShift;
@@ -54,6 +56,7 @@ class AddShiftScreen extends StatefulWidget {
 class _AddShiftScreenState extends State<AddShiftScreen> {
   final _formKey = GlobalKey<FormState>();
   final DatabaseService _db = DatabaseService();
+  final VisionScannerService _visionScanner = VisionScannerService();
 
   // Controllers for all possible fields
   final _cashTipsController = TextEditingController();
