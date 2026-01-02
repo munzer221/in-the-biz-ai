@@ -1906,7 +1906,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               child: Icon(Icons.sync, color: AppTheme.primaryGreen),
             ),
-            title: Text('Auto-Sync to Google Calendar', style: AppTheme.bodyMedium),
+            title: Text('Auto-Sync to Google Calendar',
+                style: AppTheme.bodyMedium),
             subtitle: Text(
               'Automatically export new shifts to your calendar',
               style: AppTheme.labelSmall.copyWith(color: AppTheme.textMuted),
@@ -1935,7 +1936,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   final result = await Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (_) => const ExportShiftsScreen(isRemoveMode: false),
+                      builder: (_) =>
+                          const ExportShiftsScreen(isRemoveMode: false),
                     ),
                   );
                   if (result == true && mounted) {
@@ -1954,12 +1956,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     color: AppTheme.accentBlue.withOpacity(0.15),
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: Icon(Icons.check_circle_outline, color: AppTheme.accentBlue),
+                  child: Icon(Icons.check_circle_outline,
+                      color: AppTheme.accentBlue),
                 ),
-                title: Text('Choose Shifts to Sync', style: AppTheme.bodyMedium),
+                title:
+                    Text('Choose Shifts to Sync', style: AppTheme.bodyMedium),
                 subtitle: Text(
                   'Select specific shifts to export to Google Calendar',
-                  style: AppTheme.labelSmall.copyWith(color: AppTheme.textMuted),
+                  style:
+                      AppTheme.labelSmall.copyWith(color: AppTheme.textMuted),
                 ),
                 trailing: Icon(Icons.chevron_right, color: AppTheme.textMuted),
               ),
@@ -1979,7 +1984,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 title: Text('Sync All Shifts Now', style: AppTheme.bodyMedium),
                 subtitle: Text(
                   'Export all unsynced shifts to Google Calendar',
-                  style: AppTheme.labelSmall.copyWith(color: AppTheme.textMuted),
+                  style:
+                      AppTheme.labelSmall.copyWith(color: AppTheme.textMuted),
                 ),
                 trailing: Icon(Icons.chevron_right, color: AppTheme.textMuted),
               ),
@@ -2003,13 +2009,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   final result = await Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (_) => const ExportShiftsScreen(isRemoveMode: true),
+                      builder: (_) =>
+                          const ExportShiftsScreen(isRemoveMode: true),
                     ),
                   );
                   if (result == true && mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: const Text('Events removed from Google Calendar'),
+                        content:
+                            const Text('Events removed from Google Calendar'),
                         backgroundColor: AppTheme.accentOrange,
                       ),
                     );
@@ -2022,12 +2030,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     color: AppTheme.accentOrange.withOpacity(0.15),
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: Icon(Icons.remove_circle_outline, color: AppTheme.accentOrange),
+                  child: Icon(Icons.remove_circle_outline,
+                      color: AppTheme.accentOrange),
                 ),
-                title: Text('Unsync Specific Events', style: AppTheme.bodyMedium),
+                title:
+                    Text('Unsync Specific Events', style: AppTheme.bodyMedium),
                 subtitle: Text(
                   'Choose synced shifts to remove from calendar',
-                  style: AppTheme.labelSmall.copyWith(color: AppTheme.textMuted),
+                  style:
+                      AppTheme.labelSmall.copyWith(color: AppTheme.textMuted),
                 ),
                 trailing: Icon(Icons.chevron_right, color: AppTheme.textMuted),
               ),
@@ -2045,10 +2056,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   child: Icon(Icons.warning_amber, color: AppTheme.accentRed),
                 ),
                 title: Text('Unsync All Events',
-                    style: AppTheme.bodyMedium.copyWith(color: AppTheme.accentRed)),
+                    style: AppTheme.bodyMedium
+                        .copyWith(color: AppTheme.accentRed)),
                 subtitle: Text(
                   'Remove all synced shifts from Google Calendar',
-                  style: AppTheme.labelSmall.copyWith(color: AppTheme.textMuted),
+                  style:
+                      AppTheme.labelSmall.copyWith(color: AppTheme.textMuted),
                 ),
                 trailing: Icon(Icons.chevron_right, color: AppTheme.textMuted),
               ),
