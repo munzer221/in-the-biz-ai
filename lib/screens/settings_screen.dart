@@ -360,6 +360,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   _buildSectionHeader('EVENT CONTACTS'),
                   const SizedBox(height: 12),
                   _buildContactsDirectoryTile(),
+                  const SizedBox(height: 12),
+                  _buildEventPortfolioTile(),
 
                   const SizedBox(height: 24),
 
@@ -1278,6 +1280,44 @@ class _SettingsScreenState extends State<SettingsScreen> {
             context,
             MaterialPageRoute(builder: (_) => const EventContactsScreen()),
           );
+        },
+      ),
+    );
+  }
+
+  Widget _buildEventPortfolioTile() {
+    return Container(
+      decoration: BoxDecoration(
+        color: AppTheme.cardBackground,
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+      ),
+      child: ListTile(
+        leading: Container(
+          width: 40,
+          height: 40,
+          decoration: BoxDecoration(
+            color: AppTheme.primaryGreen.withOpacity(0.15),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Icon(Icons.photo_library, color: AppTheme.primaryGreen),
+        ),
+        title: Text('Event Portfolio', style: AppTheme.bodyMedium),
+        subtitle:
+            Text('Past BEO events with photos', style: AppTheme.bodyMedium),
+        trailing: const Icon(Icons.chevron_right),
+        onTap: () async {
+          // Import the screen dynamically
+          final eventPortfolioModule = await import(
+            '../screens/event_portfolio_screen.dart',
+          );
+          if (context.mounted) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => eventPortfolioModule.EventPortfolioScreen(),
+              ),
+            );
+          }
         },
       ),
     );

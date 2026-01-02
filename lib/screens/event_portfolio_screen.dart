@@ -176,10 +176,15 @@ class _EventPortfolioScreenState extends State<EventPortfolioScreen> {
     final venue = event['venue_name'] as String?;
     final imageUrls = event['image_urls'] as List?;
 
-    // Get first image URL if available
-    final firstImageUrl = imageUrls != null && imageUrls.isNotEmpty
-        ? imageUrls.first.toString()
-        : null;
+    // Get first image URL from Supabase storage
+    String? firstImageUrl;
+    if (imageUrls != null && imageUrls.isNotEmpty) {
+      final imagePath = imageUrls.first.toString();
+      // Get public URL from Supabase storage
+      firstImageUrl = _db.supabase.storage
+          .from('beo-scans')
+          .getPublicUrl(imagePath);
+    }
 
     return GestureDetector(
       onTap: () => _showEventDetails(event),
@@ -200,21 +205,46 @@ class _EventPortfolioScreenState extends State<EventPortfolioScreen> {
                 borderRadius: const BorderRadius.vertical(
                   top: Radius.circular(12),
                 ),
-                image: firstImageUrl != null
-                    ? DecorationImage(
-                        image: NetworkImage(firstImageUrl),
-                        fit: BoxFit.cover,
-                      )
-                    : null,
               ),
-              child: firstImageUrl == null
-                  ? Center(
-                      child: Text(
-                        _getEventEmoji(eventType),
-                        style: const TextStyle(fontSize: 48),
+              child: ClipRRect(
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(12),
+                ),
+                child: firstImageUrl != null
+                    ? Image.network(
+                        firstImageUrl,
+                        fit: BoxFit.cover,
+                        width: double.infinity,
+                        height: 120,
+                        errorBuilder: (context, error, stackTrace) {
+                          // Show emoji if image fails to load
+                          return Center(
+                            child: Text(
+                              _getEventEmoji(eventType),
+                              style: const TextStyle(fontSize: 48),
+                            ),
+                          );
+                        },
+                        loadingBuilder: (context, child, loadingProgress) {
+                          if (loadingProgress == null) return child;
+                          return Center(
+                            child: CircularProgressIndicator(
+                              value: loadingProgress.expectedTotalBytes != null
+                                  ? loadingProgress.cumulativeBytesLoaded /
+                                      loadingProgress.expectedTotalBytes!
+                                  : null,
+                              color: AppTheme.primaryGreen,
+                            ),
+                          );
+                        },
+                      )
+                    : Center(
+                        child: Text(
+                          _getEventEmoji(eventType),
+                          style: const TextStyle(fontSize: 48),
+                        ),
                       ),
-                    )
-                  : null,
+              ),
             ),
 
             // Event details
