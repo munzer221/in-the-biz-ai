@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 import '../screens/add_shift_screen.dart';
 import '../services/api_service.dart';
+import '../theme/app_theme.dart';
 
 class CameraScreen extends StatefulWidget {
   const CameraScreen({super.key});
@@ -80,16 +81,16 @@ class _CameraScreenState extends State<CameraScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.camera_alt, size: 100, color: Colors.grey),
+                  Icon(Icons.camera_alt, size: 100, color: AppTheme.textMuted),
                   const SizedBox(height: 40),
                   const Text(
                     'Scan a Document',
                     style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 10),
-                  const Text(
+                  Text(
                     'BEO, Paycheck, or Receipt',
-                    style: TextStyle(color: Colors.grey),
+                    style: TextStyle(color: AppTheme.textMuted),
                   ),
                   const SizedBox(height: 60),
                   ElevatedButton.icon(

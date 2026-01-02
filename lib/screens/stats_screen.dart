@@ -696,9 +696,9 @@ class _StatsScreenState extends State<StatsScreen> {
     final total = jobTypeData.values.fold(0.0, (a, b) => a + b);
     final colors = [
       AppTheme.primaryGreen,
-      AppTheme.primaryGreen,
-      const Color(0xFF81C784),
-      const Color(0xFFA5D6A7),
+      AppTheme.chartGreen1,
+      AppTheme.chartGreen2,
+      AppTheme.chartGreen3,
     ];
 
     return Row(
