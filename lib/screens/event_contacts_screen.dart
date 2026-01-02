@@ -325,6 +325,7 @@ class _EventContactsScreenState extends State<EventContactsScreen> {
           ),
         ],
       ),
+      ),
     );
   }
 
