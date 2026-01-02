@@ -27,7 +27,9 @@ import 'notification_settings_screen.dart';
 import 'job_grouping_screen.dart';
 import 'appearance_settings_screen.dart';
 import 'event_contacts_screen.dart';
+import 'event_portfolio_screen.dart';
 import '../services/subscription_service.dart';
+import '../services/quickbooks_service.dart';
 import 'paywall_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -1305,19 +1307,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
         subtitle:
             Text('Past BEO events with photos', style: AppTheme.bodyMedium),
         trailing: const Icon(Icons.chevron_right),
-        onTap: () async {
-          // Import the screen dynamically
-          final eventPortfolioModule = await import(
-            '../screens/event_portfolio_screen.dart',
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => const EventPortfolioScreen(),
+            ),
           );
-          if (context.mounted) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => eventPortfolioModule.EventPortfolioScreen(),
-              ),
-            );
-          }
         },
       ),
     );
