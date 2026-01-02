@@ -947,60 +947,121 @@ class _SingleShiftDetailScreenState extends State<SingleShiftDetailScreen>
               setState(() => _activeEditField = null);
             }
           },
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(24),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Combined Hero Card - Job Info + Earnings + Date
-                _buildCombinedHeroCard(),
-                const SizedBox(height: 20),
+          child: Consumer<FieldOrderProvider>(
+            builder: (context, fieldOrderProvider, _) {
+              return ReorderableListView(
+                padding: const EdgeInsets.all(24),
+                onReorder: (oldIndex, newIndex) {
+                  _handleReorder(
+                      oldIndex, newIndex, fieldOrderProvider.detailsFieldOrder);
+                },
+                children: [
+                  // Combined Hero Card - Job Info + Earnings + Date (NOT reorderable)
+                  _buildCombinedHeroCard(key: const ValueKey('hero_card')),
+                  const SizedBox(key: ValueKey('hero_spacer'), height: 20),
 
-                // BEO-Style Event Contract Section
-                _buildBEOSection(),
-                const SizedBox(height: 20),
+                  // Reorderable sections based on field order
+                  ..._buildOrderedSections(fieldOrderProvider.detailsFieldOrder),
 
-                // Income Breakdown
-                _buildBreakdownCard(),
-                const SizedBox(height: 20),
+                  // Photos (if any)
+                  if (shift.imageUrl != null && shift.imageUrl!.isNotEmpty) ...[
+                    _buildPhotosCard(context, key: const ValueKey('photos')),
+                    const SizedBox(key: ValueKey('photos_spacer'), height: 20),
+                  ],
 
-                // Photos (if any)
-                if (shift.imageUrl != null && shift.imageUrl!.isNotEmpty) ...[
-                  _buildPhotosCard(context),
-                  const SizedBox(height: 20),
+                  // File Attachments
+                  _buildAttachmentsCard(key: const ValueKey('attachments')),
+                  const SizedBox(
+                      key: ValueKey('attachments_spacer'), height: 20),
+
+                  // Event Team (Contacts)
+                  _buildEventTeamSection(key: const ValueKey('event_team')),
+                  const SizedBox(key: ValueKey('event_team_spacer'), height: 20),
+
+                  // Extra bottom padding for scrolling
+                  const SizedBox(key: ValueKey('bottom_padding'), height: 60),
                 ],
-
-                // Work Details - Always show for inline editing
-                _buildWorkDetailsCard(),
-                const SizedBox(height: 20),
-
-                // Additional Earnings - Always show for inline editing
-                _buildAdditionalEarningsCard(),
-                const SizedBox(height: 20),
-
-                // Notes - Always show for inline editing
-                _buildNotesCard(),
-                const SizedBox(height: 20),
-
-                // File Attachments
-                _buildAttachmentsCard(),
-                const SizedBox(height: 20),
-
-                // Event Team (Contacts)
-                _buildEventTeamSection(),
-                const SizedBox(height: 20),
-
-                // Extra bottom padding for scrolling
-                const SizedBox(height: 60),
-              ],
-            ),
+              );
+            },
           ),
         ), // Close GestureDetector
       ), // Close NavigationWrapper child Scaffold
     ); // Close NavigationWrapper
   }
 
-  Widget _buildEventTeamSection() {
+  /// Handle reordering of sections
+  void _handleReorder(int oldIndex, int newIndex, List<String> currentOrder) {
+    // Adjust indices if needed
+    if (newIndex > oldIndex) {
+      newIndex -= 1;
+    }
+
+    final updatedOrder = List<String>.from(currentOrder);
+    final item = updatedOrder.removeAt(oldIndex);
+    updatedOrder.insert(newIndex, item);
+
+    // Save the new order
+    final fieldOrderProvider =
+        Provider.of<FieldOrderProvider>(context, listen: false);
+    fieldOrderProvider.updateDetailsFieldOrder(updatedOrder);
+
+    // Show success snackbar
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: const Text('✓ Layout saved'),
+        backgroundColor: AppTheme.successColor,
+        duration: const Duration(seconds: 2),
+      ),
+    );
+  }
+
+  /// Build sections in the order specified by field order provider
+  List<Widget> _buildOrderedSections(List<String> fieldOrder) {
+    final widgets = <Widget>[];
+
+    for (final sectionKey in fieldOrder) {
+      switch (sectionKey) {
+        case 'earnings_section':
+          widgets.add(_buildBreakdownCard(
+              key: const ValueKey('earnings_section')));
+          widgets.add(const SizedBox(
+              key: ValueKey('earnings_section_spacer'), height: 20));
+          break;
+
+        case 'event_details_section':
+          widgets.add(_buildBEOSection(
+              key: const ValueKey('event_details_section')));
+          widgets.add(const SizedBox(
+              key: ValueKey('event_details_section_spacer'), height: 20));
+          break;
+
+        case 'work_details_section':
+          widgets.add(_buildWorkDetailsCard(
+              key: const ValueKey('work_details_section')));
+          widgets.add(const SizedBox(
+              key: ValueKey('work_details_section_spacer'), height: 20));
+          break;
+
+        case 'time_section':
+          widgets.add(_buildAdditionalEarningsCard(
+              key: const ValueKey('time_section')));
+          widgets.add(const SizedBox(
+              key: ValueKey('time_section_spacer'), height: 20));
+          break;
+
+        case 'documentation_section':
+          widgets.add(_buildNotesCard(
+              key: const ValueKey('documentation_section')));
+          widgets.add(const SizedBox(
+              key: ValueKey('documentation_section_spacer'), height: 20));
+          break;
+      }
+    }
+
+    return widgets;
+  }
+
+  Widget _buildEventTeamSection({Key? key}) {
     return Container(
       decoration: BoxDecoration(
         color: AppTheme.cardBackground,
