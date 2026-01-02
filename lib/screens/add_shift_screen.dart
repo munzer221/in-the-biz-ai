@@ -1464,7 +1464,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
         // Show Reality Check warning if applicable
         if (unreportedGap != null && unreportedGap > 100) {
           message =
-              '⚠️ Reality Check: \$${unreportedGap.toFixed(2)} in unreported tips detected. Set aside ~\$${(unreportedGap * 0.22).toFixed(2)} for taxes.';
+              '⚠️ Reality Check: \$${unreportedGap.toStringAsFixed(2)} in unreported tips detected. Set aside ~\$${(unreportedGap * 0.22).toStringAsFixed(2)} for taxes.';
         }
 
         ScaffoldMessenger.of(context).showSnackBar(

@@ -187,6 +187,13 @@ class AppTheme {
         color: textSecondary,
       );
 
+  static TextStyle get bodySmall => TextStyle(
+    fontSize: 12,
+    fontWeight: FontWeight.w400,
+    color: textSecondary,
+    letterSpacing: 0.4,
+  );
+
   static TextStyle get labelSmall => TextStyle(
         fontSize: 12,
         fontWeight: FontWeight.w500,
