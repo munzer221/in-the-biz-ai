@@ -1917,9 +1917,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
               onChanged: _setAutoSyncPreference,
             ),
           ),
-          
+
           const Divider(height: 1),
-          
+
           // Choose shifts to sync
           ListTile(
             onTap: () async {
@@ -1946,9 +1946,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
             trailing: Icon(Icons.chevron_right, color: AppTheme.textMuted),
           ),
-          
+
           const Divider(height: 1),
-          
+
           // Sync all shifts now
           ListTile(
             onTap: () => _syncAllShifts(),
@@ -1966,9 +1966,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
             trailing: Icon(Icons.chevron_right, color: AppTheme.textMuted),
           ),
-          
+
           const Divider(height: 1),
-          
+
           // Choose events to remove
           ListTile(
             onTap: () async {
@@ -1995,9 +1995,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
             trailing: Icon(Icons.chevron_right, color: AppTheme.textMuted),
           ),
-          
+
           const Divider(height: 1),
-          
+
           // Remove all synced events
           ListTile(
             onTap: () => _removeAllSyncedEvents(),
@@ -2006,8 +2006,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
               children: [
                 Icon(Icons.warning_amber, color: AppTheme.accentRed, size: 18),
                 const SizedBox(width: 6),
-                Text('Remove All Synced Events', 
-                  style: AppTheme.bodyMedium.copyWith(color: AppTheme.accentRed)),
+                Text('Remove All Synced Events',
+                    style: AppTheme.bodyMedium
+                        .copyWith(color: AppTheme.accentRed)),
               ],
             ),
             subtitle: Text(
@@ -2063,9 +2064,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
     try {
       final shiftProvider = Provider.of<ShiftProvider>(context, listen: false);
-      final unsyncedShifts = shiftProvider.shifts
-          .where((s) => s.calendarEventId == null)
-          .toList();
+      final unsyncedShifts =
+          shiftProvider.shifts.where((s) => s.calendarEventId == null).toList();
 
       int successCount = 0;
       final calendarSync = CalendarSyncService();
@@ -2107,9 +2107,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Future<void> _removeAllSyncedEvents() async {
     final shiftProvider = Provider.of<ShiftProvider>(context, listen: false);
-    final syncedCount = shiftProvider.shifts
-        .where((s) => s.calendarEventId != null)
-        .length;
+    final syncedCount =
+        shiftProvider.shifts.where((s) => s.calendarEventId != null).length;
 
     if (syncedCount == 0) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -2158,9 +2157,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
     }
 
     try {
-      final syncedShifts = shiftProvider.shifts
-          .where((s) => s.calendarEventId != null)
-          .toList();
+      final syncedShifts =
+          shiftProvider.shifts.where((s) => s.calendarEventId != null).toList();
 
       int successCount = 0;
       final calendarSync = CalendarSyncService();
@@ -2169,9 +2167,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
       for (final shift in syncedShifts) {
         bool success;
         if (kIsWeb) {
-          success = await googleCalendar.deleteCalendarEvent(shift.calendarEventId!);
+          success =
+              await googleCalendar.deleteCalendarEvent(shift.calendarEventId!);
         } else {
-          success = await calendarSync.deleteCalendarEvent('primary', shift.calendarEventId!);
+          success = await calendarSync.deleteCalendarEvent(
+              'primary', shift.calendarEventId!);
         }
 
         if (success) {
