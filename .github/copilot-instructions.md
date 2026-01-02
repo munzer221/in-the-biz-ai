@@ -646,6 +646,7 @@ This section defines the UI placement strategy for the AI Vision features.
     │  💼 Business Card (Contact)      │
     │  📄 Invoice (Future)             │
     │  🧾 Receipt (Future)             │
+    │  🧾 Paycheck (New)              │
     └──────────────────────────────────┘
     ```
 
@@ -663,6 +664,7 @@ This section defines the UI placement strategy for the AI Vision features.
 -   **Business Card:** Creates/adds to Event Contacts and attaches it to the current shift.
 -   **Invoice (Future):** Links to a separate freelancer workflow (not shift-based).
 -   **Receipt (Future):** Links to expense tracking for 1099 contractors.
+-   **Paycheck (New):** Extracts data from pay stubs (see below)
 
 ### 4. Implementation Details
 
@@ -674,6 +676,44 @@ This section defines the UI placement strategy for the AI Vision features.
     *   Account for multiple pages in a checkout.
     *   Start simple, extract what is consistently available, and improve over time.
     *   Review modal (
+
+### 5. AI Vision Pay Stub Extraction:
+
+### What AI Needs to Identify:
+
+**Common Pay Stub Formats:**
+- ADP pay stubs
+- Gusto pay stubs
+- Paychex pay stubs
+- QuickBooks pay stubs
+- Generic/Custom formats
+
+**Key Fields to Extract:**
+1. **Pay Period Dates** (usually top: "Pay Period: 1/1/26 - 1/14/26")
+2. **Gross Pay** (labeled "Gross Pay" or "Total Earnings")
+3. **Hours** (Regular Hours, Overtime Hours)
+4. **Rate** (usually shows $X.XX/hr)
+5. **Deductions:**
+   - Federal Income Tax
+   - State Income Tax
+   - Social Security (FICA)
+   - Medicare
+6. **Net Pay** (labeled "Net Pay" or "Take Home")
+7. **YTD Totals** (right column, shows cumulative)
+
+**AI Vision Prompt:**
+```
+Extract paycheck information from this pay stub image:
+- Pay period dates
+- Gross pay amount
+- Hours worked (regular and overtime)
+- Hourly rate
+- All tax deductions (Federal, State, FICA, Medicare)
+- Net pay
+- Year-to-date totals if visible
+
+Format as JSON with confidence scores for each field.
+```
 
 ---
 ## 📱 RESPONSIVE UI RULES (NEW - January 1, 2026)
@@ -701,37 +741,4 @@ All screens MUST wrap their body content in `SafeArea` to prevent overlap with s
 
 ```dart
 Scaffold(
-  body: SafeArea(
-    child: YourContent(),
-  ),
-)
-```
-
-### 3. Make Content Scrollable
-Any screen with content that could overflow MUST use one of these scrollable widgets:
-- `SingleChildScrollView` - For simple scrolling content
-- `ListView` / `ListView.builder` - For lists
-- `CustomScrollView` - For complex scrolling layouts
-- `Expanded(child: ListView)` - Inside Column/Row
-
-### 4. Use Responsive Values
-- ✅ Use: `MediaQuery.of(context).size.height * 0.5` (percentage-based)
-- ✅ Use: `Expanded` and `Flexible` widgets
-- ✅ Use: `LayoutBuilder` for adaptive sizing
-- ❌ Avoid: Fixed pixel heights/widths that could overflow with large text
-
-### 5. Respect Text Scale Factor
-Flutter automatically handles `MediaQuery.of(context).textScaleFactor`. Never override it unless absolutely necessary.
-
-### 6. Test on Multiple Devices
-Test your application on:
-- Mobile phones with large text enabled (Android Accessibility Settings)
-- Tablets
-- Desktop browsers at different zoom levels
-
----
-## 📅 CALENDAR SYNC ISSUES (NEW - January 2, 2026)
-
-When debugging calendar sync issues, remember:
-
--   The `device_calendar` and `permission_handler` plugins **don't support web browsers**. They're native mobile plugins that require iOS/Android code. When "Grant Calendar Access" is clicked on the web app, the code runs but silently fails because those APIs
+  body: SafeArea
