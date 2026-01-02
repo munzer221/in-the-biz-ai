@@ -486,6 +486,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
                   const SizedBox(height: 24),
 
+                  // QuickBooks Integration Section
+                  _buildSectionHeader('QUICKBOOKS'),
+                  const SizedBox(height: 12),
+                  _buildQuickBooksSection(),
+
+                  const SizedBox(height: 24),
+
                   // Account Section
                   _buildSectionHeader('ACCOUNT'),
                   const SizedBox(height: 12),
