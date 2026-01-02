@@ -15,24 +15,25 @@ class VisionScannerService {
     String userId,
   ) async {
     final List<String> uploadedUrls = [];
-    
+
     // Get the appropriate bucket based on scan type
     final bucketName = _getBucketName(scanType);
-    
+
     for (int i = 0; i < imagePaths.length; i++) {
       final file = File(imagePaths[i]);
       final fileExt = imagePaths[i].split('.').last;
-      final fileName = '${userId}/${DateTime.now().millisecondsSinceEpoch}_page${i + 1}.$fileExt';
+      final fileName =
+          '${userId}/${DateTime.now().millisecondsSinceEpoch}_page${i + 1}.$fileExt';
 
       // Upload to Supabase Storage
       await _supabase.storage.from(bucketName).upload(
-        fileName,
-        file,
-        fileOptions: const FileOptions(
-          cacheControl: '3600',
-          upsert: false,
-        ),
-      );
+            fileName,
+            file,
+            fileOptions: const FileOptions(
+              cacheControl: '3600',
+              upsert: false,
+            ),
+          );
 
       // Get public URL
       final url = _supabase.storage.from(bucketName).getPublicUrl(fileName);
@@ -43,19 +44,21 @@ class VisionScannerService {
   }
 
   /// Get base64 encoded images for Edge Function
-  Future<List<Map<String, String>>> getBase64Images(List<String> imagePaths) async {
+  Future<List<Map<String, String>>> getBase64Images(
+      List<String> imagePaths) async {
     final List<Map<String, String>> base64Images = [];
 
     for (final path in imagePaths) {
       final file = File(path);
       final bytes = await file.readAsBytes();
       final base64 = base64Encode(bytes);
-      
+
       // Determine MIME type
       String mimeType = 'image/jpeg';
       if (path.toLowerCase().endsWith('.png')) {
         mimeType = 'image/png';
-      } else if (path.toLowerCase().endsWith('.jpg') || path.toLowerCase().endsWith('.jpeg')) {
+      } else if (path.toLowerCase().endsWith('.jpg') ||
+          path.toLowerCase().endsWith('.jpeg')) {
         mimeType = 'image/jpeg';
       }
 

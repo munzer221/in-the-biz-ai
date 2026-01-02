@@ -196,7 +196,8 @@ class _DocumentScannerScreenState extends State<DocumentScannerScreen> {
         backgroundColor: AppTheme.darkBackground,
         title: Text(
           '${widget.scanType.displayName} Scanner',
-          style: AppTheme.titleLarge.copyWith(color: AppTheme.adaptiveTextColor),
+          style:
+              AppTheme.titleLarge.copyWith(color: AppTheme.adaptiveTextColor),
         ),
         actions: [
           if (_capturedImages.isNotEmpty)
@@ -273,7 +274,8 @@ class _DocumentScannerScreenState extends State<DocumentScannerScreen> {
                 Expanded(
                   child: GridView.builder(
                     padding: const EdgeInsets.all(16),
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       crossAxisSpacing: 12,
                       mainAxisSpacing: 12,

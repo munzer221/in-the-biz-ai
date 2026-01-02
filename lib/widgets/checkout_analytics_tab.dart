@@ -30,10 +30,10 @@ class _CheckoutAnalyticsTabState extends State<CheckoutAnalyticsTab> {
 
     try {
       final userId = _db.supabase.auth.currentUser!.id;
-      
+
       // Get date range based on period
       final dateRange = _getDateRange();
-      
+
       final response = await _db.supabase
           .from('server_checkouts')
           .select()
@@ -85,7 +85,8 @@ class _CheckoutAnalyticsTabState extends State<CheckoutAnalyticsTab> {
       default:
         return {
           'start': '2020-01-01',
-          'end': DateFormat('yyyy-MM-dd').format(DateTime.now().add(const Duration(days: 365))),
+          'end': DateFormat('yyyy-MM-dd')
+              .format(DateTime.now().add(const Duration(days: 365))),
         };
     }
   }
@@ -117,8 +118,10 @@ class _CheckoutAnalyticsTabState extends State<CheckoutAnalyticsTab> {
     );
 
     // Calculate averages
-    final avgSalesPerShift = _checkouts.isNotEmpty ? totalSales / _checkouts.length : 0;
-    final avgTipsPerShift = _checkouts.isNotEmpty ? totalTips / _checkouts.length : 0;
+    final avgSalesPerShift =
+        _checkouts.isNotEmpty ? totalSales / _checkouts.length : 0;
+    final avgTipsPerShift =
+        _checkouts.isNotEmpty ? totalTips / _checkouts.length : 0;
 
     // Calculate tip percentage
     final tipPercentage = totalSales > 0 ? (totalTips / totalSales) * 100 : 0;
@@ -133,17 +136,31 @@ class _CheckoutAnalyticsTabState extends State<CheckoutAnalyticsTab> {
         // Summary cards
         Row(
           children: [
-            Expanded(child: _buildSummaryCard('Total Sales', '\$${totalSales.toStringAsFixed(2)}', AppTheme.accentBlue)),
+            Expanded(
+                child: _buildSummaryCard('Total Sales',
+                    '\$${totalSales.toStringAsFixed(2)}', AppTheme.accentBlue)),
             const SizedBox(width: 12),
-            Expanded(child: _buildSummaryCard('Total Tips', '\$${totalTips.toStringAsFixed(2)}', AppTheme.primaryGreen)),
+            Expanded(
+                child: _buildSummaryCard(
+                    'Total Tips',
+                    '\$${totalTips.toStringAsFixed(2)}',
+                    AppTheme.primaryGreen)),
           ],
         ),
         const SizedBox(height: 12),
         Row(
           children: [
-            Expanded(child: _buildSummaryCard('Total Tipout', '\$${totalTipout.toStringAsFixed(2)}', AppTheme.dangerColor)),
+            Expanded(
+                child: _buildSummaryCard(
+                    'Total Tipout',
+                    '\$${totalTipout.toStringAsFixed(2)}',
+                    AppTheme.dangerColor)),
             const SizedBox(width: 12),
-            Expanded(child: _buildSummaryCard('Tip %', '${tipPercentage.toStringAsFixed(1)}%', AppTheme.accentPurple)),
+            Expanded(
+                child: _buildSummaryCard(
+                    'Tip %',
+                    '${tipPercentage.toStringAsFixed(1)}%',
+                    AppTheme.accentPurple)),
           ],
         ),
         const SizedBox(height: 24),
@@ -178,7 +195,8 @@ class _CheckoutAnalyticsTabState extends State<CheckoutAnalyticsTab> {
             const SizedBox(height: 8),
             Text(
               'Scan your first checkout receipt using the ✨ Scan button',
-              style: AppTheme.bodyMedium.copyWith(color: AppTheme.textSecondary),
+              style:
+                  AppTheme.bodyMedium.copyWith(color: AppTheme.textSecondary),
               textAlign: TextAlign.center,
             ),
           ],
@@ -206,7 +224,8 @@ class _CheckoutAnalyticsTabState extends State<CheckoutAnalyticsTab> {
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 decoration: BoxDecoration(
-                  color: isSelected ? AppTheme.primaryGreen : Colors.transparent,
+                  color:
+                      isSelected ? AppTheme.primaryGreen : Colors.transparent,
                   borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                 ),
                 child: Text(
@@ -214,7 +233,8 @@ class _CheckoutAnalyticsTabState extends State<CheckoutAnalyticsTab> {
                   textAlign: TextAlign.center,
                   style: AppTheme.labelMedium.copyWith(
                     color: isSelected ? Colors.black : AppTheme.textSecondary,
-                    fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                    fontWeight:
+                        isSelected ? FontWeight.bold : FontWeight.normal,
                   ),
                 ),
               ),
@@ -369,7 +389,9 @@ class _CheckoutAnalyticsTabState extends State<CheckoutAnalyticsTab> {
           ),
           const SizedBox(height: 16),
           ...posSystemCounts.entries.map((entry) {
-            final percentage = (_checkouts.isNotEmpty ? (entry.value / _checkouts.length) * 100 : 0);
+            final percentage = (_checkouts.isNotEmpty
+                ? (entry.value / _checkouts.length) * 100
+                : 0);
             return Padding(
               padding: const EdgeInsets.only(bottom: 12),
               child: Column(
@@ -380,11 +402,13 @@ class _CheckoutAnalyticsTabState extends State<CheckoutAnalyticsTab> {
                     children: [
                       Text(
                         entry.key,
-                        style: AppTheme.bodyMedium.copyWith(color: AppTheme.textPrimary),
+                        style: AppTheme.bodyMedium
+                            .copyWith(color: AppTheme.textPrimary),
                       ),
                       Text(
                         '${entry.value} (${percentage.toStringAsFixed(0)}%)',
-                        style: AppTheme.bodySmall.copyWith(color: AppTheme.textSecondary),
+                        style: AppTheme.bodySmall
+                            .copyWith(color: AppTheme.textSecondary),
                       ),
                     ],
                   ),
@@ -392,7 +416,8 @@ class _CheckoutAnalyticsTabState extends State<CheckoutAnalyticsTab> {
                   LinearProgressIndicator(
                     value: percentage / 100,
                     backgroundColor: AppTheme.textMuted.withOpacity(0.2),
-                    valueColor: AlwaysStoppedAnimation<Color>(AppTheme.primaryGreen),
+                    valueColor:
+                        AlwaysStoppedAnimation<Color>(AppTheme.primaryGreen),
                   ),
                 ],
               ),
@@ -432,12 +457,16 @@ class _CheckoutAnalyticsTabState extends State<CheckoutAnalyticsTab> {
             return ListTile(
               contentPadding: EdgeInsets.zero,
               title: Text(
-                date != null ? DateFormat('MMM d, yyyy').format(DateTime.parse(date)) : 'Unknown date',
-                style: AppTheme.bodyMedium.copyWith(color: AppTheme.textPrimary),
+                date != null
+                    ? DateFormat('MMM d, yyyy').format(DateTime.parse(date))
+                    : 'Unknown date',
+                style:
+                    AppTheme.bodyMedium.copyWith(color: AppTheme.textPrimary),
               ),
               subtitle: Text(
                 posSystem,
-                style: AppTheme.bodySmall.copyWith(color: AppTheme.textSecondary),
+                style:
+                    AppTheme.bodySmall.copyWith(color: AppTheme.textSecondary),
               ),
               trailing: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -452,7 +481,8 @@ class _CheckoutAnalyticsTabState extends State<CheckoutAnalyticsTab> {
                   ),
                   Text(
                     '\$${tips.toStringAsFixed(2)} tips',
-                    style: AppTheme.bodySmall.copyWith(color: AppTheme.primaryGreen),
+                    style: AppTheme.bodySmall
+                        .copyWith(color: AppTheme.primaryGreen),
                   ),
                 ],
               ),

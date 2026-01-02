@@ -36,7 +36,8 @@ class _ScanVerificationScreenState extends State<ScanVerificationScreen> {
 
   /// Get confidence level emoji for a field
   String _getConfidenceBadge(String fieldName) {
-    if (widget.confidenceScores == null || !widget.confidenceScores!.containsKey(fieldName)) {
+    if (widget.confidenceScores == null ||
+        !widget.confidenceScores!.containsKey(fieldName)) {
       return ''; // No confidence score available
     }
 
@@ -48,7 +49,8 @@ class _ScanVerificationScreenState extends State<ScanVerificationScreen> {
 
   /// Get confidence level color
   Color _getConfidenceColor(String fieldName) {
-    if (widget.confidenceScores == null || !widget.confidenceScores!.containsKey(fieldName)) {
+    if (widget.confidenceScores == null ||
+        !widget.confidenceScores!.containsKey(fieldName)) {
       return AppTheme.textMuted;
     }
 
@@ -67,7 +69,8 @@ class _ScanVerificationScreenState extends State<ScanVerificationScreen> {
   }
 
   /// Build a single field row with label, value, and confidence badge
-  Widget _buildFieldRow(String label, String fieldKey, {String? suffix, bool multiline = false}) {
+  Widget _buildFieldRow(String label, String fieldKey,
+      {String? suffix, bool multiline = false}) {
     final value = _editableData[fieldKey];
     if (value == null) return const SizedBox.shrink(); // Hide null fields
 
@@ -104,7 +107,7 @@ class _ScanVerificationScreenState extends State<ScanVerificationScreen> {
               color: AppTheme.cardBackgroundLight,
               borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
               border: Border.all(
-                color: confidenceBadge.isNotEmpty 
+                color: confidenceBadge.isNotEmpty
                     ? confidenceColor.withOpacity(0.3)
                     : AppTheme.textMuted.withOpacity(0.2),
               ),
@@ -121,8 +124,10 @@ class _ScanVerificationScreenState extends State<ScanVerificationScreen> {
                   ),
                 ),
                 IconButton(
-                  icon: Icon(Icons.edit, color: AppTheme.primaryGreen, size: 20),
-                  onPressed: () => _editField(label, fieldKey, value.toString()),
+                  icon:
+                      Icon(Icons.edit, color: AppTheme.primaryGreen, size: 20),
+                  onPressed: () =>
+                      _editField(label, fieldKey, value.toString()),
                   padding: EdgeInsets.zero,
                   constraints: const BoxConstraints(),
                 ),
@@ -135,9 +140,10 @@ class _ScanVerificationScreenState extends State<ScanVerificationScreen> {
   }
 
   /// Show dialog to edit a field
-  Future<void> _editField(String label, String fieldKey, String currentValue) async {
+  Future<void> _editField(
+      String label, String fieldKey, String currentValue) async {
     final controller = TextEditingController(text: currentValue);
-    
+
     await showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -158,14 +164,16 @@ class _ScanVerificationScreenState extends State<ScanVerificationScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text('Cancel', style: TextStyle(color: AppTheme.textSecondary)),
+            child:
+                Text('Cancel', style: TextStyle(color: AppTheme.textSecondary)),
           ),
           ElevatedButton(
             onPressed: () {
               setState(() {
                 // Try to parse as number if the original value was numeric
                 if (_editableData[fieldKey] is num) {
-                  _editableData[fieldKey] = double.tryParse(controller.text) ?? controller.text;
+                  _editableData[fieldKey] =
+                      double.tryParse(controller.text) ?? controller.text;
                 } else {
                   _editableData[fieldKey] = controller.text;
                 }
@@ -188,7 +196,7 @@ class _ScanVerificationScreenState extends State<ScanVerificationScreen> {
 
     try {
       await widget.onConfirm(_editableData);
-      
+
       if (mounted) {
         Navigator.pop(context, true); // Return success
       }
@@ -216,7 +224,8 @@ class _ScanVerificationScreenState extends State<ScanVerificationScreen> {
         backgroundColor: AppTheme.darkBackground,
         title: Text(
           'Verify ${widget.scanType.displayName}',
-          style: AppTheme.titleLarge.copyWith(color: AppTheme.adaptiveTextColor),
+          style:
+              AppTheme.titleLarge.copyWith(color: AppTheme.adaptiveTextColor),
         ),
         actions: [
           if (widget.onRetry != null)
@@ -239,7 +248,8 @@ class _ScanVerificationScreenState extends State<ScanVerificationScreen> {
             color: AppTheme.primaryGreen.withOpacity(0.1),
             child: Row(
               children: [
-                Text(widget.scanType.emoji, style: const TextStyle(fontSize: 32)),
+                Text(widget.scanType.emoji,
+                    style: const TextStyle(fontSize: 32)),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Column(

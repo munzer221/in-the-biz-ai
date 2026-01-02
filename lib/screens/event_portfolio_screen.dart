@@ -29,7 +29,7 @@ class _EventPortfolioScreenState extends State<EventPortfolioScreen> {
 
     try {
       final userId = _db.supabase.auth.currentUser!.id;
-      
+
       var query = _db.supabase
           .from('beo_events')
           .select()
@@ -61,18 +61,21 @@ class _EventPortfolioScreenState extends State<EventPortfolioScreen> {
         backgroundColor: AppTheme.darkBackground,
         title: Text(
           'Event Portfolio',
-          style: AppTheme.titleLarge.copyWith(color: AppTheme.adaptiveTextColor),
+          style:
+              AppTheme.titleLarge.copyWith(color: AppTheme.adaptiveTextColor),
         ),
       ),
       body: Column(
         children: [
           // Filter chips
           _buildFilterChips(),
-          
+
           // Events grid or empty state
           Expanded(
             child: _isLoading
-                ? Center(child: CircularProgressIndicator(color: AppTheme.primaryGreen))
+                ? Center(
+                    child:
+                        CircularProgressIndicator(color: AppTheme.primaryGreen))
                 : _events.isEmpty
                     ? _buildEmptyState()
                     : _buildEventsGrid(),
@@ -88,7 +91,8 @@ class _EventPortfolioScreenState extends State<EventPortfolioScreen> {
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Row(
-          children: ['All', 'Wedding', 'Corporate', 'Birthday', 'Other'].map((filter) {
+          children: ['All', 'Wedding', 'Corporate', 'Birthday', 'Other']
+              .map((filter) {
             final isSelected = _selectedFilter == filter;
             return Padding(
               padding: const EdgeInsets.only(right: 8),
@@ -106,8 +110,8 @@ class _EventPortfolioScreenState extends State<EventPortfolioScreen> {
                   fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                 ),
                 side: BorderSide(
-                  color: isSelected 
-                      ? AppTheme.primaryGreen 
+                  color: isSelected
+                      ? AppTheme.primaryGreen
                       : AppTheme.textMuted.withOpacity(0.3),
                 ),
               ),
@@ -134,7 +138,8 @@ class _EventPortfolioScreenState extends State<EventPortfolioScreen> {
             const SizedBox(height: 8),
             Text(
               'Scan your first BEO using the ✨ Scan button',
-              style: AppTheme.bodyMedium.copyWith(color: AppTheme.textSecondary),
+              style:
+                  AppTheme.bodyMedium.copyWith(color: AppTheme.textSecondary),
               textAlign: TextAlign.center,
             ),
           ],
@@ -164,15 +169,16 @@ class _EventPortfolioScreenState extends State<EventPortfolioScreen> {
     final eventName = event['event_name'] as String? ?? 'Untitled Event';
     final eventType = event['event_type'] as String? ?? '';
     final eventDate = event['event_date'] as String?;
-    final guestCount = event['guest_count_confirmed'] as int? ?? event['guest_count_expected'] as int?;
+    final guestCount = event['guest_count_confirmed'] as int? ??
+        event['guest_count_expected'] as int?;
     final totalSale = (event['total_sale_amount'] as num?)?.toDouble();
     final commission = (event['commission_amount'] as num?)?.toDouble();
     final venue = event['venue_name'] as String?;
     final imageUrls = event['image_urls'] as List?;
 
     // Get first image URL if available
-    final firstImageUrl = imageUrls != null && imageUrls.isNotEmpty 
-        ? imageUrls.first.toString() 
+    final firstImageUrl = imageUrls != null && imageUrls.isNotEmpty
+        ? imageUrls.first.toString()
         : null;
 
     return GestureDetector(
@@ -245,11 +251,14 @@ class _EventPortfolioScreenState extends State<EventPortfolioScreen> {
                     if (eventDate != null)
                       Row(
                         children: [
-                          Icon(Icons.calendar_today, size: 12, color: AppTheme.textSecondary),
+                          Icon(Icons.calendar_today,
+                              size: 12, color: AppTheme.textSecondary),
                           const SizedBox(width: 4),
                           Text(
-                            DateFormat('MMM d, yyyy').format(DateTime.parse(eventDate)),
-                            style: AppTheme.labelSmall.copyWith(color: AppTheme.textSecondary),
+                            DateFormat('MMM d, yyyy')
+                                .format(DateTime.parse(eventDate)),
+                            style: AppTheme.labelSmall
+                                .copyWith(color: AppTheme.textSecondary),
                           ),
                         ],
                       ),
@@ -258,11 +267,13 @@ class _EventPortfolioScreenState extends State<EventPortfolioScreen> {
                     if (guestCount != null)
                       Row(
                         children: [
-                          Icon(Icons.people, size: 12, color: AppTheme.textSecondary),
+                          Icon(Icons.people,
+                              size: 12, color: AppTheme.textSecondary),
                           const SizedBox(width: 4),
                           Text(
                             '$guestCount guests',
-                            style: AppTheme.labelSmall.copyWith(color: AppTheme.textSecondary),
+                            style: AppTheme.labelSmall
+                                .copyWith(color: AppTheme.textSecondary),
                           ),
                         ],
                       ),
@@ -271,7 +282,8 @@ class _EventPortfolioScreenState extends State<EventPortfolioScreen> {
                     if (commission != null)
                       Row(
                         children: [
-                          Icon(Icons.attach_money, size: 12, color: AppTheme.primaryGreen),
+                          Icon(Icons.attach_money,
+                              size: 12, color: AppTheme.primaryGreen),
                           Text(
                             '\$${commission.toStringAsFixed(2)}',
                             style: AppTheme.labelSmall.copyWith(
@@ -326,7 +338,8 @@ class _EventDetailsSheet extends StatelessWidget {
     final eventType = event['event_type'] as String? ?? '';
     final eventDate = event['event_date'] as String?;
     final venue = event['venue_name'] as String?;
-    final guestCount = event['guest_count_confirmed'] as int? ?? event['guest_count_expected'] as int?;
+    final guestCount = event['guest_count_confirmed'] as int? ??
+        event['guest_count_expected'] as int?;
     final totalSale = (event['total_sale_amount'] as num?)?.toDouble();
     final commission = (event['commission_amount'] as num?)?.toDouble();
     final contact = event['primary_contact_name'] as String?;
@@ -391,8 +404,11 @@ class _EventDetailsSheet extends StatelessWidget {
               padding: const EdgeInsets.all(16),
               children: [
                 if (eventDate != null)
-                  _buildDetailRow(Icons.calendar_today, 'Date', 
-                    DateFormat('MMMM d, yyyy').format(DateTime.parse(eventDate))),
+                  _buildDetailRow(
+                      Icons.calendar_today,
+                      'Date',
+                      DateFormat('MMMM d, yyyy')
+                          .format(DateTime.parse(eventDate))),
                 if (venue != null)
                   _buildDetailRow(Icons.location_on, 'Venue', venue),
                 if (guestCount != null)
@@ -400,11 +416,12 @@ class _EventDetailsSheet extends StatelessWidget {
                 if (contact != null)
                   _buildDetailRow(Icons.person, 'Contact', contact),
                 if (totalSale != null)
-                  _buildDetailRow(Icons.attach_money, 'Total Sale', '\$${totalSale.toStringAsFixed(2)}'),
+                  _buildDetailRow(Icons.attach_money, 'Total Sale',
+                      '\$${totalSale.toStringAsFixed(2)}'),
                 if (commission != null)
-                  _buildDetailRow(Icons.payments, 'Commission', '\$${commission.toStringAsFixed(2)}',
-                    color: AppTheme.primaryGreen),
-                
+                  _buildDetailRow(Icons.payments, 'Commission',
+                      '\$${commission.toStringAsFixed(2)}',
+                      color: AppTheme.primaryGreen),
                 if (formattedNotes != null) ...[
                   const SizedBox(height: 24),
                   Text(
@@ -419,11 +436,13 @@ class _EventDetailsSheet extends StatelessWidget {
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
                       color: AppTheme.cardBackgroundLight,
-                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                      borderRadius:
+                          BorderRadius.circular(AppTheme.radiusMedium),
                     ),
                     child: Text(
                       formattedNotes,
-                      style: AppTheme.bodySmall.copyWith(color: AppTheme.textSecondary),
+                      style: AppTheme.bodySmall
+                          .copyWith(color: AppTheme.textSecondary),
                     ),
                   ),
                 ],
@@ -435,7 +454,8 @@ class _EventDetailsSheet extends StatelessWidget {
     );
   }
 
-  Widget _buildDetailRow(IconData icon, String label, String value, {Color? color}) {
+  Widget _buildDetailRow(IconData icon, String label, String value,
+      {Color? color}) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
       child: Row(

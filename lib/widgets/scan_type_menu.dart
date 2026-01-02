@@ -32,7 +32,7 @@ class ScanTypeMenu extends StatelessWidget {
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
-            
+
             // Title
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),

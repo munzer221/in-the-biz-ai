@@ -1,9 +1,12 @@
 /// Vision Scanner Scan Types
 /// Defines all supported document types for AI vision scanning
 enum ScanType {
-  beo('BEO (Event Details)', '🧾', 'Extract event name, guests, and financials from Banquet Event Orders'),
-  checkout('Server Checkout', '📊', 'Extract sales, tips, and tipout from POS receipts'),
-  businessCard('Business Card (Contact)', '💼', 'Add contact to Event Team with social media'),
+  beo('BEO (Event Details)', '🧾',
+      'Extract event name, guests, and financials from Banquet Event Orders'),
+  checkout('Server Checkout', '📊',
+      'Extract sales, tips, and tipout from POS receipts'),
+  businessCard('Business Card (Contact)', '💼',
+      'Add contact to Event Team with social media'),
   paycheck('Paycheck', '💵', 'Track W-2 income, taxes, and YTD earnings'),
   invoice('Invoice (Future)', '📄', 'For freelancers and contractors');
 
@@ -57,7 +60,8 @@ enum ConfidenceLevel {
 
   static ConfidenceLevel fromScore(double score) {
     if (score >= ConfidenceLevel.high.threshold) return ConfidenceLevel.high;
-    if (score >= ConfidenceLevel.medium.threshold) return ConfidenceLevel.medium;
+    if (score >= ConfidenceLevel.medium.threshold)
+      return ConfidenceLevel.medium;
     return ConfidenceLevel.low;
   }
 }
