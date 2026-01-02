@@ -105,10 +105,55 @@ class DatabaseService {
       'event_cost': shift.eventCost,
       'updated_at': DateTime.now().toIso8601String(),
     }).eq('id', shift.id);
+    
+    // Auto-export to calendar if enabled and shift is already synced
+    await _autoExportShift(shift);
   }
 
   /// Delete a shift
   Future<void> deleteShift(String shiftId) async {
+    // Get shift first to check if it has a calendar event
+    final userId = _supabase.auth.currentUser?.id;
+    if (userId != null) {
+      try {
+        final response = await _supabase
+            .from('shifts')
+            .select()
+            .eq('id', shiftId)
+            .eq('user_id', userId)
+            .maybeSingle();
+        
+        if (response != null) {
+          final shift = Shift.fromSupabase(response);
+          
+          // Delete calendar event if exists
+          if (shift.calendarEventId != null) {
+            final prefs = await SharedPreferences.getInstance();
+            final autoSync = prefs.getBool('auto_sync_calendar') ?? false;
+            
+            if (autoSync) {
+              try {
+                if (kIsWeb) {
+                  final googleCalendar = GoogleCalendarService();
+                  await googleCalendar.deleteCalendarEvent(shift.calendarEventId!);
+                } else {
+                  final calendarSync = CalendarSyncService();
+                  final calendarId = prefs.getString('selected_calendar_id') ?? 'primary';
+                  await calendarSync.deleteCalendarEvent(calendarId, shift.calendarEventId!);
+                }
+              } catch (e) {
+                print('Failed to delete calendar event: $e');
+                // Continue with shift deletion even if calendar deletion fails
+              }
+            }
+          }
+        }
+      } catch (e) {
+        print('Failed to fetch shift for calendar cleanup: $e');
+      }
+    }
+    
+    // Delete the shift
     await _supabase.from('shifts').delete().eq('id', shiftId);
   }
 
