@@ -794,41 +794,31 @@ class _HomeScreenState extends State<_HomeScreen> {
                     if (_selectedPeriod != 'all' && previousTotal > 0)
                       Center(
                         child: Container(
+                          height: 32,
                           padding: const EdgeInsets.symmetric(
                             horizontal: 16,
-                            vertical: 10,
                           ),
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
                               colors: percentChange >= 0
                                   ? [
-                                      AppTheme.primaryGreen.withOpacity(0.2),
-                                      AppTheme.primaryGreen.withOpacity(0.1),
+                                      AppTheme.primaryGreen.withOpacity(0.25),
+                                      AppTheme.primaryGreen.withOpacity(0.15),
                                     ]
                                   : [
-                                      AppTheme.accentRed.withOpacity(0.2),
-                                      AppTheme.accentRed.withOpacity(0.1),
+                                      AppTheme.accentRed.withOpacity(0.25),
+                                      AppTheme.accentRed.withOpacity(0.15),
                                     ],
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
                             ),
-                            borderRadius: BorderRadius.circular(20),
+                            borderRadius: BorderRadius.circular(16),
                             border: Border.all(
                               color: percentChange >= 0
                                   ? AppTheme.primaryGreen.withOpacity(0.4)
                                   : AppTheme.accentRed.withOpacity(0.4),
-                              width: 1.5,
+                              width: 1,
                             ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: (percentChange >= 0
-                                        ? AppTheme.primaryGreen
-                                        : AppTheme.accentRed)
-                                    .withOpacity(0.2),
-                                blurRadius: 8,
-                                offset: const Offset(0, 2),
-                              ),
-                            ],
                           ),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
@@ -841,22 +831,22 @@ class _HomeScreenState extends State<_HomeScreen> {
                                 color: percentChange >= 0
                                     ? AppTheme.primaryGreen
                                     : AppTheme.accentRed,
-                                size: 18,
+                                size: 16,
                               ),
-                              const SizedBox(width: 8),
+                              const SizedBox(width: 6),
                               Text(
                                 '${percentChange >= 0 ? '+' : ''}${percentChange.toStringAsFixed(0)}% from last ${_selectedPeriod == 'day' ? 'day' : _selectedPeriod == 'week' ? 'week' : _selectedPeriod == 'month' ? 'month' : 'year'}',
                                 style: TextStyle(
                                   color: percentChange >= 0
                                       ? AppTheme.primaryGreen
                                       : AppTheme.accentRed,
-                                  fontSize: 13,
+                                  fontSize: 12,
                                   fontWeight: FontWeight.w700,
                                   shadows: [
                                     Shadow(
                                       color: Colors.black.withOpacity(0.3),
                                       blurRadius: 2,
-                                      offset: Offset(0, 1),
+                                      offset: const Offset(0, 1),
                                     ),
                                   ],
                                 ),
