@@ -576,6 +576,7 @@ class _HomeScreenState extends State<_HomeScreen> {
             enabled: themeProvider.shimmerEffects,
             child: HeroCard(
               margin: const EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.all(18),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -648,7 +649,7 @@ class _HomeScreenState extends State<_HomeScreen> {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 12),
                   ],
                   // Period Selector Chips (smaller, distinct style)
                   Center(
@@ -670,13 +671,13 @@ class _HomeScreenState extends State<_HomeScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 12),
                   Center(
                     child: Text(
                       currencyFormat.format(periodTotal),
                       style: TextStyle(
                         color: AppTheme.primaryGreen,
-                        fontSize: 36,
+                        fontSize: 32,
                         fontWeight: FontWeight.bold,
                         letterSpacing: -1,
                         shadows: AppTheme.textShadow,
@@ -692,7 +693,7 @@ class _HomeScreenState extends State<_HomeScreen> {
                         '💰 ${currencyFormat.format(netTips)} net (${currencyFormat.format(grossTips)} - ${currencyFormat.format(totalTipout)} tipout)',
                         style: TextStyle(
                           color: AppTheme.textSecondary,
-                          fontSize: 12,
+                          fontSize: 11,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -771,7 +772,7 @@ class _HomeScreenState extends State<_HomeScreen> {
                     ),
                     if (goalPercent >= 1.0)
                       Padding(
-                        padding: const EdgeInsets.only(top: 8),
+                        padding: const EdgeInsets.only(top: 6),
                         child: Row(
                           children: [
                             Icon(Icons.celebration,
@@ -781,7 +782,7 @@ class _HomeScreenState extends State<_HomeScreen> {
                               'Goal reached! +${currencyFormat.format(goalProgress - _activeGoal!.targetAmount)} over',
                               style: TextStyle(
                                 color: AppTheme.primaryGreen,
-                                fontSize: 12,
+                                fontSize: 11,
                                 fontWeight: FontWeight.w600,
                                 shadows: AppTheme.textShadow,
                               ),
@@ -862,7 +863,7 @@ class _HomeScreenState extends State<_HomeScreen> {
           ),
         ),
 
-        const SliverToBoxAdapter(child: SizedBox(height: 24)),
+        const SliverToBoxAdapter(child: SizedBox(height: 16)),
 
         // Quick Stats Row
         SliverToBoxAdapter(
