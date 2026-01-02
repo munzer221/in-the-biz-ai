@@ -717,3 +717,24 @@ When debugging calendar sync issues, remember:
 -   Check the `_requestPermissions` method in the `calendar_sync_screen.dart` file for platform-specific logic.
 -   The `device_calendar` and `permission_handler` plugins **don't support web browsers**. They're native mobile plugins that require iOS/Android code.
 -   On the web, the "Grant Calendar Access" button will not work with the `device_calendar` and `permission_handler` plugins. A solution is to use the Google Calendar API (OAuth flow) on the web, while keeping the current device calendar integration for mobile.
+
+### Web Calendar Integration Options: (NEW - January 2, 2026)
+
+-   **Google Calendar API** (Best Option)
+    -   Users can connect their Google Calendar via OAuth
+    -   Full read/write access to events
+    -   Works perfectly on web
+    -   Requires Google Cloud setup, but you're already using Google Sign-In
+
+-   **Microsoft Graph API** (Outlook/Office 365)
+    -   Similar to Google Calendar API
+    -   Good for users with Outlook calendars
+
+-   **Manual ICS File Import**
+    -   Let users upload `.ics` calendar files
+    -   Parse and import events from the file
+    -   Works everywhere, no permissions needed
+
+-   **CalDAV Protocol**
+    -   Standard calendar protocol
+    -   Works with many
