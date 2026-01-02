@@ -832,51 +832,34 @@ class _HomeScreenState extends State<_HomeScreen> {
                           ),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Container(
-                                padding: const EdgeInsets.all(4),
-                                decoration: BoxDecoration(
-                                  color: percentChange >= 0
-                                      ? AppTheme.primaryGreen.withOpacity(0.2)
-                                      : AppTheme.accentRed.withOpacity(0.2),
-                                  shape: BoxShape.circle,
-                                ),
-                                child: Icon(
-                                  percentChange >= 0
-                                      ? Icons.trending_up
-                                      : Icons.trending_down,
+                              Icon(
+                                percentChange >= 0
+                                    ? Icons.trending_up
+                                    : Icons.trending_down,
+                                color: percentChange >= 0
+                                    ? AppTheme.primaryGreen
+                                    : AppTheme.accentRed,
+                                size: 18,
+                              ),
+                              const SizedBox(width: 8),
+                              Text(
+                                '${percentChange >= 0 ? '+' : ''}${percentChange.toStringAsFixed(0)}% from last ${_selectedPeriod == 'day' ? 'day' : _selectedPeriod == 'week' ? 'week' : _selectedPeriod == 'month' ? 'month' : 'year'}',
+                                style: TextStyle(
                                   color: percentChange >= 0
                                       ? AppTheme.primaryGreen
                                       : AppTheme.accentRed,
-                                  size: 20,
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w700,
+                                  shadows: [
+                                    Shadow(
+                                      color: Colors.black.withOpacity(0.3),
+                                      blurRadius: 2,
+                                      offset: Offset(0, 1),
+                                    ),
+                                  ],
                                 ),
-                              ),
-                              const SizedBox(width: 10),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    '${percentChange >= 0 ? '+' : ''}${percentChange.toStringAsFixed(0)}%',
-                                    style: TextStyle(
-                                      color: percentChange >= 0
-                                          ? AppTheme.primaryGreen
-                                          : AppTheme.accentRed,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                      height: 1.0,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 2),
-                                  Text(
-                                    'from last ${_selectedPeriod == 'day' ? 'day' : _selectedPeriod == 'week' ? 'week' : _selectedPeriod == 'month' ? 'month' : 'year'}',
-                                    style: TextStyle(
-                                      color: AppTheme.textSecondary,
-                                      fontSize: 11,
-                                      fontWeight: FontWeight.w600,
-                                      height: 1.0,
-                                    ),
-                                  ),
-                                ],
                               ),
                             ],
                           ),
