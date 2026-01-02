@@ -8,9 +8,9 @@ import 'dart:convert';
 class QuickBooksService {
   // QuickBooks OAuth Configuration
   static const String _clientId =
-      'ABlJYKtCpoj5EExrViEXWisoEgCYqqKfWy3pqdqekQ7ZxtqxPK'; // Set in production
+      'ABt6fOUBICqYWiTeSS6cEzRqJh4p0h8T8u71i2QZH0k74TYJL6'; // Set in production
   static const String _clientSecret =
-      'rzVPUQ6GY9yMRf01SNui3DOGTMdxqatFcCJin1E2';
+      '1E8eEnenX9BMZWWvqsJdmC6Tbk4h41Mz7hmt2VUL';
   static const String _redirectUri = 'https://inthebiz.app/quickbooks-callback';
   static const String _authEndpoint =
       'https://appcenter.intuit.com/connect/oauth2';
