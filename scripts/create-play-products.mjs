@@ -11,11 +11,11 @@ import path from 'path';
 const PACKAGE_NAME = 'com.inthebiz.app';
 const SERVICE_ACCOUNT_PATH = './play-service-account.json'; // You'll create this file
 
-// Subscription products to create
+// Subscription products to create - MUST match RevenueCat format
 const PRODUCTS = [
   {
     productId: 'pro_monthly',
-    basePlanId: 'monthly',
+    basePlanId: 'monthly-plan', // Must match RevenueCat: pro_monthly:monthly-plan
     price: {
       priceMicros: '4990000', // $4.99 in micros
       currency: 'USD',
@@ -26,7 +26,7 @@ const PRODUCTS = [
   },
   {
     productId: 'pro_yearly',
-    basePlanId: 'yearly',
+    basePlanId: 'yearly-plan', // Must match RevenueCat: pro_yearly:yearly-plan
     price: {
       priceMicros: '49990000', // $49.99 in micros
       currency: 'USD',
