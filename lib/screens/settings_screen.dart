@@ -28,6 +28,7 @@ import 'job_grouping_screen.dart';
 import 'appearance_settings_screen.dart';
 import 'event_contacts_screen.dart';
 import 'event_portfolio_screen.dart';
+import 'admin_panel_screen.dart';
 import '../services/subscription_service.dart';
 import '../services/quickbooks_service.dart';
 import 'paywall_screen.dart';
