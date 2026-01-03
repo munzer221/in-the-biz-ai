@@ -10,13 +10,12 @@ class AdService {
   InterstitialAd? _interstitialAd;
   bool _isAdLoaded = false;
 
-  // TODO: Replace with your actual AdMob App IDs when ready for production
-  // These are Google's Test IDs
+  // AdMob App IDs and Ad Unit IDs
   String get appId {
     if (Platform.isAndroid) {
-      return 'ca-app-pub-3940256099942544~3347511713';
+      return 'ca-app-pub-1150666051629225~2172594466'; // Android App ID
     } else if (Platform.isIOS) {
-      return 'ca-app-pub-3940256099942544~1458002511';
+      return 'ca-app-pub-1150666051629225~3569436612'; // iOS App ID
     } else {
       throw UnsupportedError('Unsupported platform');
     }
@@ -24,18 +23,19 @@ class AdService {
 
   String get interstitialAdUnitId {
     if (kDebugMode) {
+      // Use test IDs in debug mode to avoid invalid traffic
       if (Platform.isAndroid) {
-        return 'ca-app-pub-3940256099942544/1033173712';
+        return 'ca-app-pub-3940256099942544/1033173712'; // Google Test ID
       } else if (Platform.isIOS) {
-        return 'ca-app-pub-3940256099942544/4411468910';
+        return 'ca-app-pub-3940256099942544/4411468910'; // Google Test ID
       }
     }
 
-    // TODO: Replace with your real Ad Unit IDs
+    // Real Ad Unit IDs for production
     if (Platform.isAndroid) {
-      return 'ca-app-pub-3940256099942544/1033173712'; // Placeholder
+      return 'ca-app-pub-1150666051629225/8744568210'; // Android - Shift Save Ad
     } else if (Platform.isIOS) {
-      return 'ca-app-pub-3940256099942544/4411468910'; // Placeholder
+      return 'ca-app-pub-1150666051629225/5222279697'; // iOS - Shift Save Ad
     }
     return '';
   }
