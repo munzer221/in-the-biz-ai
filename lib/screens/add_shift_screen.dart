@@ -4904,7 +4904,7 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const PaywallScreen()),
+                MaterialPageRoute(builder: (context) => PaywallScreen()),
               );
             },
           ),

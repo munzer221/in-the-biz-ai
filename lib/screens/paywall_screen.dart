@@ -34,9 +34,9 @@ class _PaywallScreenState extends State<PaywallScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Icon(
+            Icon(
               Icons.star,
-              size: 80,
+              size: 64,
               color: AppTheme.accentYellow,
             ),
             const SizedBox(height: 24),
@@ -65,7 +65,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
             _buildFeatureItem('Export to PDF/CSV'),
             const SizedBox(height: 40),
             if (_isLoading)
-              const CircularProgressIndicator(color: AppTheme.primaryGreen)
+              CircularProgressIndicator(color: AppTheme.primaryGreen)
             else if (offerings.isEmpty)
               const Text(
                 'No offerings available. Please check configuration.',
@@ -110,7 +110,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
         children: [
-          const Icon(Icons.check_circle, color: AppTheme.primaryGreen),
+          Icon(Icons.check_circle, color: AppTheme.primaryGreen),
           const SizedBox(width: 12),
           Text(
             text,

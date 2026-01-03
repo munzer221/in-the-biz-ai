@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
-import 'dart:html' as html;
+import 'package:flutter/foundation.dart' show kIsWeb;
 import '../theme/app_theme.dart';
 import '../services/quickbooks_service.dart';
+
+// Conditional import for web
+import 'quickbooks_callback_stub.dart'
+    if (dart.library.html) 'quickbooks_callback_web.dart';
 
 /// QuickBooks OAuth Callback Handler
 /// Captures the authorization code and realm ID from URL parameters
@@ -26,8 +30,8 @@ class _QuickBooksCallbackScreenState extends State<QuickBooksCallbackScreen> {
 
   Future<void> _handleCallback() async {
     try {
-      // Get URL parameters
-      final uri = Uri.parse(html.window.location.href);
+      // Get URL parameters from web
+      final uri = getCurrentUri();
       final code = uri.queryParameters['code'];
       final realmId = uri.queryParameters['realmId'];
       final error = uri.queryParameters['error'];

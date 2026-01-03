@@ -257,7 +257,7 @@ class _ScanVerificationScreenState extends State<ScanVerificationScreen> {
                     children: [
                       Text(
                         'AI Extraction Complete',
-                        style: AppTheme.titleSmall.copyWith(
+                        style: AppTheme.labelMedium.copyWith(
                           color: AppTheme.textPrimary,
                           fontWeight: FontWeight.bold,
                         ),
