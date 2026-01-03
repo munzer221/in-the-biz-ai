@@ -68,15 +68,16 @@ async function main() {
   // 2. Create products
   console.log('📦 Step 2: Creating products...');
   
+  // For Google Play, format must be: subscriptionId:basePlanId
   const products = [
     {
-      store_identifier: 'pro_monthly',
+      store_identifier: 'pro_monthly:monthly-plan',
       app_id: APP_ID,
       type: 'subscription',
       display_name: 'Pro Monthly - $4.99/month',
     },
     {
-      store_identifier: 'pro_yearly',
+      store_identifier: 'pro_yearly:yearly-plan',
       app_id: APP_ID,
       type: 'subscription',
       display_name: 'Pro Yearly - $49.99/year',
