@@ -15,6 +15,14 @@ class AuthService {
   static const String _iosClientId =
       '30441285456-9ea4rfqkepbjigq8jku8qkamr8abap3r.apps.googleusercontent.com';
 
+  // Calendar scopes for Google Calendar API
+  static const List<String> calendarScopes = [
+    'email',
+    'profile',
+    'https://www.googleapis.com/auth/calendar.readonly',
+    'https://www.googleapis.com/auth/calendar.events',
+  ];
+
   // Get current user
   static User? get currentUser => _supabase.auth.currentUser;
 
