@@ -610,7 +610,7 @@ The script (`scripts/run-migration.mjs`):
 1. Create a new SQL file in `supabase/migrations/`
 2. **Naming format:** `YYYYMMDDHHMMSS_description.sql` (e.g., `20251231235959_add_new_table.sql`)
 3. Write your SQL with proper error handling
-4. Run: `node scripts/run-migration.mjs supabase/migrations/[filename].sql`
+4. Run: `node scripts/run-migration.mjs supabase/migrations/[filename].sql]`
 
 ### On Windows:
 
