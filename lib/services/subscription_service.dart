@@ -102,4 +102,11 @@ class SubscriptionService extends ChangeNotifier {
     }
   }
 
- 
+  /// Toggle debug Pro mode (for testing/admin use)
+  Future<void> setDebugProMode(bool enabled) async {
+    _isDebugProMode = enabled;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('debug_pro_mode', enabled);
+    notifyListeners();
+  }
+}
