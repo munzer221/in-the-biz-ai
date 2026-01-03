@@ -618,6 +618,88 @@ node scripts/get-tester-emails.mjs
 **API Keys stored in `.env`:**
 - `REVENUECAT_SECRET_KEY` - V2 Secret Key (starts with `sk_`)\n- `REVENUECAT_PUBLIC_KEY` - Public SDK key (starts with `goog_`)\n
 **Project Info:**\n- **Project ID:** &#96;proj42034829&#96;\n- **App ID:** &#96;app9cc9915545&#96;\n
-**Available Script:**\n&#96;&#96;&#96;cmd\n# Automatically configure RevenueCat (products, entitlements, offerings)\nnode scripts/setup-revenuecat-complete.mjs\n&#96;&#96;&#96;\n
+**Available Script:**\n```cmd
+# Automatically configure RevenueCat (products, entitlements, offerings)
+node scripts/setup-revenuecat-complete.mjs
+```\n
 **What the AI can do automatically:**\n- ✅ Create products in RevenueCat\n- ✅ Create entitlements\n- ✅ Create offerings and packages\n- ✅ Attach products to entitlements\n- ✅ Configure complete subscription setup\n
 **Current Configuration:**\n- **Products:** &#96;pro_monthly:monthly-plan&#96
+
+---
+
+## 🛠️ ANDROID BUILD & RUN - TROUBLESHOOTING
+
+The app crashes with `java.lang.ClassNotFoundException: Didn't find class "com.inthebiz.app.MainActivity"`:
+
+This usually means the Kotlin code in `android/app/src/main/kotlin/` is not compiling correctly. The most common causes are:
+
+- **Incorrect Kotlin version:** Verify that the Kotlin version in `android/build.gradle` matches the version used by Flutter.
+- **Cache issues:** Try invalidating caches and restarting Android Studio / VS Code.
+- **Missing dependencies:** Check the `android/app/build.gradle` file for missing dependencies or conflicting versions.
+- **Corrupted build:** Clean the Flutter build (`flutter clean`) and rebuild the app.
+
+**If you are still encountering the `java.lang.ClassNotFoundException` after verifying the above, ensure the following:**
+
+1.  **`MainActivity.kt` exists:** Verify that the &#x60;MainActivity.kt&#x60; file exists in the correct directory (&#x60;android/app/src/main/kotlin/com/inthebiz/app/&#x60;).
+2.  **Manifest Entry:** Check that your &#x60;AndroidManifest.xml&#x60; file correctly references the &#x60;MainActivity&#x60; class. The &#x60;<activity>&#x60; tag should include &#x60;android:name=".MainActivity"&#x60;.
+3.  **Clean Rebuild:** Perform a Flutter clean to clear out any cached build artifacts:
+    ```powershell
+    flutter clean
+    ```
+4.  **Pub Get:** Ensure all dependencies are correctly fetched:
+    ```powershell
+    flutter pub get
+    ```
+5.  **Run:** Then, attempt to run the app again:
+    ```powershell
+    flutter run -d <your_device_id>
+    ```
+
+**If Google Sign-In is failing on Android:**
+
+*   The issue is that **Android uses native Google Sign-In**, not the web version. On Android, you need to properly configure the **OAuth client ID for Android** in Google Cloud Console.
+*   The code looks correct, the issue is likely that **Google hasn't approved your Android OAuth client yet**, or the **SHA-1 certificate fingerprint** isn't configured.
+
+To fix Google Sign-In on Android:
+
+1.  **Get your Android app's SHA-1 fingerprint:**
+
+*From now on, always use `cmd` instead of `PowerShell`.*
+    ```cmd
+    cd "c:\\Users\\Brandon 2021\\Desktop\\In The Biz AI\\android"
+    .\\gradlew signingReport
+    ```
+    If that doesn't work, use &#x60;gradlew.bat signingReport&#x60;
+2.  **Configure OAuth in Google Cloud Console:**
+    1.  Go to Google Cloud Console:
+    2.  Find your project.
+    3.  Go to "APIs & Services" → "Credentials".
+    4.  Create an OAuth 2.0 client ID for Android.
+    5.  Enter your app's package name (&#x60;com.inthebiz.app&#x60;) and the SHA-1 fingerprint.
+3.  **Enable Google Sign-In API:**
+    1.  Go to Google Cloud Console:
+    2.  Find your project.
+    3.  Go to "APIs & Services" → "Enabled APIs & services".
+    4.  Enable "Google Sign-In API".
+
+**If you encounter `GetCredentialResponse error returned from framework` in the logs when using Google Sign-In on Android, it means Google's Credential Manager is failing. To fix this, add both the debug and release SHA-1 certificate fingerprints to your Google Cloud Console OAuth client. You may need to create a separate OAuth client for the debug key.**
+
+## 🌐 WEB DEPLOYMENT - REMEMBER THE MANUAL COPY STEP!
+*It's easy to forget the manual copy step, which is required due to the way Github Pages serves files.*
+*The correct deploy process is:*
+1.  `flutter build web --release --base-href=/` (creates files in `/build/web`)
+2.  **Copy build files to root** (this step is often forgotten!)
+3.  Commit and push
+
+---
+
+## 🚨 DEPRECATED INSTRUCTIONS - DO NOT USE
+
+### 🌐 WEB DEPLOYMENT TO GITHUB PAGES (OLD METHOD - DO NOT USE)
+**THIS SECTION IS DEPRECATED. DO NOT FOLLOW THESE INSTRUCTIONS.**
+
+**GITHUB ACTIONS is now configured to automatically deploy the website.**
+
+**The "put stuff in root" thing in these instructions is WRONG and outdated.**
+
+**These instructions are kept only for historical reference.**
