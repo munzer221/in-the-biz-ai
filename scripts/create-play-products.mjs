@@ -70,14 +70,17 @@ async function createSubscriptionProducts() {
         // Create subscription
         const response = await androidPublisher.monetization.subscriptions.create({
           packageName: PACKAGE_NAME,
+          productId: product.productId,
           requestBody: {
+            packageName: PACKAGE_NAME,
             productId: product.productId,
-            listings: {
-              'en-US': {
+            listings: [
+              {
+                languageCode: 'en-US',
                 title: product.title,
                 benefits: [product.description],
               },
-            },
+            ],
             basePlans: [
               {
                 basePlanId: product.basePlanId,
@@ -88,6 +91,7 @@ async function createSubscriptionProducts() {
                 regionalConfigs: [
                   {
                     regionCode: 'US',
+                    newSubscriberAvailability: true,
                     price: {
                       units: product.price.priceMicros.slice(0, -6),
                       nanos: parseInt(product.price.priceMicros.slice(-6)) * 1000,
