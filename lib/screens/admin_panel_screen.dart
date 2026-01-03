@@ -133,7 +133,13 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
       backgroundColor: AppTheme.darkBackground,
       appBar: AppBar(
         backgroundColor: AppTheme.darkBackground,
-        title: Row(
+        title: Text(
+          'Admin Panel',
+          style: AppTheme.titleLarge.copyWith(color: AppTheme.textPrimary),
+        ),
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -212,16 +218,6 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
                 ),
               ),
             const SizedBox(height: 24),
-
-            // Grant Pro Access SectionAppTheme.titleLarge),
-          ],
-        ),
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
             // Grant Pro Access Section
             Container(
               padding: const EdgeInsets.all(20),
@@ -336,29 +332,11 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
                           color: AppTheme.textMuted, size: 48),
                       const SizedBox(height: 12),
                       Text(
-      },
-    );
-  }
-
-  Widget _buildAnalyticRow(String label, String value, Color valueColor) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          label,
-          style: AppTheme.bodyMedium.copyWith(color: AppTheme.textSecondary),
-        ),
-        Text(
-          value,
-          style: AppTheme.bodyMedium.copyWith(
-            color: valueColor,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-      ],
-    );
-  }
-}                     ),
+                        'No Pro users yet',
+                        style: AppTheme.bodyMedium.copyWith(
+                          color: AppTheme.textMuted,
+                        ),
+                      ),
                     ],
                   ),
                 ),
