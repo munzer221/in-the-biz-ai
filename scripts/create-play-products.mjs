@@ -75,7 +75,7 @@ async function createSubscriptionProducts() {
             listings: {
               'en-US': {
                 title: product.title,
-                description: product.description,
+                benefits: [product.description],
               },
             },
             basePlans: [
@@ -84,14 +84,14 @@ async function createSubscriptionProducts() {
                 state: 'ACTIVE',
                 autoRenewingBasePlanType: {
                   billingPeriodDuration: product.billingPeriod,
-                  resubscribeState: 'RESUBSCRIBE_STATE_ACTIVE',
                 },
                 regionalConfigs: [
                   {
                     regionCode: 'US',
                     price: {
-                      priceMicros: product.price.priceMicros,
-                      currency: product.price.currency,
+                      units: product.price.priceMicros.slice(0, -6),
+                      nanos: parseInt(product.price.priceMicros.slice(-6)) * 1000,
+                      currencyCode: product.price.currency,
                     },
                   },
                 ],
