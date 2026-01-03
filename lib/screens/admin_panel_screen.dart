@@ -47,7 +47,6 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
       _subscriptionAnalytics = analytics;
       _isLoadingAnalytics = false;
     });
-  } });
   }
 
   Future<void> _grantProAccess() async {
