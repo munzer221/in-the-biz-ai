@@ -33,8 +33,8 @@ async function rolloutDraftRelease() {
     const editId = editResponse.data.id;
     console.log(`✅ Edit created: ${editId}\n`);
 
-    // Update track - replace all releases with just version 2
-    console.log(`🎯 Replacing releases with version 2...`);
+    // Update track - replace version 1 with version 2, keep as draft
+    console.log(`🎯 Setting version 2 as the active draft...`);
     await androidPublisher.edits.tracks.update({
       packageName: PACKAGE_NAME,
       editId,
@@ -43,7 +43,7 @@ async function rolloutDraftRelease() {
         track: TRACK,
         releases: [{
           versionCodes: ['2'],
-          status: 'inProgress',  // Use inProgress for active draft releases
+          status: 'draft',
           releaseNotes: [{
             language: 'en-US',
             text: 'Bug fixes and performance improvements. Fixed MainActivity package issue.',
@@ -51,7 +51,7 @@ async function rolloutDraftRelease() {
         }],
       },
     });
-    console.log(`✅ Release status updated\n`);
+    console.log(`✅ Version 2 is now the active draft\n`);
 
     // Commit
     console.log('💾 Committing changes...');
