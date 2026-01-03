@@ -52,7 +52,7 @@ class AuthService {
 
       await GoogleSignIn.instance.initialize(
         clientId: clientId,
-        // serverClientId is not supported on mobile - only use clientId for iOS
+        serverClientId: _webClientId, // Required for Supabase ID token auth
       );
 
       final GoogleSignInAccount? googleUser =

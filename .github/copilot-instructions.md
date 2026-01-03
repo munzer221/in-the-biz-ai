@@ -418,6 +418,7 @@ This removes PowerShell from the profiles entirely, so VS Code can't offer it as
 ## 🌐 WEB DEPLOYMENT TO GITHUB PAGES (CRITICAL - January 1, 2026)
 
 **IMPORTANT:** GitHub Pages serves files from the **ROOT** of the gh-pages branch, NOT from `build/web/` folder.
+**CRITICAL: This process must be followed exactly.**
 
 ### Correct Automated Deployment with GitHub Actions (UPDATED - January 1, 2026)
 
@@ -661,12 +662,35 @@ node scripts/get-tester-emails.mjs
 ### RevenueCat API
 
 **API Keys stored in `.env`:**
-- `REVENUECAT_SECRET_KEY` - V2 Secret Key (starts with `sk_`)\n- `REVENUECAT_PUBLIC_KEY` - Public SDK key (starts with `goog_`)\n
-**Project Info:**\n- **Project ID:** &#96;proj42034829&#96;\n- **App ID:** &#96;app9cc9915545&#96;\n
-**Available Script:**\n&#96;&#96;&#96;cmd\n# Automatically configure RevenueCat (products, entitlements, offerings)\nnode scripts/setup-revenuecat-complete.mjs\n&#96;&#96;&#96;\n
-**What the AI can do automatically:**\n- ✅ Create products in RevenueCat\n- ✅ Create entitlements\n- ✅ Create offerings and packages\n- ✅ Attach products to entitlements\n- ✅ Configure complete subscription setup\n
-**Current Configuration:**\n- **Products:** &#96;pro_monthly:monthly-plan&#96; ($4.99/mo), &#96;pro_yearly:yearly-plan&#96; ($49.99/yr)\n- **Entitlement:** &#96;pro&#96;\n- **Offering:** &#96;default&#96; with packages &#96;monthly&#96; and &#96;annual&#96;\n
-**When user asks to modify subscriptions:**\n1. Use the appropriate script to make changes via API\n2. Do NOT ask user to manually configure things in dashboards\n3. Both Google Play and RevenueCat can be managed programmatically
+- `REVENUECAT_SECRET_KEY` - V2 Secret Key (starts with `sk_`)
+- `REVENUECAT_PUBLIC_KEY` - Public SDK key (starts with `goog_`)
+
+**Project Info:**
+- **Project ID:** &#96;proj42034829&#96;
+- **App ID:** &#96;app9cc9915545&#96;
+
+**Available Script:**
+```cmd
+# Automatically configure RevenueCat (products, entitlements, offerings)
+node scripts/setup-revenuecat-complete.mjs
+```
+
+**What the AI can do automatically:**
+- ✅ Create products in RevenueCat
+- ✅ Create entitlements
+- ✅ Create offerings and packages
+- ✅ Attach products to entitlements
+- ✅ Configure complete subscription setup
+
+**Current Configuration:**
+- **Products:** &#96;pro_monthly:monthly-plan&#96; ($4.99/mo), &#96;pro_yearly:yearly-plan&#96; ($49.99/yr)
+- **Entitlement:** &#96;pro&#96;
+- **Offering:** &#96;default&#96; with packages &#96;monthly&#96; and &#96;annual&#96;
+
+**When user asks to modify subscriptions:**
+1. Use the appropriate script to make changes via API
+2. Do NOT ask user to manually configure things in dashboards
+3. Both Google Play and RevenueCat can be managed programmatically
 
 ---
 
@@ -694,3 +718,26 @@ This removes PowerShell from the profiles entirely, so VS Code can't offer it as
 ## 🛑 CRITICAL: WEB DEPLOYMENT IS MALFUNCTIONING - DO NOT DEPLOY WITHOUT BRANDON'S DIRECT SUPERVISION
 
 GitHub Pages deployment is currently malfunctioning due to a series of errors. **DO NOT attempt to deploy the web app (inthebiz.app) without direct supervision from Brandon.** Continuing to deploy using the automated scripts will likely result in a broken website. Instead, seek guidance from Brandon to troubleshoot the deployment process.
+
+**Root Cause:** The web app code was built to a subdirectory instead of the root directory.
+
+**Solution:**
+1. Edit `deploy-web.bat` and comment out this line:
+```
+REM flutter build web --release --base-href=/in-the-biz-ai/
+```
+2. Uncomment this line:
+```
+flutter build web --release --base-href=/
+```
+
+This ensures the web app builds to the root directory, which is where GitHub Pages expects the files. After this change, redeploy to the web as usual.
+
+---
+
+## 🔑 GOOGLE CLOUD CONSOLE OAUTH CONFIGURATION (NEW - January 3, 2026)
+
+**If experiencing Google Sign-In problems (SHA mismatch) on Android or Web, the most likely cause is an incorrect OAuth configuration in Google Cloud Console.**
+
+**Android OAuth Client:**
+1.  **Package Name:** Ensure the package name in the Google Cloud Console matches the app's package name in `android/app/build.gradle.kts` which should be: `com.inthebiz.app
