@@ -2844,8 +2844,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
           ),
           child: ListTile(
-            leading: Icon(Icons.admin_panel_settings,
-                color: AppTheme.accentOrange),
+            leading:
+                Icon(Icons.admin_panel_settings, color: AppTheme.accentOrange),
             title: Text('Debug Pro Mode',
                 style: AppTheme.titleMedium
                     .copyWith(color: AppTheme.accentOrange)),
@@ -2865,9 +2865,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             ? '✓ Debug Pro Mode ENABLED - All Pro features unlocked'
                             : '✗ Debug Pro Mode DISABLED - Paywall active',
                       ),
-                      backgroundColor: value
-                          ? AppTheme.successColor
-                          : AppTheme.dangerColor,
+                      backgroundColor:
+                          value ? AppTheme.successColor : AppTheme.dangerColor,
                     ),
                   );
                 }
