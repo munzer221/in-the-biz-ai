@@ -83,38 +83,36 @@ async function main() {
 
   // 3. Get entitlements
   console.log('\n🎯 Step 3: Checking entitlements...');
-  const entitlements = await apiCall('/entitlements');
+  const entitlementsResp = await apiCall('/entitlements');
+  const entitlements = entitlementsResp?.items || [];
   
-  if (entitlements) {
-    console.log(`✅ Found ${entitlements.length || 0} entitlement(s)`);
-    if (entitlements.length > 0) {
-      entitlements.forEach(ent => {
-        console.log(`  - ${ent.identifier}`);
-      });
-    }
+  console.log(`${entitlements.length > 0 ? '✅' : '⏳'} Found ${entitlements.length} entitlement(s)`);
+  if (entitlements.length > 0) {
+    entitlements.forEach(ent => {
+      console.log(`  - ${ent.identifier}`);
+    });
   }
 
   // 4. Get offerings
   console.log('\n🎁 Step 4: Checking offerings...');
-  const offerings = await apiCall('/offerings');
+  const offeringsResp = await apiCall('/offerings');
+  const offerings = offeringsResp?.items || [];
   
-  if (offerings) {
-    console.log(`✅ Found ${offerings.length || 0} offering(s)`);
-    if (offerings.length > 0) {
-      offerings.forEach(offer => {
-        console.log(`  - ${offer.identifier}`);
-      });
-    }
+  console.log(`${offerings.length > 0 ? '✅' : '⏳'} Found ${offerings.length} offering(s)`);
+  if (offerings.length > 0) {
+    offerings.forEach(offer => {
+      console.log(`  - ${offer.identifier}`);
+    });
   }
 
   console.log('\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n');
   
   console.log('📋 Configuration Status:\n');
   
-  const hasProMonthly = products?.some(p => p.identifier === 'pro_monthly');
-  const hasProYearly = products?.some(p => p.identifier === 'pro_yearly');
-  const hasProEntitlement = entitlements?.some(e => e.identifier === 'pro');
-  const hasDefaultOffering = offerings?.some(o => o.identifier === 'default');
+  const hasProMonthly = products.some(p => p.identifier === 'pro_monthly');
+  const hasProYearly = products.some(p => p.identifier === 'pro_yearly');
+  const hasProEntitlement = entitlements.some(e => e.identifier === 'pro');
+  const hasDefaultOffering = offerings.some(o => o.identifier === 'default');
 
   console.log(`  ${hasProMonthly ? '✅' : '⏳'} Product: pro_monthly`);
   console.log(`  ${hasProYearly ? '✅' : '⏳'} Product: pro_yearly`);
