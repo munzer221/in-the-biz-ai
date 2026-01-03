@@ -528,7 +528,7 @@ robocopy "c:\Users\Brandon 2021\Desktop\In The Biz AI\build\web" "c:\Users\Brand
 3.  **Commit and Push**: Commit all the changes and push them to the `gh-pages` branch.
 
 ```powershell
-git add *.js *.html *.json .last_build_id flutter_bootstrap.js flutter_service_worker.js
+git add *.js *.html *.json .last_build_id flutter_bootstrap.js flutter_service_worker.js canvaskit version.json
 git commit -m "Deploy: Web files in root for GitHub Pages"
 git push origin gh-pages
 ```
