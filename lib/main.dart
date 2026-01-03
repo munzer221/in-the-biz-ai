@@ -48,7 +48,9 @@ void main() async {
         ChangeNotifierProvider(create: (_) => ShiftProvider()),
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
         ChangeNotifierProvider(create: (_) => FieldOrderProvider()),
-        ChangeNotifierProvider(create: (_) => SubscriptionService()),
+        // Only provide SubscriptionService on mobile
+        if (!kIsWeb)
+          ChangeNotifierProvider(create: (_) => SubscriptionService()),
       ],
       child: const InTheBizApp(),
     ),
