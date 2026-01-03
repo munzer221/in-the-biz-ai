@@ -97,7 +97,6 @@ class SubscriptionService extends ChangeNotifier {
   }
 
   Future<bool> restorePurchases() async {
-  Future<bool> restorePurchases() async {
     try {
       final customerInfo = await Purchases.restorePurchases();
       _customerInfo = customerInfo;
@@ -157,8 +156,7 @@ class SubscriptionService extends ChangeNotifier {
       }
 
       final userId = users['id'];
-      final currentUserEmail =
-          Supabase.instance.client.auth.currentUser?.email;
+      final currentUserEmail = Supabase.instance.client.auth.currentUser?.email;
 
       await Supabase.instance.client.from('pro_users').upsert({
         'user_id': userId,
