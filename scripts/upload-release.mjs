@@ -58,7 +58,7 @@ async function uploadRelease() {
     console.log(`✅ Bundle uploaded successfully!`);
     console.log(`   Version code: ${versionCode}\n`);
 
-    // Step 3: Assign to track
+    // Step 3: Assign to track with proper name
     console.log(`🎯 Assigning to ${TRACK} track...`);
     await androidPublisher.edits.tracks.update({
       packageName: PACKAGE_NAME,
@@ -67,8 +67,9 @@ async function uploadRelease() {
       requestBody: {
         track: TRACK,
         releases: [{
+          name: `${versionCode}`, // Set version name
           versionCodes: [versionCode.toString()],
-          status: 'draft', // Use 'draft' for apps not yet published
+          status: 'completed', // Set to completed to make it active
           releaseNotes: [{
             language: 'en-US',
             text: 'Bug fixes and performance improvements',
