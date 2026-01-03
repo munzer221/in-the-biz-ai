@@ -2833,6 +2833,36 @@ class _SettingsScreenState extends State<SettingsScreen> {
     }
   }
 
+  Widget _buildAdminPanelTile() {
+    return Container(
+      decoration: BoxDecoration(
+        color: AppTheme.cardBackground,
+        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+        border: Border.all(
+          color: AppTheme.accentOrange.withOpacity(0.3),
+          width: 1,
+        ),
+      ),
+      child: ListTile(
+        leading: Icon(Icons.admin_panel_settings, color: AppTheme.accentOrange),
+        title: Text('Admin Panel',
+            style: AppTheme.titleMedium.copyWith(color: AppTheme.accentOrange)),
+        subtitle: Text(
+          'Manage Pro users',
+          style: AppTheme.bodySmall.copyWith(color: AppTheme.textMuted),
+        ),
+        trailing: Icon(Icons.arrow_forward_ios,
+            color: AppTheme.accentOrange, size: 16),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const AdminPanelScreen()),
+          );
+        },
+      ),
+    );
+  }
+
   Widget _buildDebugProToggle() {
     return Consumer<SubscriptionService>(
       builder: (context, subscriptionService, child) {

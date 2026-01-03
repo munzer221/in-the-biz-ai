@@ -161,11 +161,13 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
                     controller: _emailController,
                     decoration: InputDecoration(
                       hintText: 'User email address',
-                      prefixIcon: Icon(Icons.email, color: AppTheme.primaryGreen),
+                      prefixIcon:
+                          Icon(Icons.email, color: AppTheme.primaryGreen),
                       filled: true,
                       fillColor: AppTheme.cardBackgroundLight,
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                        borderRadius:
+                            BorderRadius.circular(AppTheme.radiusMedium),
                         borderSide: BorderSide.none,
                       ),
                     ),
@@ -180,7 +182,8 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
                       filled: true,
                       fillColor: AppTheme.cardBackgroundLight,
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                        borderRadius:
+                            BorderRadius.circular(AppTheme.radiusMedium),
                         borderSide: BorderSide.none,
                       ),
                     ),
@@ -195,7 +198,8 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
                         backgroundColor: AppTheme.primaryGreen,
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                          borderRadius:
+                              BorderRadius.circular(AppTheme.radiusMedium),
                         ),
                       ),
                       child: const Text(
@@ -227,7 +231,8 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
               Center(
                 child: Padding(
                   padding: const EdgeInsets.all(40),
-                  child: CircularProgressIndicator(color: AppTheme.primaryGreen),
+                  child:
+                      CircularProgressIndicator(color: AppTheme.primaryGreen),
                 ),
               )
             else if (_proUsers.isEmpty)
@@ -240,11 +245,13 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
                 child: Center(
                   child: Column(
                     children: [
-                      Icon(Icons.people_outline, color: AppTheme.textMuted, size: 48),
+                      Icon(Icons.people_outline,
+                          color: AppTheme.textMuted, size: 48),
                       const SizedBox(height: 12),
                       Text(
                         'No Pro users yet',
-                        style: AppTheme.bodyMedium.copyWith(color: AppTheme.textMuted),
+                        style: AppTheme.bodyMedium
+                            .copyWith(color: AppTheme.textMuted),
                       ),
                     ],
                   ),
@@ -265,7 +272,8 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
                       color: AppTheme.cardBackground,
-                      borderRadius: BorderRadius.circular(AppTheme.radiusMedium),
+                      borderRadius:
+                          BorderRadius.circular(AppTheme.radiusMedium),
                       border: Border.all(
                         color: AppTheme.primaryGreen.withOpacity(0.3),
                         width: 1,
@@ -279,7 +287,8 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
                             color: AppTheme.primaryGreen.withOpacity(0.15),
                             shape: BoxShape.circle,
                           ),
-                          child: Icon(Icons.star, color: AppTheme.primaryGreen, size: 24),
+                          child: Icon(Icons.star,
+                              color: AppTheme.primaryGreen, size: 24),
                         ),
                         const SizedBox(width: 16),
                         Expanded(
@@ -299,7 +308,8 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
                                   color: AppTheme.textMuted,
                                 ),
                               ),
-                              if (user['notes'] != null && user['notes'].toString().isNotEmpty) ...[
+                              if (user['notes'] != null &&
+                                  user['notes'].toString().isNotEmpty) ...[
                                 const SizedBox(height: 4),
                                 Text(
                                   user['notes'],
