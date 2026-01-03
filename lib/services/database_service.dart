@@ -12,6 +12,9 @@ import 'google_calendar_service.dart';
 
 class DatabaseService {
   static SupabaseClient get _supabase => Supabase.instance.client;
+  
+  /// Public getter for Supabase client (used by vision scanner)
+  SupabaseClient get supabase => _supabase;
 
   /// Helper to format DateTime to YYYY-MM-DD in local timezone
   static String _formatDateLocal(DateTime date) {
