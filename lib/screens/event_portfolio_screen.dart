@@ -30,16 +30,19 @@ class _EventPortfolioScreenState extends State<EventPortfolioScreen> {
     try {
       final userId = _db.supabase.auth.currentUser!.id;
 
-      var query = _db.supabase
-          .from('beo_events')
-          .select()
-          .eq('user_id', userId)
-          .order('event_date', ascending: false);
-
-      // Apply type filter if not "All"
-      if (_selectedFilter != 'all') {
-        query = query.eq('event_type', _selectedFilter);
-      }
+      // Build query with conditional filter
+      final query = _selectedFilter == 'all'
+          ? _db.supabase
+              .from('beo_events')
+              .select()
+              .eq('user_id', userId)
+              .order('event_date', ascending: false)
+          : _db.supabase
+              .from('beo_events')
+              .select()
+              .eq('user_id', userId)
+              .eq('event_type', _selectedFilter)
+              .order('event_date', ascending: false);
 
       final response = await query;
 
