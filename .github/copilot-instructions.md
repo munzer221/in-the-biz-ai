@@ -370,35 +370,12 @@ node scripts/create-play-products.mjs
 ### RevenueCat API
 
 **API Keys stored in `.env`:**
-- `REVENUECAT_SECRET_KEY` - V2 Secret Key (starts with `sk_`)
-- `REVENUECAT_PUBLIC_KEY` - Public SDK key (starts with `goog_`)
-
-**Project Info:**
-- **Project ID:** `proj42034829`
-- **App ID:** `app9cc9915545`
-
-**Available Script:**
-```cmd
-# Automatically configure RevenueCat (products, entitlements, offerings)
-node scripts/setup-revenuecat-complete.mjs
-```
-
-**What the AI can do automatically:**
-- ✅ Create products in RevenueCat
-- ✅ Create entitlements
-- ✅ Create offerings and packages
-- ✅ Attach products to entitlements
-- ✅ Configure complete subscription setup
-
-**Current Configuration:**
-- **Products:** `pro_monthly:monthly-plan` ($4.99/mo), `pro_yearly:yearly-plan` ($49.99/yr)
-- **Entitlement:** `pro`
-- **Offering:** `default` with packages `monthly` and `annual`
-
-**When user asks to modify subscriptions:**
-1. Use the appropriate script to make changes via API
-2. Do NOT ask user to manually configure things in dashboards
-3. Both Google Play and RevenueCat can be managed programmatically
+- `REVENUECAT_SECRET_KEY` - V2 Secret Key (starts with `sk_`)\n- `REVENUECAT_PUBLIC_KEY` - Public SDK key (starts with `goog_`)\n
+**Project Info:**\n- **Project ID:** &#96;proj42034829&#96;\n- **App ID:** &#96;app9cc9915545&#96;\n
+**Available Script:**\n&#96;&#96;&#96;cmd\n# Automatically configure RevenueCat (products, entitlements, offerings)\nnode scripts/setup-revenuecat-complete.mjs\n&#96;&#96;&#96;\n
+**What the AI can do automatically:**\n- ✅ Create products in RevenueCat\n- ✅ Create entitlements\n- ✅ Create offerings and packages\n- ✅ Attach products to entitlements\n- ✅ Configure complete subscription setup\n
+**Current Configuration:**\n- **Products:** &#96;pro_monthly:monthly-plan&#96; ($4.99/mo), &#96;pro_yearly:yearly-plan&#96; ($49.99/yr)\n- **Entitlement:** &#96;pro&#96;\n- **Offering:** &#96;default&#96; with packages &#96;monthly&#96; and &#96;annual&#96;\n
+**When user asks to modify subscriptions:**\n1. Use the appropriate script to make changes via API\n2. Do NOT ask user to manually configure things in dashboards\n3. Both Google Play and RevenueCat can be managed programmatically
 
 ---
 
@@ -730,11 +707,4 @@ This section defines the UI placement strategy for the AI Vision features.
     *   Start simple, extract what is consistently available, and improve over time.
     *   Review modal lets user verify/edit extracted data.
 -   **Business Card:** Creates/adds to Event Contacts and attaches it to the current shift.
--   **Invoice (Future):** Links to a separate freelancer workflow (not shift-based).
--   **Receipt (Future):** Links to expense tracking for 1099 contractors.
--   **Paycheck (New):** Extracts data from pay stubs (see below)
-
-### 4. Implementation Details
-
--   **BEO Scanner:**
-    *   AI should prompt: "Scan another page?" or "Ready to import?"
+-   **Invoice (Future):**
