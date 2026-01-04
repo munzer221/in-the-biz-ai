@@ -876,22 +876,159 @@ class _CalendarSyncScreenState extends State<CalendarSyncScreen> {
     );
   }
 
-  /// Import selected Google Calendar events as shifts
+  /// Import selected Google Calendar events as shifts (Web version)
+  /// Follows the same pattern as mobile: shows JobGroupingScreen first
   Future<void> _importGoogleShifts() async {
     if (_selectedShiftIds.isEmpty) return;
 
+    final selectedEvents =
+        _googleEvents.where((e) => _selectedShiftIds.contains(e.id)).toList();
+
+    if (selectedEvents.isEmpty) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('No shifts selected'),
+            backgroundColor: AppTheme.accentRed,
+          ),
+        );
+      }
+      return;
+    }
+
+    // Extract unique job titles from selected events
+    final Map<String, int> extractedJobs = {};
+    for (final event in selectedEvents) {
+      final title = event.summary?.trim() ?? 'Unknown';
+      extractedJobs[title] = (extractedJobs[title] ?? 0) + 1;
+    }
+
+    if (extractedJobs.isEmpty) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('No work shifts found'),
+            backgroundColor: AppTheme.accentRed,
+          ),
+        );
+      }
+      return;
+    }
+
+    // Show job grouping screen (same as mobile)
+    if (mounted) {
+      final calendarTitles = extractedJobs.entries
+          .map((e) => {'title': e.key, 'count': e.value})
+          .toList();
+
+      final groups = await Navigator.push<List<Map<String, dynamic>>>(
+        context,
+        MaterialPageRoute(
+          builder: (context) => JobGroupingScreen(
+            calendarTitles: calendarTitles,
+          ),
+        ),
+      );
+
+      if (groups == null || groups.isEmpty) {
+        // User cancelled
+        return;
+      }
+
+      // Build job mapping from groups
+      Map<String, String> finalJobMapping = {};
+
+      final titleService = CalendarTitleService();
+      await titleService.saveJobGroups(groups);
+
+      for (final group in groups) {
+        final job = group['job'] as Job;
+        final titles = group['titles'] as List<String>;
+
+        for (final title in titles) {
+          finalJobMapping[title] = job.id;
+        }
+      }
+
+      if (finalJobMapping.isEmpty) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('No job mappings created'),
+              backgroundColor: AppTheme.accentRed,
+            ),
+          );
+        }
+        return;
+      }
+
+      // Now import with proper job mapping
+      await _importGoogleShiftsWithMapping(selectedEvents, finalJobMapping);
+    }
+  }
+
+  /// Import Google Calendar events with job mapping (Web version)
+  Future<void> _importGoogleShiftsWithMapping(
+    List<gcal.Event> events,
+    Map<String, String> jobMapping,
+  ) async {
     setState(() => _isImporting = true);
 
-    try {
-      int imported = 0;
-      final selectedEvents =
-          _googleEvents.where((e) => _selectedShiftIds.contains(e.id)).toList();
+    int imported = 0;
+    int skipped = 0;
 
-      for (final event in selectedEvents) {
+    try {
+      // Get existing shifts to check for duplicates
+      final shiftProvider = Provider.of<ShiftProvider>(context, listen: false);
+      final existingShifts = shiftProvider.shifts;
+      final now = DateTime.now();
+
+      for (final event in events) {
         final startTime = event.start?.dateTime ?? event.start?.date;
         final endTime = event.end?.dateTime ?? event.end?.date;
 
-        if (startTime == null) continue;
+        if (startTime == null) {
+          skipped++;
+          continue;
+        }
+
+        // Only import past shifts (same as mobile)
+        if (startTime.isAfter(now)) {
+          skipped++;
+          continue;
+        }
+
+        // Get job title and find mapping
+        final jobTitle = event.summary?.trim() ?? '';
+        final jobId = jobMapping[jobTitle];
+
+        if (jobId == null || jobId.isEmpty) {
+          skipped++;
+          continue;
+        }
+
+        // Check for duplicates by date and source
+        final existingShift = existingShifts.firstWhere(
+          (shift) =>
+              shift.date.year == startTime.year &&
+              shift.date.month == startTime.month &&
+              shift.date.day == startTime.day &&
+              shift.source == 'google_calendar',
+          orElse: () => Shift(
+            id: '',
+            date: DateTime(1900),
+            cashTips: -1,
+            creditTips: -1,
+            hourlyRate: -1,
+            hoursWorked: -1,
+          ),
+        );
+
+        // Skip if shift exists with earnings
+        if (existingShift.id.isNotEmpty && existingShift.totalIncome > 0) {
+          skipped++;
+          continue;
+        }
 
         // Calculate hours
         double hours = 0;
@@ -899,40 +1036,56 @@ class _CalendarSyncScreenState extends State<CalendarSyncScreen> {
           hours = endTime.difference(startTime).inMinutes / 60.0;
         }
 
-        // Format times as strings (e.g., "9:00 AM")
-        final startTimeStr = DateFormat('h:mm a').format(startTime.toLocal());
+        // Format times as strings (e.g., "14:30")
+        final startTimeStr =
+            '${startTime.hour.toString().padLeft(2, '0')}:${startTime.minute.toString().padLeft(2, '0')}';
         final endTimeStr = endTime != null
-            ? DateFormat('h:mm a').format(endTime.toLocal())
+            ? '${endTime.hour.toString().padLeft(2, '0')}:${endTime.minute.toString().padLeft(2, '0')}'
             : null;
 
-        // Create shift
+        // Determine status based on time
+        final isFuture = startTime.isAfter(now);
+
+        // Create shift with proper job ID
         final shift = Shift(
-          id: const Uuid().v4(),
-          jobId: '', // Will need to be set by user or mapped
+          id: existingShift.id.isNotEmpty
+              ? existingShift.id
+              : const Uuid().v4(),
+          jobId: jobId,
           date: startTime.toLocal(),
           startTime: startTimeStr,
           endTime: endTimeStr,
           hoursWorked: hours,
           cashTips: 0,
           creditTips: 0,
-          notes: event.summary ?? '',
-          createdAt: DateTime.now(),
+          hourlyRate: 0,
+          status: isFuture ? 'scheduled' : 'completed',
           source: 'google_calendar',
+          calendarEventId: event.id,
+          notes: event.description,
+          createdAt: DateTime.now(),
         );
 
         await _db.saveShift(shift);
         imported++;
       }
 
+      // Refresh the shift provider
       if (mounted) {
+        final shiftProvider =
+            Provider.of<ShiftProvider>(context, listen: false);
+        await shiftProvider.loadShifts();
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Imported $imported shifts!'),
+            content: Text(
+                '✅ Imported $imported shifts${skipped > 0 ? ' ($skipped skipped)' : ''}'),
             backgroundColor: AppTheme.primaryGreen,
           ),
         );
       }
     } catch (e) {
+      print('[Web Calendar] Error importing: $e');
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
