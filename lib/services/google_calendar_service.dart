@@ -82,7 +82,7 @@ class GoogleCalendarService {
 
       // Initialize GoogleSignIn singleton once
       if (!_initialized) {
-        print('[v1.1.3] Initializing GoogleSignIn...');
+        print('[v1.1.4] Initializing GoogleSignIn...');
         await GoogleSignIn.instance.initialize();
         _initialized = true;
 
@@ -90,16 +90,16 @@ class GoogleCalendarService {
         GoogleSignIn.instance.authenticationEvents.listen((event) {
           if (event is GoogleSignInAuthenticationEventSignIn) {
             _currentUser = event.user;
-            print('[v1.1.3] User signed in via event: ${event.user?.id}');
+            print('[v1.1.4] User signed in via event: ${event.user?.id}');
           } else if (event is GoogleSignInAuthenticationEventSignOut) {
             _currentUser = null;
-            print('[v1.1.3] User signed out');
+            print('[v1.1.4] User signed out');
           }
         });
       }
 
       // Try lightweight auth to get current user
-      print('[v1.1.3] Attempting lightweight authentication...');
+      print('[v1.1.4] Attempting lightweight authentication...');
       final lightweightUser =
           await GoogleSignIn.instance.attemptLightweightAuthentication();
 
@@ -109,46 +109,51 @@ class GoogleCalendarService {
       // Update _currentUser from the authentication result OR from event
       if (lightweightUser != null) {
         _currentUser = lightweightUser;
-        print('[v1.1.3] Got user from lightweight auth: ${lightweightUser.id}');
+        print('[v1.1.4] Got user from lightweight auth: ${lightweightUser.id}');
       } else if (_currentUser != null) {
-        print('[v1.1.3] Got user from event listener: ${_currentUser!.id}');
+        print('[v1.1.4] Got user from event listener: ${_currentUser!.id}');
       } else {
-        // No user from lightweight auth or events - need to authenticate
+        // No user available - on web, we need to request authorization directly
+        // which will trigger the OAuth flow with account picker
         print(
-            '[v1.1.3] No lightweight auth - attempting full authentication...');
+            '[v1.1.4] No user found - requesting authorization directly (triggers OAuth)...');
 
-        if (GoogleSignIn.instance.supportsAuthenticate()) {
-          // Use authenticate() method on platforms that support it
-          final authenticatedUser = await GoogleSignIn.instance.authenticate();
-          _currentUser = authenticatedUser;
-          print(
-              '[v1.1.3] Got user from authenticate(): ${authenticatedUser?.id}');
-        } else {
-          print('[v1.1.3] Platform does not support authenticate()');
-          return false;
-        }
+        try {
+          // Request authorization - this will show Google account picker and OAuth consent
+          final authClient = GoogleSignIn.instance.authorizationClient;
+          final authorization =
+              await authClient.authorizeScopes(AuthService.calendarScopes);
 
-        if (_currentUser == null) {
-          print('[v1.1.3] Authentication failed or was cancelled');
+          // After authorization, check if user is now available
+          await Future.delayed(const Duration(milliseconds: 1000));
+          if (_currentUser != null) {
+            print(
+                '[v1.1.4] User available after authorization: ${_currentUser!.id}');
+          } else {
+            print('[v1.1.4] Authorization completed but no user available');
+            return false;
+          }
+        } catch (e) {
+          print('[v1.1.4] Authorization failed: $e');
           return false;
         }
       }
 
-      print('[v1.1.3] User found, requesting calendar scope authorization...');
+      print('[v1.1.4] User found, requesting calendar scope authorization...');
 
       // Request authorization for calendar scopes from existing user
       // On web, this triggers Google's consent popup for calendar access
       final authorization = await _currentUser!.authorizationClient
           .authorizeScopes(AuthService.calendarScopes);
 
-      print('[v1.1.3] Authorization granted, creating HTTP client...');
+      print('[v1.1.4] Authorization granted, creating HTTP client...');
 
       // Get authenticated HTTP client
       final httpClient = authorization.authClient(
         scopes: AuthService.calendarScopes,
       );
 
-      print('[v1.1.3] Creating CalendarApi...');
+      print('[v1.1.4] Creating CalendarApi...');
       _calendarApi = calendar.CalendarApi(httpClient);
 
       // Save that we have calendar access
@@ -157,8 +162,8 @@ class GoogleCalendarService {
 
       return true;
     } catch (e, stackTrace) {
-      print('[v1.1.3] Error requesting calendar access: $e');
-      print('[v1.1.3] Stack trace: $stackTrace');
+      print('[v1.1.4] Error requesting calendar access: $e');
+      print('[v1.1.4] Stack trace: $stackTrace');
       return false;
     }
   }
