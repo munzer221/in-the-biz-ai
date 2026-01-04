@@ -692,11 +692,13 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
       return;
     }
 
-    // Check for Pro status and show ad if needed
-    final subscriptionService =
-        Provider.of<SubscriptionService>(context, listen: false);
-    if (!subscriptionService.isPro) {
-      await AdService().showInterstitialAd();
+    // Check for Pro status and show ad if needed (Mobile only)
+    if (!kIsWeb) {
+      final subscriptionService =
+          Provider.of<SubscriptionService>(context, listen: false);
+      if (!subscriptionService.isPro) {
+        await AdService().showInterstitialAd();
+      }
     }
 
     setState(() => _isSaving = true);
@@ -4892,26 +4894,28 @@ class _AddShiftScreenState extends State<AddShiftScreen> {
   Future<void> _pickAndUploadFile() async {
     if (widget.existingShift == null) return;
 
-    // Check Pro status and limits
-    final subscriptionService =
-        Provider.of<SubscriptionService>(context, listen: false);
-    if (!subscriptionService.isPro && _attachments.length >= 5) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content:
-              const Text('Free limit reached (5 attachments). Upgrade to Pro!'),
-          action: SnackBarAction(
-            label: 'Upgrade',
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => PaywallScreen()),
-              );
-            },
+    // Check Pro status and limits (Mobile only)
+    if (!kIsWeb) {
+      final subscriptionService =
+          Provider.of<SubscriptionService>(context, listen: false);
+      if (!subscriptionService.isPro && _attachments.length >= 5) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text(
+                'Free limit reached (5 attachments). Upgrade to Pro!'),
+            action: SnackBarAction(
+              label: 'Upgrade',
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => PaywallScreen()),
+                );
+              },
+            ),
           ),
-        ),
-      );
-      return;
+        );
+        return;
+      }
     }
 
     try {

@@ -31,135 +31,153 @@ class DatabaseService {
 
   /// Save a new shift to Supabase
   Future<Shift> saveShift(Shift shift) async {
-    final userId = _supabase.auth.currentUser?.id;
-    if (userId == null) throw Exception('User not logged in');
+    try {
+      final userId = _supabase.auth.currentUser?.id;
+      if (userId == null) throw Exception('User not logged in');
 
-    final response = await _supabase
-        .from('shifts')
-        .insert({
-          'user_id': userId,
-          'date': _formatDateLocal(shift.date),
-          'cash_tips': shift.cashTips,
-          'credit_tips': shift.creditTips,
-          'hourly_rate': shift.hourlyRate,
-          'hours_worked': shift.hoursWorked,
-          'notes': shift.notes,
-          'image_url': shift.imageUrl,
-          'job_id': shift.jobId,
-          'job_type': shift.jobType,
-          'start_time': shift.startTime,
-          'end_time': shift.endTime,
-          'event_name': shift.eventName,
-          'hostess': shift.hostess,
-          'guest_count': shift.guestCount,
-          'location': shift.location,
-          'client_name': shift.clientName,
-          'project_name': shift.projectName,
-          'commission': shift.commission,
-          'mileage': shift.mileage,
-          'flat_rate': shift.flatRate,
-          'overtime_hours': shift.overtimeHours,
-          'sales_amount': shift.salesAmount,
-          'tipout_percent': shift.tipoutPercent,
-          'additional_tipout': shift.additionalTipout,
-          'additional_tipout_note': shift.additionalTipoutNote,
-          'event_cost': shift.eventCost,
-          'status': shift.status,
-          'source': shift.source,
-          'is_recurring': shift.isRecurring,
-          'recurrence_rule': shift.recurrenceRule,
-          'recurring_series_id': shift.recurringSeriesId,
-          'calendar_event_id': shift.calendarEventId,
-          // Rideshare & Delivery fields
-          'rides_count': shift.ridesCount,
-          'deliveries_count': shift.deliveriesCount,
-          'dead_miles': shift.deadMiles,
-          'fuel_cost': shift.fuelCost,
-          'tolls_parking': shift.tollsParking,
-          'surge_multiplier': shift.surgeMultiplier,
-          'acceptance_rate': shift.acceptanceRate,
-          'base_fare': shift.baseFare,
-          // Music & Entertainment fields
-          'gig_type': shift.gigType,
-          'setup_hours': shift.setupHours,
-          'performance_hours': shift.performanceHours,
-          'breakdown_hours': shift.breakdownHours,
-          'equipment_used': shift.equipmentUsed,
-          'equipment_rental_cost': shift.equipmentRentalCost,
-          'crew_payment': shift.crewPayment,
-          'merch_sales': shift.merchSales,
-          'audience_size': shift.audienceSize,
-          // Artist & Crafts fields
-          'pieces_created': shift.piecesCreated,
-          'pieces_sold': shift.piecesSold,
-          'materials_cost': shift.materialsCost,
-          'sale_price': shift.salePrice,
-          'venue_commission_percent': shift.venueCommissionPercent,
-          // Retail/Sales fields
-          'items_sold': shift.itemsSold,
-          'transactions_count': shift.transactionsCount,
-          'upsells_count': shift.upsellsCount,
-          'upsells_amount': shift.upsellsAmount,
-          'returns_count': shift.returnsCount,
-          'returns_amount': shift.returnsAmount,
-          'shrink_amount': shift.shrinkAmount,
-          'department': shift.department,
-          // Salon/Spa fields
-          'service_type': shift.serviceType,
-          'services_count': shift.servicesCount,
-          'product_sales': shift.productSales,
-          'repeat_client_percent': shift.repeatClientPercent,
-          'chair_rental': shift.chairRental,
-          'new_clients_count': shift.newClientsCount,
-          'returning_clients_count': shift.returningClientsCount,
-          'walkin_count': shift.walkinCount,
-          'appointment_count': shift.appointmentCount,
-          // Hospitality fields
-          'room_type': shift.roomType,
-          'rooms_cleaned': shift.roomsCleaned,
-          'quality_score': shift.qualityScore,
-          'shift_type': shift.shiftType,
-          'room_upgrades': shift.roomUpgrades,
-          'guests_checked_in': shift.guestsCheckedIn,
-          'cars_parked': shift.carsParked,
-          // Healthcare fields
-          'patient_count': shift.patientCount,
-          'shift_differential': shift.shiftDifferential,
-          'on_call_hours': shift.onCallHours,
-          'procedures_count': shift.proceduresCount,
-          'specialization': shift.specialization,
-          // Fitness fields
-          'sessions_count': shift.sessionsCount,
-          'session_type': shift.sessionType,
-          'class_size': shift.classSize,
-          'retention_rate': shift.retentionRate,
-          'cancellations_count': shift.cancellationsCount,
-          'package_sales': shift.packageSales,
-          'supplement_sales': shift.supplementSales,
-          // Construction/Trades fields
-          'labor_cost': shift.laborCost,
-          'subcontractor_cost': shift.subcontractorCost,
-          'square_footage': shift.squareFootage,
-          'weather_delay_hours': shift.weatherDelayHours,
-          // Freelancer fields
-          'revisions_count': shift.revisionsCount,
-          'client_type': shift.clientType,
-          'expenses': shift.expenses,
-          'billable_hours': shift.billableHours,
-          // Restaurant fields (additional)
-          'table_section': shift.tableSection,
-          'cash_sales': shift.cashSales,
-          'card_sales': shift.cardSales,
-        })
-        .select()
-        .single();
+      print('💾 [DB] Saving shift...');
+      print('💾 [DB] Job ID: ${shift.jobId}');
+      print('💾 [DB] Date: ${shift.date}');
+      print('💾 [DB] Status: ${shift.status}');
 
-    final savedShift = Shift.fromSupabase(response);
+      final response = await _supabase
+          .from('shifts')
+          .insert({
+            'user_id': userId,
+            'date': _formatDateLocal(shift.date),
+            'cash_tips': shift.cashTips,
+            'credit_tips': shift.creditTips,
+            'hourly_rate': shift.hourlyRate,
+            'hours_worked': shift.hoursWorked,
+            'notes': shift.notes,
+            'image_url': shift.imageUrl,
+            'job_id': shift.jobId,
+            'job_type': shift.jobType,
+            'start_time': shift.startTime,
+            'end_time': shift.endTime,
+            'event_name': shift.eventName,
+            'hostess': shift.hostess,
+            'guest_count': shift.guestCount,
+            'location': shift.location,
+            'client_name': shift.clientName,
+            'project_name': shift.projectName,
+            'commission': shift.commission,
+            'mileage': shift.mileage,
+            'flat_rate': shift.flatRate,
+            'overtime_hours': shift.overtimeHours,
+            'sales_amount': shift.salesAmount,
+            'tipout_percent': shift.tipoutPercent,
+            'additional_tipout': shift.additionalTipout,
+            'additional_tipout_note': shift.additionalTipoutNote,
+            'event_cost': shift.eventCost,
+            'status': shift.status,
+            'source': shift.source,
+            'is_recurring': shift.isRecurring,
+            'recurrence_rule': shift.recurrenceRule,
+            'recurring_series_id': shift.recurringSeriesId,
+            'calendar_event_id': shift.calendarEventId,
+            // Rideshare & Delivery fields
+            'rides_count': shift.ridesCount,
+            'deliveries_count': shift.deliveriesCount,
+            'dead_miles': shift.deadMiles,
+            'fuel_cost': shift.fuelCost,
+            'tolls_parking': shift.tollsParking,
+            'surge_multiplier': shift.surgeMultiplier,
+            'acceptance_rate': shift.acceptanceRate,
+            'base_fare': shift.baseFare,
+            // Music & Entertainment fields
+            'gig_type': shift.gigType,
+            'setup_hours': shift.setupHours,
+            'performance_hours': shift.performanceHours,
+            'breakdown_hours': shift.breakdownHours,
+            'equipment_used': shift.equipmentUsed,
+            'equipment_rental_cost': shift.equipmentRentalCost,
+            'crew_payment': shift.crewPayment,
+            'merch_sales': shift.merchSales,
+            'audience_size': shift.audienceSize,
+            // Artist & Crafts fields
+            'pieces_created': shift.piecesCreated,
+            'pieces_sold': shift.piecesSold,
+            'materials_cost': shift.materialsCost,
+            'sale_price': shift.salePrice,
+            'venue_commission_percent': shift.venueCommissionPercent,
+            // Retail/Sales fields
+            'items_sold': shift.itemsSold,
+            'transactions_count': shift.transactionsCount,
+            'upsells_count': shift.upsellsCount,
+            'upsells_amount': shift.upsellsAmount,
+            'returns_count': shift.returnsCount,
+            'returns_amount': shift.returnsAmount,
+            'shrink_amount': shift.shrinkAmount,
+            'department': shift.department,
+            // Salon/Spa fields
+            'service_type': shift.serviceType,
+            'services_count': shift.servicesCount,
+            'product_sales': shift.productSales,
+            'repeat_client_percent': shift.repeatClientPercent,
+            'chair_rental': shift.chairRental,
+            'new_clients_count': shift.newClientsCount,
+            'returning_clients_count': shift.returningClientsCount,
+            'walkin_count': shift.walkinCount,
+            'appointment_count': shift.appointmentCount,
+            // Hospitality fields
+            'room_type': shift.roomType,
+            'rooms_cleaned': shift.roomsCleaned,
+            'quality_score': shift.qualityScore,
+            'shift_type': shift.shiftType,
+            'room_upgrades': shift.roomUpgrades,
+            'guests_checked_in': shift.guestsCheckedIn,
+            'cars_parked': shift.carsParked,
+            // Healthcare fields
+            'patient_count': shift.patientCount,
+            'shift_differential': shift.shiftDifferential,
+            'on_call_hours': shift.onCallHours,
+            'procedures_count': shift.proceduresCount,
+            'specialization': shift.specialization,
+            // Fitness fields
+            'sessions_count': shift.sessionsCount,
+            'session_type': shift.sessionType,
+            'class_size': shift.classSize,
+            'retention_rate': shift.retentionRate,
+            'cancellations_count': shift.cancellationsCount,
+            'package_sales': shift.packageSales,
+            'supplement_sales': shift.supplementSales,
+            // Construction/Trades fields
+            'labor_cost': shift.laborCost,
+            'subcontractor_cost': shift.subcontractorCost,
+            'square_footage': shift.squareFootage,
+            'weather_delay_hours': shift.weatherDelayHours,
+            // Freelancer fields
+            'revisions_count': shift.revisionsCount,
+            'client_type': shift.clientType,
+            'expenses': shift.expenses,
+            'billable_hours': shift.billableHours,
+            // Restaurant fields (additional)
+            'table_section': shift.tableSection,
+            'cash_sales': shift.cashSales,
+            'card_sales': shift.cardSales,
+          })
+          .select()
+          .single();
 
-    // Auto-export to calendar if enabled
-    await _autoExportShift(savedShift);
+      print('💾 [DB] Insert successful, response received');
+      print('💾 [DB] Response type: ${response.runtimeType}');
+      print(
+          '💾 [DB] Response keys: ${response is Map ? response.keys.toList() : 'not a map'}');
 
-    return savedShift;
+      final savedShift = Shift.fromSupabase(response);
+      print('💾 [DB] Shift parsed successfully: ${savedShift.id}');
+
+      // Auto-export to calendar if enabled
+      await _autoExportShift(savedShift);
+
+      print('💾 [DB] Save completed successfully');
+      return savedShift;
+    } catch (e, stackTrace) {
+      print('❌ [DB] Error saving shift: $e');
+      print('❌ [DB] Stack trace: $stackTrace');
+      rethrow;
+    }
   }
 
   /// Get all shifts for current user

@@ -10,8 +10,14 @@ class AdService {
   InterstitialAd? _interstitialAd;
   bool _isAdLoaded = false;
 
+  // Check if we're on a supported platform (not web)
+  bool get _isMobilePlatform =>
+      !kIsWeb && (Platform.isAndroid || Platform.isIOS);
+
   // AdMob App IDs and Ad Unit IDs
   String get appId {
+    if (!_isMobilePlatform) return '';
+
     if (Platform.isAndroid) {
       return 'ca-app-pub-1150666051629225~2172594466'; // Android App ID
     } else if (Platform.isIOS) {
@@ -22,6 +28,8 @@ class AdService {
   }
 
   String get interstitialAdUnitId {
+    if (!_isMobilePlatform) return '';
+
     if (kDebugMode) {
       // Use test IDs in debug mode to avoid invalid traffic
       if (Platform.isAndroid) {
@@ -41,11 +49,18 @@ class AdService {
   }
 
   Future<void> initialize() async {
+    if (!_isMobilePlatform) {
+      debugPrint('Ads not supported on web platform - skipping initialization');
+      return;
+    }
+
     await MobileAds.instance.initialize();
     _loadInterstitialAd();
   }
 
   void _loadInterstitialAd() {
+    if (!_isMobilePlatform) return;
+
     InterstitialAd.load(
       adUnitId: interstitialAdUnitId,
       request: const AdRequest(),
@@ -77,6 +92,11 @@ class AdService {
   }
 
   Future<void> showInterstitialAd() async {
+    if (!_isMobilePlatform) {
+      debugPrint('Ads not supported on web platform - skipping ad display');
+      return; // Just return immediately on web
+    }
+
     if (_isAdLoaded && _interstitialAd != null) {
       await _interstitialAd!.show();
       _isAdLoaded = false;
