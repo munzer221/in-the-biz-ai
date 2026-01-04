@@ -51,13 +51,11 @@ class GoogleCalendarService {
       final authorization = await _currentUser!.authorizationClient
           .authorizationForScopes(AuthService.calendarScopes);
 
-      if (authorization == null) {
-        return false; // Not authorized yet
-      }
-
-      // Get authenticated HTTP client
-      final httpClient =
-          authorization.authClient(scopes: AuthService.calendarScopes);
+      // Get authenticated HTTP client (authorization can be null if not authorized yet)
+      final httpClient = authorization?.authClient(
+            scopes: AuthService.calendarScopes,
+          ) ??
+          (throw Exception('No calendar authorization found'));
 
       _calendarApi = calendar.CalendarApi(httpClient);
       return true;
@@ -90,14 +88,10 @@ class GoogleCalendarService {
       }
 
       // Authenticate user and get account directly
+      // Note: authenticate() never returns null on web, throws on cancellation
       final account = await GoogleSignIn.instance.authenticate(
         scopeHint: AuthService.calendarScopes,
       );
-
-      if (account == null) {
-        print('Authentication failed or was cancelled');
-        return false;
-      }
 
       _currentUser = account;
 
@@ -106,8 +100,9 @@ class GoogleCalendarService {
           .authorizeScopes(AuthService.calendarScopes);
 
       // Get authenticated HTTP client
-      final httpClient =
-          authorization.authClient(scopes: AuthService.calendarScopes);
+      final httpClient = authorization.authClient(
+        scopes: AuthService.calendarScopes,
+      );
 
       _calendarApi = calendar.CalendarApi(httpClient);
 
