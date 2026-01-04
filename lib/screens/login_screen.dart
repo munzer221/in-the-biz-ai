@@ -40,14 +40,14 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<void> _initializeGoogleSignInWeb() async {
     try {
-      // Skip nonce for now - it's optional and causing issues with the Flutter google_sign_in package
-      // The package may be handling nonce differently than expected
+      // Initialize with calendar scopes included (optional - user can skip during login)
+      // This prevents re-initialization issues when requesting calendar access later
       await GoogleSignIn.instance.initialize(
         clientId:
             '30441285456-pkvqkagh3fcv0b6n71t5tpnuda94l8d5.apps.googleusercontent.com',
         serverClientId:
             '30441285456-pkvqkagh3fcv0b6n71t5tpnuda94l8d5.apps.googleusercontent.com',
-        // No nonce - let Supabase handle it
+        scopes: AuthService.calendarScopes, // Include calendar scopes
       );
 
       GoogleSignIn.instance.authenticationEvents.listen((event) async {
