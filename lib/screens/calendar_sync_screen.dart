@@ -10,6 +10,7 @@ import 'package:uuid/uuid.dart';
 import '../theme/app_theme.dart';
 import '../services/database_service.dart';
 import '../services/calendar_title_service.dart';
+import '../services/google_calendar_service.dart';
 import '../providers/shift_provider.dart';
 import '../models/shift.dart';
 import '../models/job.dart';
@@ -67,10 +68,51 @@ class _CalendarSyncScreenState extends State<CalendarSyncScreen> {
   }
 
   Future<void> _requestPermissions() async {
-    // Note: Calendar sync on web uses Google Calendar API
-    // Device calendar is only for mobile platforms
+    // On web, use Google Calendar API directly
+    if (kIsWeb) {
+      try {
+        final googleCalService = GoogleCalendarService();
+        final success = await googleCalService.requestCalendarAccess();
 
-    // First try using permission_handler for a proper system dialog
+        if (success) {
+          setState(() {
+            _hasPermission = true;
+            _showSetupGuide = false;
+          });
+          // TODO: Load Google Calendar events
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Google Calendar access granted!'),
+                backgroundColor: AppTheme.primaryGreen,
+              ),
+            );
+          }
+        } else {
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                    'Failed to access Google Calendar. Please sign in first.'),
+                backgroundColor: AppTheme.accentRed,
+              ),
+            );
+          }
+        }
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Error accessing calendar: $e'),
+              backgroundColor: AppTheme.accentRed,
+            ),
+          );
+        }
+      }
+      return;
+    }
+
+    // For mobile platforms, use permission_handler for better UX
     var status = await Permission.calendar.request();
 
     if (status.isGranted) {
