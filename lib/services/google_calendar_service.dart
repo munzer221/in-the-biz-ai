@@ -90,7 +90,7 @@ class GoogleCalendarService {
         GoogleSignIn.instance.authenticationEvents.listen((event) {
           if (event is GoogleSignInAuthenticationEventSignIn) {
             _currentUser = event.user;
-            print('[v1.1.5] User signed in via event: ${event.user?.id}');
+            print('[v1.1.5] User signed in via event: ${event.user.id}');
           } else if (event is GoogleSignInAuthenticationEventSignOut) {
             _currentUser = null;
             print('[v1.1.5] User signed out');
@@ -176,6 +176,68 @@ class GoogleCalendarService {
       print('[v1.1.5] Error requesting calendar access: $e');
       print('[v1.1.5] Stack trace: $stackTrace');
       return false;
+    }
+  }
+
+  /// Check if calendar API is ready
+  bool get isReady => _calendarApi != null;
+
+  /// Get list of user's calendars
+  Future<List<calendar.CalendarListEntry>> getCalendars() async {
+    if (_calendarApi == null) {
+      print('[v1.1.5] getCalendars: CalendarApi not initialized');
+      return [];
+    }
+
+    try {
+      print('[v1.1.5] Fetching calendar list...');
+      final calendarList = await _calendarApi!.calendarList.list();
+      final items = calendarList.items ?? [];
+      print('[v1.1.5] Found ${items.length} calendars');
+      for (final cal in items) {
+        print('[v1.1.5] - ${cal.summary} (${cal.id})');
+      }
+      return items;
+    } catch (e) {
+      print('[v1.1.5] Error getting calendars: $e');
+      return [];
+    }
+  }
+
+  /// Get events from a specific calendar
+  Future<List<calendar.Event>> getCalendarEvents(
+    String calendarId, {
+    DateTime? startDate,
+    DateTime? endDate,
+  }) async {
+    if (_calendarApi == null) {
+      print('[v1.1.5] getCalendarEvents: CalendarApi not initialized');
+      return [];
+    }
+
+    try {
+      final now = DateTime.now();
+      final start = startDate ??
+          now.subtract(const Duration(days: 365 * 15)); // 15 years back
+      final end =
+          endDate ?? now.add(const Duration(days: 180)); // 6 months ahead
+
+      print('[v1.1.5] Fetching events from calendar: $calendarId');
+      final events = await _calendarApi!.events.list(
+        calendarId,
+        timeMin: start.toUtc(),
+        timeMax: end.toUtc(),
+        singleEvents: true,
+        orderBy: 'startTime',
+        maxResults: 2500,
+      );
+
+      final items = events.items ?? [];
+      print('[v1.1.5] Found ${items.length} events');
+      return items;
+    } catch (e) {
+      print('[v1.1.5] Error getting calendar events: $e');
+      return [];
     }
   }
 

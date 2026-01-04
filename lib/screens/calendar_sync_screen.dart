@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:device_calendar/device_calendar.dart';
+import 'package:googleapis/calendar/v3.dart' as gcal;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -35,7 +36,11 @@ class CalendarSyncScreen extends StatefulWidget {
 class _CalendarSyncScreenState extends State<CalendarSyncScreen> {
   final DeviceCalendarPlugin _deviceCalendarPlugin = DeviceCalendarPlugin();
   final DatabaseService _db = DatabaseService();
+  GoogleCalendarService? _googleCalendarService; // For web
   List<Calendar> _calendars = [];
+  List<gcal.CalendarListEntry> _googleCalendars = []; // For web
+  gcal.CalendarListEntry? _selectedGoogleCalendar; // For web
+  List<gcal.Event> _googleEvents = []; // For web
   Calendar? _selectedCalendar;
   List<Event> _upcomingShifts = [];
   Set<String> _selectedShiftIds = {}; // Track selected shift IDs
@@ -110,19 +115,24 @@ class _CalendarSyncScreenState extends State<CalendarSyncScreen> {
       }
 
       try {
-        final googleCalService = GoogleCalendarService();
-        final success = await googleCalService.requestCalendarAccess();
+        _googleCalendarService = GoogleCalendarService();
+        final success = await _googleCalendarService!.requestCalendarAccess();
 
         if (success) {
           setState(() {
             _hasPermission = true;
             _showSetupGuide = false;
+            _isLoading = true;
           });
-          // TODO: Load Google Calendar events
+
+          // Load Google Calendar list
+          await _loadGoogleCalendars();
+
           if (mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text('Google Calendar access granted!'),
+                content: Text(
+                    'Google Calendar access granted! Found ${_googleCalendars.length} calendars.'),
                 backgroundColor: AppTheme.primaryGreen,
               ),
             );
@@ -217,6 +227,91 @@ class _CalendarSyncScreenState extends State<CalendarSyncScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Error loading calendars: $e')),
+        );
+      }
+    }
+  }
+
+  /// Load calendars from Google Calendar API (web only)
+  Future<void> _loadGoogleCalendars() async {
+    if (_googleCalendarService == null) return;
+
+    setState(() => _isLoading = true);
+
+    try {
+      final calendars = await _googleCalendarService!.getCalendars();
+      setState(() {
+        _googleCalendars = calendars;
+        _isLoading = false;
+      });
+      print('[CalendarSync] Loaded ${calendars.length} Google calendars');
+    } catch (e) {
+      setState(() => _isLoading = false);
+      print('[CalendarSync] Error loading Google calendars: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error loading calendars: $e')),
+        );
+      }
+    }
+  }
+
+  /// Load events from a Google Calendar (web only)
+  Future<void> _loadGoogleCalendarEvents(
+      gcal.CalendarListEntry calendar) async {
+    if (_googleCalendarService == null || calendar.id == null) return;
+
+    setState(() {
+      _selectedGoogleCalendar = calendar;
+      _isLoading = true;
+    });
+
+    try {
+      final events =
+          await _googleCalendarService!.getCalendarEvents(calendar.id!);
+
+      // Filter for work-related events
+      final workKeywords = [
+        'shift',
+        'work',
+        'server',
+        'bartender',
+        'host',
+        'bar',
+        'restaurant',
+        'schedule',
+        'hot schedules',
+        '7shifts',
+        'when i work',
+        'homebase',
+        'sling',
+      ];
+
+      final workEvents = events.where((event) {
+        final title = event.summary?.toLowerCase() ?? '';
+        final description = event.description?.toLowerCase() ?? '';
+        return workKeywords.any((keyword) =>
+            title.contains(keyword) || description.contains(keyword));
+      }).toList();
+
+      setState(() {
+        _googleEvents = workEvents;
+        // Auto-select all shifts by default
+        _selectedShiftIds = workEvents
+            .map((e) => e.id ?? '')
+            .where((id) => id.isNotEmpty)
+            .toSet();
+        _isLoading = false;
+      });
+
+      print(
+          '[CalendarSync] Found ${workEvents.length} work events out of ${events.length} total');
+    } catch (e) {
+      setState(() => _isLoading = false);
+      print('[CalendarSync] Error loading Google events: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error loading events: $e')),
         );
       }
     }
@@ -577,7 +672,286 @@ class _CalendarSyncScreenState extends State<CalendarSyncScreen> {
     );
   }
 
+  /// Build Google Calendar list for web
+  Widget _buildGoogleCalendarList() {
+    if (_googleCalendars.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.calendar_today, size: 64, color: AppTheme.textMuted),
+            const SizedBox(height: 16),
+            Text('No calendars found', style: AppTheme.titleMedium),
+            const SizedBox(height: 8),
+            Text(
+              'Make sure you have calendars in your Google account.',
+              style:
+                  AppTheme.bodyMedium.copyWith(color: AppTheme.textSecondary),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 24),
+            ElevatedButton.icon(
+              onPressed: _requestPermissions,
+              icon: const Icon(Icons.refresh),
+              label: const Text('Try Again'),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return Column(
+      children: [
+        // Calendar selector
+        Container(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Select Calendar', style: AppTheme.titleMedium),
+              const SizedBox(height: 8),
+              Text(
+                'Choose the calendar where your work shifts are synced',
+                style:
+                    AppTheme.bodyMedium.copyWith(color: AppTheme.textSecondary),
+              ),
+              const SizedBox(height: 16),
+              SizedBox(
+                height: 100,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: _googleCalendars.length,
+                  itemBuilder: (context, index) {
+                    final calendar = _googleCalendars[index];
+                    final isSelected =
+                        _selectedGoogleCalendar?.id == calendar.id;
+                    return GestureDetector(
+                      onTap: () => _loadGoogleCalendarEvents(calendar),
+                      child: Container(
+                        width: 180,
+                        margin: const EdgeInsets.only(right: 12),
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: isSelected
+                              ? AppTheme.primaryGreen.withOpacity(0.2)
+                              : AppTheme.cardBackground,
+                          borderRadius:
+                              BorderRadius.circular(AppTheme.radiusMedium),
+                          border: Border.all(
+                            color: isSelected
+                                ? AppTheme.primaryGreen
+                                : Colors.transparent,
+                            width: 2,
+                          ),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.calendar_month,
+                              color: isSelected
+                                  ? AppTheme.primaryGreen
+                                  : AppTheme.textSecondary,
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              calendar.summary ?? 'Unnamed Calendar',
+                              style: AppTheme.bodyMedium.copyWith(
+                                fontWeight: isSelected
+                                    ? FontWeight.bold
+                                    : FontWeight.normal,
+                              ),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+        // Events list
+        Expanded(
+          child: _selectedGoogleCalendar == null
+              ? Center(
+                  child: Text(
+                    'Select a calendar to view events',
+                    style: AppTheme.bodyMedium
+                        .copyWith(color: AppTheme.textSecondary),
+                  ),
+                )
+              : _googleEvents.isEmpty
+                  ? Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.event_busy,
+                              size: 64, color: AppTheme.textMuted),
+                          const SizedBox(height: 16),
+                          Text('No work events found',
+                              style: AppTheme.titleMedium),
+                          const SizedBox(height: 8),
+                          Text(
+                            'We look for events with keywords like\n"shift", "work", "server", "schedule", etc.',
+                            style: AppTheme.bodyMedium
+                                .copyWith(color: AppTheme.textSecondary),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
+                    )
+                  : ListView.builder(
+                      padding: const EdgeInsets.all(16),
+                      itemCount: _googleEvents.length,
+                      itemBuilder: (context, index) {
+                        final event = _googleEvents[index];
+                        final eventId = event.id ?? '';
+                        final isSelected = _selectedShiftIds.contains(eventId);
+
+                        final startTime =
+                            event.start?.dateTime ?? event.start?.date;
+                        final endTime = event.end?.dateTime ?? event.end?.date;
+
+                        return Card(
+                          color: AppTheme.cardBackground,
+                          margin: const EdgeInsets.only(bottom: 12),
+                          child: ListTile(
+                            leading: Checkbox(
+                              value: isSelected,
+                              onChanged: (value) {
+                                setState(() {
+                                  if (value == true) {
+                                    _selectedShiftIds.add(eventId);
+                                  } else {
+                                    _selectedShiftIds.remove(eventId);
+                                  }
+                                });
+                              },
+                              activeColor: AppTheme.primaryGreen,
+                            ),
+                            title: Text(
+                              event.summary ?? 'Untitled Event',
+                              style: AppTheme.bodyMedium,
+                            ),
+                            subtitle: Text(
+                              startTime != null
+                                  ? DateFormat('EEE, MMM d • h:mm a')
+                                      .format(startTime.toLocal())
+                                  : 'No date',
+                              style: AppTheme.bodySmall
+                                  .copyWith(color: AppTheme.textSecondary),
+                            ),
+                            trailing: startTime != null && endTime != null
+                                ? Text(
+                                    '${endTime.difference(startTime).inHours}h',
+                                    style: AppTheme.bodySmall
+                                        .copyWith(color: AppTheme.primaryGreen),
+                                  )
+                                : null,
+                          ),
+                        );
+                      },
+                    ),
+        ),
+        // Import button
+        if (_googleEvents.isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: ElevatedButton(
+              onPressed: _selectedShiftIds.isEmpty ? null : _importGoogleShifts,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppTheme.primaryGreen,
+                foregroundColor: Colors.black,
+                minimumSize: const Size(double.infinity, 50),
+              ),
+              child: Text('Import ${_selectedShiftIds.length} Shifts'),
+            ),
+          ),
+      ],
+    );
+  }
+
+  /// Import selected Google Calendar events as shifts
+  Future<void> _importGoogleShifts() async {
+    if (_selectedShiftIds.isEmpty) return;
+
+    setState(() => _isImporting = true);
+
+    try {
+      int imported = 0;
+      final selectedEvents =
+          _googleEvents.where((e) => _selectedShiftIds.contains(e.id)).toList();
+
+      for (final event in selectedEvents) {
+        final startTime = event.start?.dateTime ?? event.start?.date;
+        final endTime = event.end?.dateTime ?? event.end?.date;
+
+        if (startTime == null) continue;
+
+        // Calculate hours
+        double hours = 0;
+        if (endTime != null) {
+          hours = endTime.difference(startTime).inMinutes / 60.0;
+        }
+
+        // Format times as strings (e.g., "9:00 AM")
+        final startTimeStr = DateFormat('h:mm a').format(startTime.toLocal());
+        final endTimeStr = endTime != null
+            ? DateFormat('h:mm a').format(endTime.toLocal())
+            : null;
+
+        // Create shift
+        final shift = Shift(
+          id: const Uuid().v4(),
+          jobId: '', // Will need to be set by user or mapped
+          date: startTime.toLocal(),
+          startTime: startTimeStr,
+          endTime: endTimeStr,
+          hoursWorked: hours,
+          cashTips: 0,
+          creditTips: 0,
+          notes: event.summary ?? '',
+          createdAt: DateTime.now(),
+          source: 'google_calendar',
+        );
+
+        await _db.saveShift(shift);
+        imported++;
+      }
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Imported $imported shifts!'),
+            backgroundColor: AppTheme.primaryGreen,
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error importing shifts: $e'),
+            backgroundColor: AppTheme.accentRed,
+          ),
+        );
+      }
+    } finally {
+      setState(() => _isImporting = false);
+    }
+  }
+
   Widget _buildCalendarList() {
+    // On web, use Google Calendar data
+    if (kIsWeb) {
+      return _buildGoogleCalendarList();
+    }
+
     if (_calendars.isEmpty) {
       return Center(
         child: Column(
