@@ -91,10 +91,7 @@ class GoogleCalendarService {
 
       // Authenticate user if not already signed in
       if (_currentUser == null) {
-        await GoogleSignIn.instance.authenticate();
-
-        // Wait for authentication event
-        await Future.delayed(const Duration(milliseconds: 500));
+        _currentUser = await GoogleSignIn.instance.authenticate();
 
         if (_currentUser == null) {
           return false;
