@@ -89,22 +89,20 @@ class GoogleCalendarService {
         });
       }
 
-      // Authenticate user if not already signed in
-      if (_currentUser == null) {
-        _currentUser = await GoogleSignIn.instance.authenticate(
-          scopeHint: AuthService.calendarScopes,
-        );
+      // Authenticate user and get account directly
+      final account = await GoogleSignIn.instance.authenticate(
+        scopeHint: AuthService.calendarScopes,
+      );
 
-        // Wait for authentication event
-        await Future.delayed(const Duration(milliseconds: 500));
-
-        if (_currentUser == null) {
-          return false;
-        }
+      if (account == null) {
+        print('Authentication failed or was cancelled');
+        return false;
       }
 
+      _currentUser = account;
+
       // Request authorization for calendar scopes
-      final authorization = await _currentUser!.authorizationClient
+      final authorization = await account.authorizationClient
           .authorizeScopes(AuthService.calendarScopes);
 
       // Get authenticated HTTP client
