@@ -93,6 +93,9 @@ class GoogleCalendarService {
       if (_currentUser == null) {
         _currentUser = await GoogleSignIn.instance.authenticate();
 
+        // Wait for authentication event
+        await Future.delayed(const Duration(milliseconds: 500));
+
         if (_currentUser == null) {
           return false;
         }

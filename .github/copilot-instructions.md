@@ -3,6 +3,11 @@ description: AI rules derived by SpecStory from the project AI interaction histo
 globs: *
 ---
 
+# In The Biz AI – Copilot Instructions
+
+**Knowledge cutoff:** June 2024  
+**Current date:** January 3, 2026
+
 ---
 description: AI rules derived by SpecStory from the project AI interaction history
 ---
@@ -12,11 +17,143 @@ description: AI rules derived by SpecStory from the project AI interaction histo
 **Knowledge cutoff:** June 2024
 **Current date:** January 3, 2026
 
-**These instructions are automatically applied to every Copilot chat session.**
+**These instructions are automatically applied to every Copilot chat session.**  
+
 
 ---
 
-## 📝 DOCUMENTATION RULE
+## 📑 Table of Contents
+1. [Documentation Rule](#documentation-rule)
+2. [Device Setup & Commands](#device-setup--commands)
+3. [Theme System Rules](#theme-system-rules)
+4. [Website Metadata](#website-metadata)
+5. [Security Rules](#security-rules)
+6. [AI Vision UI Design](#ai-vision-ui-design)
+7. [Terminal & Shell Rules](#terminal--shell-rules)
+8. [Web Deployment](#web-deployment)
+9. [Supabase Migrations](#supabase-migrations)
+10. [Google Play & RevenueCat](#google-play--revenueCat)
+11. [Android Build & Troubleshooting](#android-build--troubleshooting)
+12. [Copilot Instructions File](#copilot-instructions-file)
+13. [Deprecated/Legacy Instructions](#deprecatedlegacy-instructions)
+14. [Admin Panel Enhancements](#admin-panel-enhancements)
+15. [Calendar Import Issues](#calendar-import-issues)
+
+---
+
+## 📝 Documentation Rule
+
+**CRITICAL:**
+- Do **NOT** add implementation details, feature summaries, or "how things work" documentation here.
+- This file is for workflow, device, deployment, and critical rules **only**.
+- See project docs for feature/implementation details.
+
+---
+
+## 📱 Device Setup & Commands
+
+**Quick Reference Table:**
+
+| Device         | ID              | IP           | Run Command Example                                 |
+|---------------|-----------------|--------------|-----------------------------------------------------|
+| Seeker Phone  | SM02G4061996968 | 10.0.0.65    | `flutter run -d SM02G4061996968`                   |
+| Tablet        | R92X3069WGW     | 10.0.0.50    | `flutter run -d R92X3069WGW`                       |
+| SN339D Phone  | (see batch)     | 10.0.0.98    | `flutter run -d 10.0.0.98:5555`                    |
+
+**Wireless Debugging:**
+- Use `connect-wifi.bat` to connect all devices over Wi-Fi.
+- See batch file section for details.
+
+---
+
+## 🎨 Theme System Rules
+
+**NEVER use hardcoded colors. ALWAYS use AppTheme.**
+
+**Key Points:**
+- Use `AppTheme` for all colors (see list in original instructions).
+- Hero cards: always use `AppTheme.heroCardBackground`.
+- Use `AppTheme.adaptiveTextColor` for text that must adapt to theme.
+- See full theme rules in original instructions for details.
+
+---
+
+## 🌐 Website Metadata
+
+- Always update `<title>` and Open Graph meta tags in `index.html` before deployment.
+- Verify metadata by sharing the site link after deploy.
+
+---
+
+## 🔒 Security Rules
+
+- **NEVER** commit `.env` files; always add to `.gitignore`.
+- Restrict API keys, rotate if compromised, monitor usage.
+- Use `cmd.exe` (not PowerShell) for all shell commands.
+
+---
+
+## 🤖 AI Vision UI Design
+
+- Unified Scan button in header for Add/Edit/Details screens.
+- Scan options in bottom sheet menu.
+- Post-scan verification screen for extracted data.
+- Use `HeroCard` widget for all hero/summary cards.
+
+---
+
+## 💻 Terminal & Shell Rules
+
+- **ALWAYS** use `cmd.exe` in VS Code.
+- Remove PowerShell from VS Code terminal profiles.
+- See settings.json snippet in original instructions.
+
+---
+
+## 🌐 Web Deployment
+
+- **Manual deployment only** (see deploy.bat for steps).
+- Build, copy `/build/web` to root, commit, push to `gh-pages`.
+- Use `deploy.bat` for automation.
+
+---
+
+## 🗄️ Supabase Migrations
+
+- **Do NOT** use `supabase db push` or `supabase migration up`.
+- Use `node scripts/run-migration.mjs <file>.sql` only.
+- See `.env` for `DATABASE_URL`.
+
+---
+
+## 🔐 Google Play & RevenueCat
+
+- Use provided scripts for Play Console and RevenueCat automation.
+- **Never** upload a release without explicit user confirmation.
+- See original for script names and usage.
+
+---
+
+## 🛠️ Android Build & Troubleshooting
+
+- If `ClassNotFoundException`, check Kotlin version, clean build, check `MainActivity.kt` and manifest.
+- For Google Sign-In, ensure correct SHA-1 and OAuth setup in Google Cloud Console.
+
+---
+
+## 📝 COPILOT INSTRUCTIONS FILE - PURPOSE AND CONTENT
+
+The copilot instructions file (.github/copilot-instructions.md) contains workflow rules, deployment guides, device setup steps, theming rules, security practices, and troubleshooting tips for the project. It guides AI assistants and developers, ensuring consistency and preventing common mistakes. It does not include app features, business logic, or code documentation; it only contains operational and workflow rules.
+
+---
+
+## 🚨 Deprecated/Legacy Instructions
+
+See end of file for deprecated web deployment and other legacy notes.
+
+---
+
+// ...existing code...
 
 **CRITICAL:** Do NOT add implementation details, feature summaries, or "how things work" documentation to these copilot instructions.
 
@@ -71,7 +208,7 @@ cd "c:\Users\Brandon 2021\Desktop\In The Biz AI" ; flutter run -d R92X3069WGW
 - Hitting **Ctrl+S** will trigger a hot reload on both devices. It's a handy trick when you want to manually reload everything without making an actual code change.
 - You can also just add a space somewhere and then delete it, then hit save - Flutter will reload both devices even though nothing actually changed in the code.
 
-**Wireless Debugging Setup (ADB over Wi-Fi) (NEW - December 29, 2025):**
+**Wireless Debugging Setup (ADB over Wi-Fi):**
 
 These steps allow for wireless debugging, avoiding USB cable issues.
 
@@ -173,11 +310,11 @@ pause
 
 ---
 
-## 🎨 THEME SYSTEM - CRITICAL RULES (UPDATED December 30, 2025)
+## 🎨 THEME SYSTEM - CRITICAL RULES
 
 **NEVER use hardcoded colors. ALWAYS use AppTheme.**
 
-### General Theming Philosophy (NEW - December 30, 2025):
+### General Theming Philosophy:
 - Professional apps use a **primary accent color** (green, purple, blue) but keep most of the UI **neutral** (whites, grays, blacks) so the accent color **pops** instead of overwhelming everything.
 - Use the accent color **sparingly** - for buttons, highlights, gradients, and key interactive elements.
 - **Backgrounds should be neutral** (almost black - `#0D0D0D`) in dark themes to make the colored containers pop.
@@ -313,7 +450,7 @@ class HeroCard extends StatelessWidget {
 
 ---
 
-## 🌐 WEBSITE METADATA RULES (NEW - December 31, 2025)
+## 🌐 WEBSITE METADATA RULES
 
 - **When deploying the website, ALWAYS update the `<title>` tag** in the `index.html` file to reflect the correct site name (e.g., "In The Biz").
 - **ALWAYS update the Open Graph meta tags** (`og:title`, `og:description`, `og:image`, etc.) in the `index.html` file to ensure correct display when sharing links. This includes:
@@ -324,7 +461,7 @@ class HeroCard extends StatelessWidget {
 
 ---
 
-## 🔒 SECURITY RULES (NEW - December 31, 2025):
+## 🔒 SECURITY RULES
 
 - **NEVER commit `.env` files to Git.** These files contain sensitive API keys and credentials.
 - **ALWAYS add `.env` to your `.gitignore` file.** This prevents accidental commits.
@@ -337,7 +474,7 @@ class HeroCard extends StatelessWidget {
 
 ---
 
-## 🤖 AI VISION FEATURES - UI DESIGN (UPDATED - January 2, 2026)
+## 🤖 AI VISION FEATURES - UI DESIGN
 
 This section defines the UI placement strategy for the AI Vision features.
 
@@ -364,7 +501,6 @@ This section defines the UI placement strategy for the AI Vision features.
     │ ✨ Scan Paycheck                  │
     │ ✨ Scan Invoice                   │
     └──────────────────────────────────┘
-    ```
 -   **Behavior:**
     -   Each item triggers the camera, initiating the respective scan.
 
@@ -380,7 +516,6 @@ This section defines the UI placement strategy for the AI Vision features.
 ### 4. Empty State
 
 -   **Display:** When no shifts exist.
--   **Elements:**
     ```
     ✨ No Shifts Yet - Start Scanning! ✨
     ```
@@ -394,7 +529,7 @@ This section defines the UI placement strategy for the AI Vision features.
 
 ---
 
-## 💻 TERMINAL & SHELL RULES (NEW - January 1, 2026)
+## 💻 TERMINAL & SHELL RULES
 
 - **ALWAYS use `cmd.exe` instead of PowerShell.**
 - To ensure VS Code **always** uses `cmd.exe`, add the following to your VS Code `settings.json` and remove the PowerShell profile:
@@ -419,7 +554,7 @@ This removes PowerShell from the profiles entirely, so VS Code can't offer it as
 
 **IMPORTANT:** GitHub Pages serves files from the **ROOT** of the gh-pages branch, NOT from `build/web/` folder.
 
-### MANUAL DEPLOYMENT ONLY (TEMPORARY - January 3, 2026)
+### MANUAL DEPLOYMENT ONLY (TEMPORARY)
 
 Due to ongoing issues with deployment stability, automated deployment is disabled. Use the following manual process ONLY.
 
@@ -452,7 +587,7 @@ git commit -m "Deploy: Web files in root for GitHub Pages"
 git push origin gh-pages
 ```
 
-**Deployment Script (deploy.bat) (NEW - January 3, 2026):**
+**Deployment Script (deploy.bat):**
 
 Create a batch file (`deploy.bat`) in the project root directory with the following content:
 
@@ -503,7 +638,7 @@ This script automates the entire deployment process, including building the app,
 
 ---
 
-## 🗄️ SUPABASE DATABASE MIGRATIONS (NEW - December 31, 2025)
+## 🗄️ SUPABASE DATABASE MIGRATIONS
 
 **DO NOT use `supabase db push` or `supabase migration up`** - these require Docker and are unreliable on Windows.
 
@@ -560,7 +695,7 @@ On Windows, configure Docker Desktop to start automatically to ensure the Supaba
 
 ---
 
-## 🔐 GOOGLE PLAY & REVENUECAT API ACCESS (UPDATED - January 3, 2026)
+## 🔐 GOOGLE PLAY & REVENUECAT API ACCESS
 
 **We have automated API access to both Google Play Console and RevenueCat.**
 
@@ -585,6 +720,8 @@ node scripts/upload-release.mjs
 node scripts/get-tester-emails.mjs
 ```
 
+**IMPORTANT:** The service account and OAuth clients must be configured for the correct Google Cloud project. There are two projects: "In The Biz AI" and "gen-lang-client-0009693474". The service account is in "gen-lang-client-0009693474".
+
 **What the AI can do automatically:**
 - ✅ Create subscription products in Google Play Console
 - ✅ Upload new releases to Google Play (internal testing track)
@@ -593,7 +730,7 @@ node scripts/get-tester-emails.mjs
 - ✅ Verify service account permissions
 - ✅ Extract tester emails from Supabase database
 
-**IMPORTANT:** Always ASK the user before uploading a release. Do NOT automatically run `upload-release.mjs` without explicit confirmation. The script is available but should only be used when user explicitly requests deployment.
+**IMPORTANT:** Always ASK the user before uploading a release. Do NOT automatically run `upload-release.mjs` without explicit user confirmation. The script is available but should only be used when user explicitly requests deployment.
 
 **Requirements:**
 - Service account must have **Admin (all permissions)** at app level in Play Console
@@ -623,83 +760,16 @@ node scripts/get-tester-emails.mjs
 node scripts/setup-revenuecat-complete.mjs
 ```\n
 **What the AI can do automatically:**\n- ✅ Create products in RevenueCat\n- ✅ Create entitlements\n- ✅ Create offerings and packages\n- ✅ Attach products to entitlements\n- ✅ Configure complete subscription setup\n
-**Current Configuration:**\n- **Products:** &#96;pro_monthly:monthly-plan&#96
+**Current Configuration:**\n- **
 
----
+**IMPORTANT: Google Play requires the SHA-1 certificate fingerprint of the app signing key to be added to the OAuth client in Google Cloud Console.**
 
-## 🛠️ ANDROID BUILD & RUN - TROUBLESHOOTING
+**To locate the SHA-1 fingerprint:**
 
-The app crashes with `java.lang.ClassNotFoundException: Didn't find class "com.inthebiz.app.MainActivity"`:
+1.  Go to Google Play Console: https://play.google.com/console
+2.  Select your app ("In The Biz AI").
+3.  Navigate to **Release > Setup > App integrity**.
+4.  In the "App signing" section, find the "SHA-1 certificate fingerprint."
+    **This is the fingerprint that Google Play uses, NOT the upload key fingerprint.**
 
-This usually means the Kotlin code in `android/app/src/main/kotlin/` is not compiling correctly. The most common causes are:
-
-- **Incorrect Kotlin version:** Verify that the Kotlin version in `android/build.gradle` matches the version used by Flutter.
-- **Cache issues:** Try invalidating caches and restarting Android Studio / VS Code.
-- **Missing dependencies:** Check the `android/app/build.gradle` file for missing dependencies or conflicting versions.
-- **Corrupted build:** Clean the Flutter build (`flutter clean`) and rebuild the app.
-
-**If you are still encountering the `java.lang.ClassNotFoundException` after verifying the above, ensure the following:**
-
-1.  **`MainActivity.kt` exists:** Verify that the &#x60;MainActivity.kt&#x60; file exists in the correct directory (&#x60;android/app/src/main/kotlin/com/inthebiz/app/&#x60;).
-2.  **Manifest Entry:** Check that your &#x60;AndroidManifest.xml&#x60; file correctly references the &#x60;MainActivity&#x60; class. The &#x60;<activity>&#x60; tag should include &#x60;android:name=".MainActivity"&#x60;.
-3.  **Clean Rebuild:** Perform a Flutter clean to clear out any cached build artifacts:
-    ```powershell
-    flutter clean
-    ```
-4.  **Pub Get:** Ensure all dependencies are correctly fetched:
-    ```powershell
-    flutter pub get
-    ```
-5.  **Run:** Then, attempt to run the app again:
-    ```powershell
-    flutter run -d <your_device_id>
-    ```
-
-**If Google Sign-In is failing on Android:**
-
-*   The issue is that **Android uses native Google Sign-In**, not the web version. On Android, you need to properly configure the **OAuth client ID for Android** in Google Cloud Console.
-*   The code looks correct, the issue is likely that **Google hasn't approved your Android OAuth client yet**, or the **SHA-1 certificate fingerprint** isn't configured.
-
-To fix Google Sign-In on Android:
-
-1.  **Get your Android app's SHA-1 fingerprint:**
-
-*From now on, always use `cmd` instead of `PowerShell`.*
-    ```cmd
-    cd "c:\\Users\\Brandon 2021\\Desktop\\In The Biz AI\\android"
-    .\\gradlew signingReport
-    ```
-    If that doesn't work, use &#x60;gradlew.bat signingReport&#x60;
-2.  **Configure OAuth in Google Cloud Console:**
-    1.  Go to Google Cloud Console:
-    2.  Find your project.
-    3.  Go to "APIs & Services" → "Credentials".
-    4.  Create an OAuth 2.0 client ID for Android.
-    5.  Enter your app's package name (&#x60;com.inthebiz.app&#x60;) and the SHA-1 fingerprint.
-3.  **Enable Google Sign-In API:**
-    1.  Go to Google Cloud Console:
-    2.  Find your project.
-    3.  Go to "APIs & Services" → "Enabled APIs & services".
-    4.  Enable "Google Sign-In API".
-
-**If you encounter `GetCredentialResponse error returned from framework` in the logs when using Google Sign-In on Android, it means Google's Credential Manager is failing. To fix this, add both the debug and release SHA-1 certificate fingerprints to your Google Cloud Console OAuth client. You may need to create a separate OAuth client for the debug key.**
-
-## 🌐 WEB DEPLOYMENT - REMEMBER THE MANUAL COPY STEP!
-*It's easy to forget the manual copy step, which is required due to the way Github Pages serves files.*
-*The correct deploy process is:*
-1.  `flutter build web --release --base-href=/` (creates files in `/build/web`)
-2.  **Copy build files to root** (this step is often forgotten!)
-3.  Commit and push
-
----
-
-## 🚨 DEPRECATED INSTRUCTIONS - DO NOT USE
-
-### 🌐 WEB DEPLOYMENT TO GITHUB PAGES (OLD METHOD - DO NOT USE)
-**THIS SECTION IS DEPRECATED. DO NOT FOLLOW THESE INSTRUCTIONS.**
-
-**GITHUB ACTIONS is now configured to automatically deploy the website.**
-
-**The "put stuff in root" thing in these instructions is WRONG and outdated.**
-
-**These instructions are kept only for historical reference.**
+**There are separate OAuth clients for debug and release

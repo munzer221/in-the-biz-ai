@@ -10,13 +10,13 @@ class AuthService {
   // App name "In The Biz AI" is configured in OAuth consent screen
   static const String _webClientId =
       '30441285456-pkvqkagh3fcv0b6n71t5tpnuda94l8d5.apps.googleusercontent.com';
-  
+
   // Android OAuth clients - different for debug vs release builds
   static const String _androidDebugClientId =
-      '30441285456-5a965980027k9dbq3ati2cjald8ou2hd.apps.googleusercontent.com';
+      '30441285456-5a965980027k9dbq3ati2cjald8ou2hd.apps.googleusercontent.com'; // Debug SHA-1
   static const String _androidReleaseClientId =
-      '30441285456-d1e0f38r07vghj3kf3u7c8am25p1cmk3.apps.googleusercontent.com';
-  
+      '30441285456-d1e0f38r07vghj3kf3u7c8am25p1cmk3.apps.googleusercontent.com'; // Release SHA-1
+
   static const String _iosClientId =
       '30441285456-9ea4rfqkepbjigq8jku8qkamr8abap3r.apps.googleusercontent.com';
 
@@ -54,7 +54,7 @@ class AuthService {
     // Mobile: Use authenticate() method with initialization
     try {
       String? clientId;
-      
+
       if (Platform.isIOS) {
         clientId = _iosClientId;
       } else if (Platform.isAndroid) {

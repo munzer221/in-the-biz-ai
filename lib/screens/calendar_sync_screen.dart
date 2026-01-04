@@ -11,6 +11,7 @@ import '../theme/app_theme.dart';
 import '../services/database_service.dart';
 import '../services/calendar_title_service.dart';
 import '../services/google_calendar_service.dart';
+import '../services/auth_service.dart';
 import '../providers/shift_provider.dart';
 import '../models/shift.dart';
 import '../models/job.dart';
@@ -70,6 +71,44 @@ class _CalendarSyncScreenState extends State<CalendarSyncScreen> {
   Future<void> _requestPermissions() async {
     // On web, use Google Calendar API directly
     if (kIsWeb) {
+      // Check if user is signed in first
+      if (!AuthService.isLoggedIn) {
+        if (mounted) {
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              backgroundColor: AppTheme.cardBackground,
+              title: Text('Sign In Required',
+                  style: TextStyle(color: AppTheme.textPrimary)),
+              content: Text(
+                'You need to sign in with Google before syncing your calendar.',
+                style: TextStyle(color: AppTheme.textSecondary),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text('Cancel',
+                      style: TextStyle(color: AppTheme.textMuted)),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    Navigator.pop(
+                        context); // Go back to settings/previous screen
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppTheme.primaryGreen,
+                    foregroundColor: Colors.black,
+                  ),
+                  child: Text('Go to Login'),
+                ),
+              ],
+            ),
+          );
+        }
+        return;
+      }
+
       try {
         final googleCalService = GoogleCalendarService();
         final success = await googleCalService.requestCalendarAccess();
@@ -92,8 +131,8 @@ class _CalendarSyncScreenState extends State<CalendarSyncScreen> {
           if (mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text(
-                    'Failed to access Google Calendar. Please sign in first.'),
+                content:
+                    Text('Failed to access Google Calendar. Please try again.'),
                 backgroundColor: AppTheme.accentRed,
               ),
             );

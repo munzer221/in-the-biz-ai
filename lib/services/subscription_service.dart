@@ -187,6 +187,49 @@ class SubscriptionService extends ChangeNotifier {
     }
   }
 
+  /// Grant Pro access by user ID (admin function)
+  Future<bool> grantProAccessByUserId(String userId, String notes) async {
+    try {
+      // Get user email using database function
+      final emailResponse = await Supabase.instance.client
+          .rpc('get_user_email', params: {'user_uuid': userId});
+
+      if (emailResponse == null) {
+        debugPrint('User not found with ID: $userId');
+        return false;
+      }
+
+      final email = emailResponse as String;
+      final currentUserEmail = Supabase.instance.client.auth.currentUser?.email;
+
+      await Supabase.instance.client.from('pro_users').upsert({
+        'user_id': userId,
+        'email': email,
+        'granted_by': currentUserEmail,
+        'notes': notes,
+      });
+
+      return true;
+    } catch (e) {
+      debugPrint('Error granting Pro access: $e');
+      return false;
+    }
+  }
+
+  /// Revoke Pro access by user ID (admin function)
+  Future<bool> revokeProAccessByUserId(String userId) async {
+    try {
+      await Supabase.instance.client
+          .from('pro_users')
+          .delete()
+          .eq('user_id', userId);
+      return true;
+    } catch (e) {
+      debugPrint('Error revoking Pro access: $e');
+      return false;
+    }
+  }
+
   /// Get list of all manually granted Pro users (admin function)
   Future<List<Map<String, dynamic>>> getProUsers() async {
     try {
@@ -204,27 +247,38 @@ class SubscriptionService extends ChangeNotifier {
   /// Get subscription analytics (admin function)
   Future<Map<String, dynamic>> getSubscriptionAnalytics() async {
     try {
-      // Get customer info from RevenueCat
-      final customerInfo = await Purchases.getCustomerInfo();
+      // Get admin-level analytics from database
+      final proUsersResponse = await Supabase.instance.client
+          .from('pro_users')
+          .select('id, granted_at, granted_by');
 
-      // Calculate metrics
-      final hasActiveSub =
-          customerInfo.entitlements.all['pro']?.isActive ?? false;
-      final subPeriodType = customerInfo.entitlements.all['pro']?.periodType;
+      final proUsers = List<Map<String, dynamic>>.from(proUsersResponse);
+
+      // Count manually granted Pro users
+      final manuallyGrantedCount = proUsers.length;
+
+      // Count users granted by admin vs system
+      final adminGrantedCount = proUsers
+          .where((u) => u['granted_by'] != null && u['granted_by'] != 'system')
+          .length;
+
+      // Get total user count
+      final profilesCount =
+          await Supabase.instance.client.from('profiles').select('id').count();
+
+      final totalUsers = profilesCount.count;
 
       return {
-        'is_subscribed': hasActiveSub,
-        'subscription_type': subPeriodType?.name ?? 'none',
-        'original_purchase_date':
-            customerInfo.entitlements.all['pro']?.originalPurchaseDate,
-        'expiration_date': customerInfo.entitlements.all['pro']?.expirationDate,
-        'will_renew': customerInfo.entitlements.all['pro']?.willRenew ?? false,
+        'total_users': totalUsers,
+        'pro_users_admin_granted': adminGrantedCount,
+        'pro_users_paid': 0, // TODO: Get from RevenueCat when integrated
+        'free_users_count': totalUsers - manuallyGrantedCount,
       };
     } catch (e) {
       debugPrint('Error fetching subscription analytics: $e');
       return {
-        'is_subscribed': false,
-        'subscription_type': 'error',
+        'total_users': 0,
+        'pro_users_count': 0,
         'error': e.toString(),
       };
     }
